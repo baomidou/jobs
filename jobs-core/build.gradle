@@ -2,7 +2,7 @@ dependencies {
     api "${lib.'xxl-rpc-core'}"
     api "${lib.'commons-exec'}"
     api "${lib.'groovy'}"
-    annotationProcessor "org.springframework.boot:spring-boot:${springBootVersion}"
+    implementation "org.springframework:spring-context:${springVersion}"
     implementation "${lib.'slf4j-api'}"
 
     testCompile "${lib.'javax.servlet-api'}"
