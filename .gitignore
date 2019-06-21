@@ -1,0 +1,27 @@
+**/target/
+
+**/.gitignore
+# IntelliJ project files
+.idea
+*.iml
+**/out
+html
+*.ipr
+*.iws
+
+# Eclipse project files
+**/.classpath
+**/.project
+**/.settings/
+**/bin/
+
+# gradle
+.gradle
+**/build
+
+# MacOS
+.DS_Store
+/repo/
+gradle/
+gradlew
+gradlew.bat
