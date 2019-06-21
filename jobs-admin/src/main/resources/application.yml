@@ -1,0 +1,31 @@
+server:
+  port: 8088
+spring:
+  # 环境 dev|test|pro
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+  mail:
+    host: smtp.qq.com
+    username: xxx@qq.com
+    password: xxx
+    port: 25
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+### mybatis
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  global-config:
+    banner: true
+    db-config:
+      id-type: auto
+  configuration:
+    cache-enabled: false
+    map-underscore-to-camel-case: true

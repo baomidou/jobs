@@ -1,0 +1,16 @@
+dependencies {
+    api project(":jobs-core")
+    implementation "${lib.'mybatis-plus'}"
+    implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}" as String))
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
+    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:${springBootVersion}"
+    api "org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}"
+    api "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure-processor'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompile "${lib.'javax.servlet-api'}"
+}
+
+compileJava.dependsOn(processResources)

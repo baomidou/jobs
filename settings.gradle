@@ -1,0 +1,6 @@
+rootProject.name = 'jobs'
+include 'jobs-core'
+include 'jobs-spring-boot-starter'
+include 'jobs-admin'
+include 'jobs-spring-boot-sample'
+

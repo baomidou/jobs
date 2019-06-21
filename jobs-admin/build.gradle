@@ -1,0 +1,9 @@
+dependencies {
+    api project(":jobs-spring-boot-starter")
+    api "${lib.'mybatis-plus'}"
+    api "${lib.'mysql-connector-java'}"
+    api "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    api "org.springframework.boot:spring-boot-starter-mail:${springBootVersion}"
+    implementation "${lib.'p6spy'}"
+
+}
