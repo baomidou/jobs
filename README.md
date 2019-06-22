@@ -4,4 +4,4 @@
 
 
 # 鸣谢
-jobs 参考：<a target="_blank" href="https://github.com/xuxueli/xxl-job">xxl-job</a>
+jobs 参考：<a target="_blank" href="https://github.com/xuxueli/jobs">jobs</a>

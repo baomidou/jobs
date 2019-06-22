@@ -1,16 +1,5 @@
-plugins {
-    id 'java'
-}
-
-group 'com.baomidou'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    api project(":jobs-core")
+    api "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+
 }
