@@ -3,7 +3,7 @@ package com.baomidou.jobs.starter.trigger;
 import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.enums.ExecutorBlockStrategyEnum;
 import com.baomidou.jobs.core.model.TriggerParam;
-import com.baomidou.jobs.core.runner.IJobsRunner;
+import com.baomidou.jobs.core.executor.IJobsExecutor;
 import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.entity.JobsGroup;
@@ -199,7 +199,7 @@ public class JobsTrigger {
     public static JobsResponse<String> runExecutor(TriggerParam triggerParam, String address) {
         JobsResponse<String> runResult;
         try {
-            IJobsRunner executorBiz = JobsScheduler.getExecutorBiz(address);
+            IJobsExecutor executorBiz = JobsScheduler.getExecutorBiz(address);
             runResult = executorBiz.run(triggerParam);
         } catch (Exception e) {
             log.error(">>>>>>>>>>> jobs trigger error, please check if the executor[{}] is running.", address, e);

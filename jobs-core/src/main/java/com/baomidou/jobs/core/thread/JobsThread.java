@@ -1,6 +1,6 @@
 package com.baomidou.jobs.core.thread;
 
-import com.baomidou.jobs.core.executor.IJobsExecutor;
+import com.baomidou.jobs.core.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.core.handler.IJobsHandler;
 import com.baomidou.jobs.core.log.JobsFileAppender;
 import com.baomidou.jobs.core.log.JobsLogger;
@@ -163,7 +163,7 @@ public class JobsThread extends Thread{
 
 				} else {
 					if (idleTimes > 30) {
-						IJobsExecutor.removeJobThread(jobId, "excutor idel times over limit.");
+						JobsAbstractExecutor.removeJobThread(jobId, "excutor idel times over limit.");
 					}
 				}
 			} catch (Throwable e) {

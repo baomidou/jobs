@@ -1,21 +1,18 @@
-package com.baomidou.jobs.core.executor.impl;
+package com.baomidou.jobs.core.executor;
 
-import com.baomidou.jobs.core.executor.IJobsExecutor;
 import com.baomidou.jobs.core.glue.IGlueFactory;
 import com.baomidou.jobs.core.handler.IJobsHandler;
-import com.baomidou.jobs.core.handler.annotation.JobsHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.Map;
-
 /**
  * jobs executor (for spring)
  *
- * @author xuxueli 2018-11-01 09:24:52
+ * @author xxl jobob
+ * @since 2019-06-22
  */
-public class JobsSpringExecutor extends IJobsExecutor implements ApplicationContextAware {
+public class JobsSpringExecutor extends JobsAbstractExecutor implements ApplicationContextAware {
 
 
     @Override
@@ -37,18 +34,10 @@ public class JobsSpringExecutor extends IJobsExecutor implements ApplicationCont
         }
 
         // init job handler action
-        Map<String, Object> serviceBeanMap = applicationContext.getBeansWithAnnotation(JobsHandler.class);
-
-        if (serviceBeanMap != null && serviceBeanMap.size() > 0) {
-            for (Object serviceBean : serviceBeanMap.values()) {
-                if (serviceBean instanceof IJobsHandler) {
-                    String name = serviceBean.getClass().getAnnotation(JobsHandler.class).value();
-                    IJobsHandler handler = (IJobsHandler) serviceBean;
-                    if (loadJobHandler(name) != null) {
-                        throw new RuntimeException("jobs jobhandler naming conflicts.");
-                    }
-                    registJobHandler(name, handler);
-                }
+        String[] jobsHandlerArr = applicationContext.getBeanNamesForType(IJobsHandler.class);
+        if (null != jobsHandlerArr && jobsHandlerArr.length > 0) {
+            for (String jobsHandler : jobsHandlerArr) {
+                setJobHandler(jobsHandler, (IJobsHandler) applicationContext.getBean(jobsHandler));
             }
         }
     }

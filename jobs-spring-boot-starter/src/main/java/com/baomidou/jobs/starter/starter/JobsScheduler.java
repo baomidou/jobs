@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter.starter;
 
-import com.baomidou.jobs.core.runner.IJobsRunner;
+import com.baomidou.jobs.core.executor.IJobsExecutor;
 import com.baomidou.jobs.core.web.IJobsAdmin;
 import com.baomidou.jobs.starter.monitor.JobsFailMonitor;
 import com.baomidou.jobs.starter.monitor.JobsRegistryMonitor;
@@ -106,9 +106,9 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
     /**
      * ---------------------- executor-client ----------------------
      */
-    private static ConcurrentHashMap<String, IJobsRunner> executorBizRepository = new ConcurrentHashMap<String, IJobsRunner>();
+    private static ConcurrentHashMap<String, IJobsExecutor> executorBizRepository = new ConcurrentHashMap<String, IJobsExecutor>();
 
-    public static IJobsRunner getExecutorBiz(String address) throws Exception {
+    public static IJobsExecutor getExecutorBiz(String address) throws Exception {
         // valid
         if (address == null || address.trim().length() == 0) {
             return null;
@@ -116,18 +116,18 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
 
         // load-cache
         address = address.trim();
-        IJobsRunner executorBiz = executorBizRepository.get(address);
+        IJobsExecutor executorBiz = executorBizRepository.get(address);
         if (executorBiz != null) {
             return executorBiz;
         }
 
         // set-cache
-        executorBiz = (IJobsRunner) new XxlRpcReferenceBean(
+        executorBiz = (IJobsExecutor) new XxlRpcReferenceBean(
                 NetEnum.NETTY_HTTP,
                 Serializer.SerializeEnum.HESSIAN.getSerializer(),
                 CallType.SYNC,
                 LoadBalance.ROUND,
-                IJobsRunner.class,
+                IJobsExecutor.class,
                 null,
                 5000,
                 address,

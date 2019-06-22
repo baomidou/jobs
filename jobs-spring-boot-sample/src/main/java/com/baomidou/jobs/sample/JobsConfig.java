@@ -1,8 +1,7 @@
 package com.baomidou.jobs.sample;
 
-import com.baomidou.jobs.core.executor.impl.JobsSpringExecutor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.baomidou.jobs.core.executor.JobsSpringExecutor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +9,12 @@ import org.springframework.context.annotation.Configuration;
 /**
  * jobs config
  *
- * @author xuxueli 2017-04-28
+ * @author xxl jobob
+ * @since 2019-06-22
  */
+@Slf4j
 @Configuration
 public class JobsConfig {
-    private Logger logger = LoggerFactory.getLogger(JobsConfig.class);
-
     @Value("${xxl.job.admin.addresses}")
     private String adminAddresses;
 
@@ -40,7 +39,7 @@ public class JobsConfig {
 
     @Bean(initMethod = "start", destroyMethod = "destroy")
     public JobsSpringExecutor xxlJobExecutor() {
-        logger.info(">>>>>>>>>>> jobs config init.");
+        log.info(">>>>>>>>>>> jobs config init.");
         JobsSpringExecutor jobsSpringExecutor = new JobsSpringExecutor();
         jobsSpringExecutor.setAdminAddresses(adminAddresses);
         jobsSpringExecutor.setAppName(appName);

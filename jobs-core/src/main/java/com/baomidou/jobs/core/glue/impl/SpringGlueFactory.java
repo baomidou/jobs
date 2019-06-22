@@ -1,10 +1,8 @@
 package com.baomidou.jobs.core.glue.impl;
 
-import com.baomidou.jobs.core.executor.impl.JobsSpringExecutor;
+import com.baomidou.jobs.core.executor.JobsSpringExecutor;
 import com.baomidou.jobs.core.glue.IGlueFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.AnnotationUtils;

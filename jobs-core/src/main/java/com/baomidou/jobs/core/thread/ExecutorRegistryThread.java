@@ -2,7 +2,7 @@ package com.baomidou.jobs.core.thread;
 
 import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.enums.RegistryConfig;
-import com.baomidou.jobs.core.executor.IJobsExecutor;
+import com.baomidou.jobs.core.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.core.model.RegistryParam;
 import com.baomidou.jobs.core.web.IJobsAdmin;
 import com.baomidou.jobs.core.web.JobsResponse;
@@ -31,7 +31,7 @@ public class ExecutorRegistryThread {
             logger.warn(">>>>>>>>>>> jobs, executor registry config fail, appName is null.");
             return;
         }
-        if (IJobsExecutor.getAdminBizList() == null) {
+        if (JobsAbstractExecutor.getAdminBizList() == null) {
             logger.warn(">>>>>>>>>>> jobs, executor registry config fail, adminAddresses is null.");
             return;
         }
@@ -44,7 +44,7 @@ public class ExecutorRegistryThread {
                 while (!toStop) {
                     try {
                         RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(), appName, address);
-                        for (IJobsAdmin adminBiz: IJobsExecutor.getAdminBizList()) {
+                        for (IJobsAdmin adminBiz: JobsAbstractExecutor.getAdminBizList()) {
                             try {
                                 JobsResponse<String> registryResult = adminBiz.registry(registryParam);
                                 if (registryResult!=null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {
@@ -80,7 +80,7 @@ public class ExecutorRegistryThread {
                 // registry remove
                 try {
                     RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(), appName, address);
-                    for (IJobsAdmin adminBiz: IJobsExecutor.getAdminBizList()) {
+                    for (IJobsAdmin adminBiz: JobsAbstractExecutor.getAdminBizList()) {
                         try {
                             JobsResponse<String> registryResult = adminBiz.registryRemove(registryParam);
                             if (registryResult!=null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {

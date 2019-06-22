@@ -2,7 +2,7 @@ package com.baomidou.jobs.starter.router.strategy;
 
 import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.model.TriggerParam;
-import com.baomidou.jobs.core.runner.IJobsRunner;
+import com.baomidou.jobs.core.executor.IJobsExecutor;
 import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.router.ExecutorRouter;
 import com.baomidou.jobs.starter.starter.JobsScheduler;
@@ -23,7 +23,7 @@ public class ExecutorRouteBusyover extends ExecutorRouter {
             // beat
             JobsResponse<String> idleBeatResult;
             try {
-                IJobsRunner executorBiz = JobsScheduler.getExecutorBiz(address);
+                IJobsExecutor executorBiz = JobsScheduler.getExecutorBiz(address);
                 idleBeatResult = executorBiz.idleBeat(triggerParam.getJobId());
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
