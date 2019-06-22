@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by xuxueli on 17/5/10.
+ * Jobs Api
+ *
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 @Controller
 public class JobApiController implements InitializingBean {

@@ -23,8 +23,8 @@ public class ExecutorRouteFailover extends ExecutorRouter {
             // beat
             JobsResponse<String> beatResult;
             try {
-                IJobsExecutor executorBiz = JobsScheduler.getExecutorBiz(address);
-                beatResult = executorBiz.beat();
+                IJobsExecutor jobsExecutor = JobsScheduler.getJobsExecutor(address);
+                beatResult = jobsExecutor.beat();
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
                 beatResult = JobsResponse.failed(e.getMessage());

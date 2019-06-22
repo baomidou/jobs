@@ -66,39 +66,36 @@ public class JobsTriggerPool {
         }
 
         // trigger
-        triggerPool_.execute(new Runnable() {
-            @Override
-            public void run() {
+        triggerPool_.execute(() -> {
 
-                long start = System.currentTimeMillis();
+            long start = System.currentTimeMillis();
 
-                try {
-                    // do trigger
-                    JobsTrigger.trigger(jobId, triggerType, failRetryCount, executorShardingParam, executorParam);
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                } finally {
+            try {
+                // do trigger
+                JobsTrigger.trigger(jobId, triggerType, failRetryCount, executorShardingParam, executorParam);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            } finally {
 
-                    // check timeout-count-map
-                    long minTim_now = System.currentTimeMillis() / 60000;
-                    if (minTim != minTim_now) {
-                        minTim = minTim_now;
-                        jobTimeoutCountMap.clear();
+                // check timeout-count-map
+                long minTim_now = System.currentTimeMillis() / 60000;
+                if (minTim != minTim_now) {
+                    minTim = minTim_now;
+                    jobTimeoutCountMap.clear();
+                }
+
+                // incr timeout-count-map
+                long cost = System.currentTimeMillis() - start;
+                if (cost > 500) {
+                    // ob-timeout threshold 500ms
+                    AtomicInteger timeoutCount = jobTimeoutCountMap.putIfAbsent(jobId, new AtomicInteger(1));
+                    if (timeoutCount != null) {
+                        timeoutCount.incrementAndGet();
                     }
-
-                    // incr timeout-count-map
-                    long cost = System.currentTimeMillis() - start;
-                    if (cost > 500) {
-                        // ob-timeout threshold 500ms
-                        AtomicInteger timeoutCount = jobTimeoutCountMap.putIfAbsent(jobId, new AtomicInteger(1));
-                        if (timeoutCount != null) {
-                            timeoutCount.incrementAndGet();
-                        }
-                    }
-
                 }
 
             }
+
         });
     }
 

@@ -2,10 +2,10 @@ package com.baomidou.jobs.starter.starter;
 
 import com.baomidou.jobs.core.executor.IJobsExecutor;
 import com.baomidou.jobs.core.web.IJobsAdmin;
+import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.monitor.JobsFailMonitor;
 import com.baomidou.jobs.starter.monitor.JobsRegistryMonitor;
 import com.baomidou.jobs.starter.monitor.JobsScheduleHelper;
-import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.trigger.JobsTriggerPool;
 import com.xxl.rpc.remoting.invoker.XxlRpcInvokerFactory;
 import com.xxl.rpc.remoting.invoker.call.CallType;
@@ -15,8 +15,7 @@ import com.xxl.rpc.remoting.net.NetEnum;
 import com.xxl.rpc.remoting.net.impl.servlet.server.ServletServerHandler;
 import com.xxl.rpc.remoting.provider.XxlRpcProviderFactory;
 import com.xxl.rpc.serialize.Serializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
@@ -25,15 +24,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author xuxueli 2018-10-28 00:18:17
+ * Jobs Scheduler
+ *
+ * @author xxl jobob
+ * @since 2019-06-22
  */
+@Slf4j
 @Configuration
 public class JobsScheduler implements InitializingBean, DisposableBean {
-    private static final Logger logger = LoggerFactory.getLogger(JobsScheduler.class);
-
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -49,7 +51,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
         // start-schedule
         JobsScheduleHelper.getInstance().start();
 
-        logger.info(">>>>>>>>> init jobs admin success.");
+        log.debug(">>>>>>>>> init jobs admin success.");
     }
 
     @Override
@@ -88,7 +90,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 null);
 
         // add services
-        xxlRpcProviderFactory.addService(IJobsAdmin.class.getName(), null, JobsHelper.getAdminBiz());
+        xxlRpcProviderFactory.addService(IJobsAdmin.class.getName(), null, JobsHelper.getJobsAdmin());
 
         // servlet handler
         servletServerHandler = new ServletServerHandler(xxlRpcProviderFactory);
@@ -106,9 +108,9 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
     /**
      * ---------------------- executor-client ----------------------
      */
-    private static ConcurrentHashMap<String, IJobsExecutor> executorBizRepository = new ConcurrentHashMap<String, IJobsExecutor>();
+    private static Map<String, IJobsExecutor> JOBS_EXECUTOR = new ConcurrentHashMap<>();
 
-    public static IJobsExecutor getExecutorBiz(String address) throws Exception {
+    public static IJobsExecutor getJobsExecutor(String address) throws Exception {
         // valid
         if (address == null || address.trim().length() == 0) {
             return null;
@@ -116,13 +118,13 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
 
         // load-cache
         address = address.trim();
-        IJobsExecutor executorBiz = executorBizRepository.get(address);
-        if (executorBiz != null) {
-            return executorBiz;
+        IJobsExecutor jobsExecutor = JOBS_EXECUTOR.get(address);
+        if (jobsExecutor != null) {
+            return jobsExecutor;
         }
 
         // set-cache
-        executorBiz = (IJobsExecutor) new XxlRpcReferenceBean(
+        jobsExecutor = (IJobsExecutor) new XxlRpcReferenceBean(
                 NetEnum.NETTY_HTTP,
                 Serializer.SerializeEnum.HESSIAN.getSerializer(),
                 CallType.SYNC,
@@ -135,8 +137,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 null,
                 null).getObject();
 
-        executorBizRepository.put(address, executorBiz);
-        return executorBiz;
+        JOBS_EXECUTOR.put(address, jobsExecutor);
+        return jobsExecutor;
     }
-
 }

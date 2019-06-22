@@ -199,8 +199,8 @@ public class JobsTrigger {
     public static JobsResponse<String> runExecutor(TriggerParam triggerParam, String address) {
         JobsResponse<String> runResult;
         try {
-            IJobsExecutor executorBiz = JobsScheduler.getExecutorBiz(address);
-            runResult = executorBiz.run(triggerParam);
+            IJobsExecutor jobsExecutor = JobsScheduler.getJobsExecutor(address);
+            runResult = jobsExecutor.run(triggerParam);
         } catch (Exception e) {
             log.error(">>>>>>>>>>> jobs trigger error, please check if the executor[{}] is running.", address, e);
             runResult = JobsResponse.failed(ThrowableUtil.toString(e));

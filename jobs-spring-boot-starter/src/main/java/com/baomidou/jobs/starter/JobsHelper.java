@@ -41,7 +41,7 @@ public class JobsHelper implements InitializingBean {
     @Resource
     private JobsProperties _jobProperties;
     @Resource
-    private IJobsAdmin _adminBiz;
+    private IJobsAdmin _jobsAdmin;
     @Resource
     private DataSource _dataSource;
 
@@ -73,8 +73,8 @@ public class JobsHelper implements InitializingBean {
         return JOB_HELPER._jobAlarmHandler;
     }
 
-    public static IJobsAdmin getAdminBiz() {
-        return JOB_HELPER._adminBiz;
+    public static IJobsAdmin getJobsAdmin() {
+        return JOB_HELPER._jobsAdmin;
     }
 
     public static DataSource getDataSource() {
