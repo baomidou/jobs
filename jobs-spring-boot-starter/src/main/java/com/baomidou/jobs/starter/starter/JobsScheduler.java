@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.starter;
 
-import com.baomidou.jobs.core.biz.AdminBiz;
-import com.baomidou.jobs.core.biz.ExecutorBiz;
+import com.baomidou.jobs.core.runner.IJobsRunner;
+import com.baomidou.jobs.core.web.IJobsAdmin;
 import com.baomidou.jobs.starter.monitor.JobsFailMonitor;
 import com.baomidou.jobs.starter.monitor.JobsRegistryMonitor;
 import com.baomidou.jobs.starter.monitor.JobsScheduleHelper;
@@ -88,7 +88,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 null);
 
         // add services
-        xxlRpcProviderFactory.addService(AdminBiz.class.getName(), null, JobsHelper.getAdminBiz());
+        xxlRpcProviderFactory.addService(IJobsAdmin.class.getName(), null, JobsHelper.getAdminBiz());
 
         // servlet handler
         servletServerHandler = new ServletServerHandler(xxlRpcProviderFactory);
@@ -106,9 +106,9 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
     /**
      * ---------------------- executor-client ----------------------
      */
-    private static ConcurrentHashMap<String, ExecutorBiz> executorBizRepository = new ConcurrentHashMap<String, ExecutorBiz>();
+    private static ConcurrentHashMap<String, IJobsRunner> executorBizRepository = new ConcurrentHashMap<String, IJobsRunner>();
 
-    public static ExecutorBiz getExecutorBiz(String address) throws Exception {
+    public static IJobsRunner getExecutorBiz(String address) throws Exception {
         // valid
         if (address == null || address.trim().length() == 0) {
             return null;
@@ -116,18 +116,18 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
 
         // load-cache
         address = address.trim();
-        ExecutorBiz executorBiz = executorBizRepository.get(address);
+        IJobsRunner executorBiz = executorBizRepository.get(address);
         if (executorBiz != null) {
             return executorBiz;
         }
 
         // set-cache
-        executorBiz = (ExecutorBiz) new XxlRpcReferenceBean(
+        executorBiz = (IJobsRunner) new XxlRpcReferenceBean(
                 NetEnum.NETTY_HTTP,
                 Serializer.SerializeEnum.HESSIAN.getSerializer(),
                 CallType.SYNC,
                 LoadBalance.ROUND,
-                ExecutorBiz.class,
+                IJobsRunner.class,
                 null,
                 5000,
                 address,

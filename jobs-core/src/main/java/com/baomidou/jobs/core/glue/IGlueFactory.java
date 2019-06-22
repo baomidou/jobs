@@ -1,6 +1,6 @@
 package com.baomidou.jobs.core.glue;
 
-import com.baomidou.jobs.core.handler.IJobHandler;
+import com.baomidou.jobs.core.handler.IJobsHandler;
 import com.baomidou.jobs.core.glue.impl.SpringGlueFactory;
 import groovy.lang.GroovyClassLoader;
 
@@ -13,16 +13,16 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author xuxueli 2016-1-2 20:02:27
  */
-public class GlueFactory {
+public class IGlueFactory {
 
 
-	private static GlueFactory glueFactory = new GlueFactory();
-	public static GlueFactory getInstance(){
+	private static IGlueFactory glueFactory = new IGlueFactory();
+	public static IGlueFactory getInstance(){
 		return glueFactory;
 	}
 	public static void refreshInstance(int type){
 		if (type == 0) {
-			glueFactory = new GlueFactory();
+			glueFactory = new IGlueFactory();
 		} else if (type == 1) {
 			glueFactory = new SpringGlueFactory();
 		}
@@ -42,18 +42,18 @@ public class GlueFactory {
 	 * @return
 	 * @throws Exception
 	 */
-	public IJobHandler loadNewInstance(String codeSource) throws Exception{
+	public IJobsHandler loadNewInstance(String codeSource) throws Exception{
 		if (codeSource!=null && codeSource.trim().length()>0) {
 			Class<?> clazz = getCodeSourceClass(codeSource);
 			if (clazz != null) {
 				Object instance = clazz.newInstance();
 				if (instance!=null) {
-					if (instance instanceof IJobHandler) {
+					if (instance instanceof IJobsHandler) {
 						this.injectService(instance);
-						return (IJobHandler) instance;
+						return (IJobsHandler) instance;
 					} else {
 						throw new IllegalArgumentException(">>>>>>>>>>> xxl-glue, loadNewInstance error, "
-								+ "cannot convert from instance["+ instance.getClass() +"] to IJobHandler");
+								+ "cannot convert from instance["+ instance.getClass() +"] to IJobsHandler");
 					}
 				}
 			}

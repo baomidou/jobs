@@ -1,8 +1,7 @@
 package com.baomidou.jobs.core.log;
 
-import com.baomidou.jobs.core.biz.model.LogResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.baomidou.jobs.core.model.LogResult;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -12,10 +11,10 @@ import java.util.Date;
  * store trigger log in each log-file
  * @author xuxueli 2016-3-12 19:25:12
  */
-public class XxlJobFileAppender {
-	private static Logger logger = LoggerFactory.getLogger(XxlJobFileAppender.class);
-	
-	// for JobThread (support log for child thread of job handler)
+@Slf4j
+public class JobsFileAppender {
+
+	// for JobsThread (support log for child thread of job handler)
 	//public static ThreadLocal<String> contextHolder = new ThreadLocal<String>();
 	public static final InheritableThreadLocal<String> contextHolder = new InheritableThreadLocal<String>();
 
@@ -71,7 +70,8 @@ public class XxlJobFileAppender {
 	public static String makeLogFileName(Date triggerDate, int logId) {
 
 		// filePath/yyyy-MM-dd
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	// avoid concurrent problem, can not be static
+		// avoid concurrent problem, can not be static
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		File logFilePath = new File(getLogPath(), sdf.format(triggerDate));
 		if (!logFilePath.exists()) {
 			logFilePath.mkdir();
@@ -103,7 +103,7 @@ public class XxlJobFileAppender {
 			try {
 				logFile.createNewFile();
 			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
+				log.error(e.getMessage(), e);
 				return;
 			}
 		}
@@ -121,13 +121,13 @@ public class XxlJobFileAppender {
 			fos.write(appendLog.getBytes("utf-8"));
 			fos.flush();
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 		} finally {
 			if (fos != null) {
 				try {
 					fos.close();
 				} catch (IOException e) {
-					logger.error(e.getMessage(), e);
+					log.error(e.getMessage(), e);
 				}
 			}
 		}
@@ -168,13 +168,13 @@ public class XxlJobFileAppender {
 				}
 			}
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
-					logger.error(e.getMessage(), e);
+					log.error(e.getMessage(), e);
 				}
 			}
 		}
@@ -209,13 +209,13 @@ public class XxlJobFileAppender {
 				return sb.toString();
 			}
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
-					logger.error(e.getMessage(), e);
+					log.error(e.getMessage(), e);
 				}
 			}
 		}

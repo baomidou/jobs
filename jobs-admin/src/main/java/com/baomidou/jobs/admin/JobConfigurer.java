@@ -1,4 +1,4 @@
-package com.baomidou.jobs.admin.config;
+package com.baomidou.jobs.admin;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.ControllerAdvice;

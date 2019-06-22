@@ -1,11 +1,12 @@
 package com.baomidou.jobs.starter.router.strategy;
 
-import com.baomidou.jobs.core.biz.ExecutorBiz;
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.biz.model.TriggerParam;
-import lombok.extern.slf4j.Slf4j;
+import com.baomidou.jobs.core.JobsConstant;
+import com.baomidou.jobs.core.model.TriggerParam;
+import com.baomidou.jobs.core.runner.IJobsRunner;
+import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.router.ExecutorRouter;
 import com.baomidou.jobs.starter.starter.JobsScheduler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -16,17 +17,17 @@ import java.util.List;
 public class ExecutorRouteFailover extends ExecutorRouter {
 
     @Override
-    public ReturnT<String> route(TriggerParam triggerParam, List<String> addressList) {
+    public JobsResponse<String> route(TriggerParam triggerParam, List<String> addressList) {
         StringBuffer beatResultSB = new StringBuffer();
         for (String address : addressList) {
             // beat
-            ReturnT<String> beatResult;
+            JobsResponse<String> beatResult;
             try {
-                ExecutorBiz executorBiz = JobsScheduler.getExecutorBiz(address);
+                IJobsRunner executorBiz = JobsScheduler.getExecutorBiz(address);
                 beatResult = executorBiz.beat();
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
-                beatResult = new ReturnT<String>(ReturnT.FAIL_CODE, ""+e );
+                beatResult = JobsResponse.failed(e.getMessage());
             }
             beatResultSB.append( (beatResultSB.length()>0)?"<br><br>":"")
                     .append("心跳检测：")
@@ -35,14 +36,13 @@ public class ExecutorRouteFailover extends ExecutorRouter {
                     .append("<br>msg：").append(beatResult.getMsg());
 
             // beat success
-            if (beatResult.getCode() == ReturnT.SUCCESS_CODE) {
+            if (beatResult.getCode() == JobsConstant.CODE_SUCCESS) {
 
                 beatResult.setMsg(beatResultSB.toString());
-                beatResult.setContent(address);
+                beatResult.setData(address);
                 return beatResult;
             }
         }
-        return new ReturnT<String>(ReturnT.FAIL_CODE, beatResultSB.toString());
-
+        return JobsResponse.failed(beatResultSB.toString());
     }
 }

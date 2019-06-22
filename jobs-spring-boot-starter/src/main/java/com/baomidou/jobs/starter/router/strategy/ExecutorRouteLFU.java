@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.router.strategy;
 
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.biz.model.TriggerParam;
+import com.baomidou.jobs.core.model.TriggerParam;
+import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.router.ExecutorRouter;
 
 import java.util.*;
@@ -63,16 +63,13 @@ public class ExecutorRouteLFU extends ExecutorRouter {
         });
 
         Map.Entry<String, Integer> addressItem = lfuItemList.get(0);
-        String minAddress = addressItem.getKey();
         addressItem.setValue(addressItem.getValue() + 1);
-
         return addressItem.getKey();
     }
 
     @Override
-    public ReturnT<String> route(TriggerParam triggerParam, List<String> addressList) {
-        String address = route(triggerParam.getJobId(), addressList);
-        return new ReturnT<String>(address);
+    public JobsResponse<String> route(TriggerParam triggerParam, List<String> addressList) {
+        return JobsResponse.ok(route(triggerParam.getJobId(), addressList));
     }
 
 }

@@ -1,4 +1,4 @@
-package com.baomidou.jobs.starter;
+package com.baomidou.jobs.core.web;
 
 /**
  * REST API 错误码接口
@@ -6,12 +6,12 @@ package com.baomidou.jobs.starter;
  * @author 青苗
  * @since 2019-06-08
  */
-public interface IErrorCode {
+public interface IJobsErrorCode {
 
     /**
      * 错误编码 -1、失败 0、成功
      */
-    long getCode();
+    int getCode();
 
     /**
      * 错误描述

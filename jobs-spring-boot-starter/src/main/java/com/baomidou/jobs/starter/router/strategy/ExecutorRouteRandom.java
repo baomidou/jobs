@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.router.strategy;
 
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.biz.model.TriggerParam;
+import com.baomidou.jobs.core.model.TriggerParam;
+import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.router.ExecutorRouter;
 
 import java.util.List;
@@ -15,9 +15,7 @@ public class ExecutorRouteRandom extends ExecutorRouter {
     private static Random localRandom = new Random();
 
     @Override
-    public ReturnT<String> route(TriggerParam triggerParam, List<String> addressList) {
-        String address = addressList.get(localRandom.nextInt(addressList.size()));
-        return new ReturnT<String>(address);
+    public JobsResponse<String> route(TriggerParam triggerParam, List<String> addressList) {
+        return JobsResponse.ok(addressList.get(localRandom.nextInt(addressList.size())));
     }
-
 }

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.jobs.starter.R;
+import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.entity.JobsLog;
 
 /**
@@ -24,7 +24,7 @@ public class JobLogController extends BaseController {
      * 分页
      */
     @GetMapping("/page")
-    public R<Object> page(JobsLog jobLog) {
+    public JobsResponse<Object> page(JobsLog jobLog) {
         return success(jobLogService.page(request, jobLog));
     }
 
@@ -32,7 +32,7 @@ public class JobLogController extends BaseController {
      * 总执行次数
      */
     @GetMapping("/count")
-    public R<Integer> count() {
+    public JobsResponse<Integer> count() {
         return success(jobLogService.countAll());
     }
 
@@ -40,7 +40,7 @@ public class JobLogController extends BaseController {
      * 总执行成功次数
      */
     @GetMapping("/count-success")
-    public R<Integer> countSuccess() {
+    public JobsResponse<Integer> countSuccess() {
         return success(jobLogService.countSuccess());
     }
 }

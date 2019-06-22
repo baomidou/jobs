@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.router.strategy;
 
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.biz.model.TriggerParam;
+import com.baomidou.jobs.core.model.TriggerParam;
+import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.router.ExecutorRouter;
 
 import java.io.UnsupportedEncodingException;
@@ -77,9 +77,9 @@ public class ExecutorRouteConsistentHash extends ExecutorRouter {
     }
 
     @Override
-    public ReturnT<String> route(TriggerParam triggerParam, List<String> addressList) {
+    public JobsResponse<String> route(TriggerParam triggerParam, List<String> addressList) {
         String address = hashJob(triggerParam.getJobId(), addressList);
-        return new ReturnT<String>(address);
+        return JobsResponse.ok(address);
     }
 
 }

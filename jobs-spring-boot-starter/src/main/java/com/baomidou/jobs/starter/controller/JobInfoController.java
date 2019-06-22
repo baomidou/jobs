@@ -2,7 +2,7 @@ package com.baomidou.jobs.starter.controller;
 
 import com.baomidou.jobs.starter.service.IJobsInfoService;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.jobs.starter.R;
+import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.entity.JobsInfo;
 
 import javax.annotation.Resource;
@@ -23,7 +23,7 @@ public class JobInfoController extends BaseController {
      * 分页
      */
     @GetMapping("/page")
-    public R<Object> page(JobsInfo jobInfo) {
+    public JobsResponse<Object> page(JobsInfo jobInfo) {
         return success(jobInfoService.page(request, jobInfo));
     }
 
@@ -31,7 +31,7 @@ public class JobInfoController extends BaseController {
      * 总任务数
      */
     @GetMapping("/count")
-    public R<Integer> count() {
+    public JobsResponse<Integer> count() {
         return success(jobInfoService.count());
     }
 
@@ -39,7 +39,7 @@ public class JobInfoController extends BaseController {
      * 执行
      */
     @PostMapping("/execute-{id}")
-    public R<Boolean> execute(@PathVariable("id") int id, String param) {
+    public JobsResponse<Boolean> execute(@PathVariable("id") int id, String param) {
         return success(jobInfoService.execute(id, param));
     }
 
@@ -47,7 +47,7 @@ public class JobInfoController extends BaseController {
      * 启动
      */
     @PostMapping("/start-{id}")
-    public R<Boolean> start(@PathVariable("id") int id) {
+    public JobsResponse<Boolean> start(@PathVariable("id") int id) {
         return success(jobInfoService.start(id));
     }
 
@@ -55,7 +55,7 @@ public class JobInfoController extends BaseController {
      * 停止
      */
     @PostMapping("/stop-{id}")
-    public R<Boolean> stop(@PathVariable("id") int id) {
+    public JobsResponse<Boolean> stop(@PathVariable("id") int id) {
         return success(jobInfoService.stop(id));
     }
 
@@ -63,7 +63,7 @@ public class JobInfoController extends BaseController {
      * 删除
      */
     @PostMapping("/remove-{id}")
-    public R<Boolean> remove(@PathVariable("id") int id) {
+    public JobsResponse<Boolean> remove(@PathVariable("id") int id) {
         return success(jobInfoService.remove(id));
     }
 }

@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter.controller;
 
-import com.baomidou.jobs.core.biz.AdminBiz;
+import com.baomidou.jobs.core.web.IJobsAdmin;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,7 @@ public class JobApiController implements InitializingBean {
 
     }
 
-    @RequestMapping(AdminBiz.MAPPING)
+    @RequestMapping(IJobsAdmin.MAPPING)
     public void api(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         JobsScheduler.invokeAdminService(request, response);
     }

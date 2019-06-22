@@ -1,13 +1,14 @@
 package com.baomidou.jobs.core.thread;
 
-import com.baomidou.jobs.core.biz.AdminBiz;
+import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.enums.RegistryConfig;
-import com.baomidou.jobs.core.executor.XxlJobExecutor;
+import com.baomidou.jobs.core.executor.IJobsExecutor;
+import com.baomidou.jobs.core.log.JobsFileAppender;
+import com.baomidou.jobs.core.log.JobsLogger;
+import com.baomidou.jobs.core.model.HandleCallbackParam;
 import com.baomidou.jobs.core.util.FileUtil;
-import com.baomidou.jobs.core.biz.model.HandleCallbackParam;
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.log.XxlJobFileAppender;
-import com.baomidou.jobs.core.log.XxlJobLogger;
+import com.baomidou.jobs.core.web.IJobsAdmin;
+import com.baomidou.jobs.core.web.JobsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,7 @@ public class TriggerCallbackThread {
     public void start() {
 
         // valid
-        if (XxlJobExecutor.getAdminBizList() == null) {
+        if (IJobsExecutor.getAdminBizList() == null) {
             logger.warn(">>>>>>>>>>> jobs, executor callback config fail, adminAddresses is null.");
             return;
         }
@@ -156,10 +157,10 @@ public class TriggerCallbackThread {
     private void doCallback(List<HandleCallbackParam> callbackParamList){
         boolean callbackRet = false;
         // callback, will retry if error
-        for (AdminBiz adminBiz: XxlJobExecutor.getAdminBizList()) {
+        for (IJobsAdmin adminBiz: IJobsExecutor.getAdminBizList()) {
             try {
-                ReturnT<String> callbackResult = adminBiz.callback(callbackParamList);
-                if (callbackResult!=null && ReturnT.SUCCESS_CODE == callbackResult.getCode()) {
+                JobsResponse<String> callbackResult = adminBiz.callback(callbackParamList);
+                if (callbackResult!=null && JobsConstant.CODE_SUCCESS == callbackResult.getCode()) {
                     callbackLog(callbackParamList, "<br>----------- jobs job callback finish.");
                     callbackRet = true;
                     break;
@@ -180,16 +181,16 @@ public class TriggerCallbackThread {
      */
     private void callbackLog(List<HandleCallbackParam> callbackParamList, String logContent){
         for (HandleCallbackParam callbackParam: callbackParamList) {
-            String logFileName = XxlJobFileAppender.makeLogFileName(new Date(callbackParam.getLogDateTim()), callbackParam.getLogId());
-            XxlJobFileAppender.contextHolder.set(logFileName);
-            XxlJobLogger.log(logContent);
+            String logFileName = JobsFileAppender.makeLogFileName(new Date(callbackParam.getLogDateTim()), callbackParam.getLogId());
+            JobsFileAppender.contextHolder.set(logFileName);
+            JobsLogger.log(logContent);
         }
     }
 
 
     // ---------------------- fail-callback file ----------------------
 
-    private static String failCallbackFilePath = XxlJobFileAppender.getLogPath().concat(File.separator).concat("callbacklog").concat(File.separator);
+    private static String failCallbackFilePath = JobsFileAppender.getLogPath().concat(File.separator).concat("callbacklog").concat(File.separator);
     private static String failCallbackFileName = failCallbackFilePath.concat("jobs-callback-{x}").concat(".log");
 
     private void appendFailCallbackFile(List<HandleCallbackParam> callbackParamList){
@@ -199,7 +200,7 @@ public class TriggerCallbackThread {
         }
 
         // append file
-        byte[] callbackParamList_bytes = XxlJobExecutor.getSerializer().serialize(callbackParamList);
+        byte[] callbackParamList_bytes = IJobsExecutor.getSerializer().serialize(callbackParamList);
 
         File callbackLogFile = new File(failCallbackFileName.replace("{x}", String.valueOf(System.currentTimeMillis())));
         if (callbackLogFile.exists()) {
@@ -230,7 +231,7 @@ public class TriggerCallbackThread {
         // load and clear file, retry
         for (File callbaclLogFile: callbackLogPath.listFiles()) {
             byte[] callbackParamList_bytes = FileUtil.readFileContent(callbaclLogFile);
-            List<HandleCallbackParam> callbackParamList = (List<HandleCallbackParam>) XxlJobExecutor.getSerializer().deserialize(callbackParamList_bytes, HandleCallbackParam.class);
+            List<HandleCallbackParam> callbackParamList = (List<HandleCallbackParam>) IJobsExecutor.getSerializer().deserialize(callbackParamList_bytes, HandleCallbackParam.class);
 
             callbaclLogFile.delete();
             doCallback(callbackParamList);

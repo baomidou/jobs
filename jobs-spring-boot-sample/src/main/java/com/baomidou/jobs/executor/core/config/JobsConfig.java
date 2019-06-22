@@ -1,6 +1,6 @@
 package com.baomidou.jobs.executor.core.config;
 
-import com.baomidou.jobs.core.executor.impl.XxlJobSpringExecutor;
+import com.baomidou.jobs.core.executor.impl.JobsSpringExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,9 +39,9 @@ public class JobsConfig {
 
 
     @Bean(initMethod = "start", destroyMethod = "destroy")
-    public XxlJobSpringExecutor xxlJobExecutor() {
+    public JobsSpringExecutor xxlJobExecutor() {
         logger.info(">>>>>>>>>>> jobs config init.");
-        XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
+        JobsSpringExecutor xxlJobSpringExecutor = new JobsSpringExecutor();
         xxlJobSpringExecutor.setAdminAddresses(adminAddresses);
         xxlJobSpringExecutor.setAppName(appName);
         xxlJobSpringExecutor.setIp(ip);

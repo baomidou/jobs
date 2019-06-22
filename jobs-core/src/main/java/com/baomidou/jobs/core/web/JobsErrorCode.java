@@ -1,4 +1,6 @@
-package com.baomidou.jobs.starter;
+package com.baomidou.jobs.core.web;
+
+import com.baomidou.jobs.core.JobsConstant;
 
 /**
  * REST API 错误码
@@ -6,27 +8,27 @@ package com.baomidou.jobs.starter;
  * @author 青苗
  * @since 2019-06-08
  */
-public enum ApiErrorCode implements IErrorCode {
+public enum JobsErrorCode implements IJobsErrorCode {
     /**
      * 失败
      */
-    FAILED(-1, "操作失败"),
+    FAILED(JobsConstant.CODE_FAILED, "操作失败"),
     /**
      * 成功
      */
-    SUCCESS(0, "执行成功");
+    SUCCESS(JobsConstant.CODE_SUCCESS, "执行成功");
 
-    private final long code;
+    private final int code;
     private final String msg;
 
-    ApiErrorCode(final long code, final String msg) {
+    JobsErrorCode(final int code, final String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public static ApiErrorCode fromCode(long code) {
-        ApiErrorCode[] ecs = ApiErrorCode.values();
-        for (ApiErrorCode ec : ecs) {
+    public static JobsErrorCode fromCode(int code) {
+        JobsErrorCode[] ecs = JobsErrorCode.values();
+        for (JobsErrorCode ec : ecs) {
             if (ec.getCode() == code) {
                 return ec;
             }
@@ -35,7 +37,7 @@ public enum ApiErrorCode implements IErrorCode {
     }
 
     @Override
-    public long getCode() {
+    public int getCode() {
         return code;
     }
 

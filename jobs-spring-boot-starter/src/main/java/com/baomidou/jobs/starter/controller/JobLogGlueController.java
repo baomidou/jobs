@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter.controller;
 
-import com.baomidou.jobs.starter.R;
+import com.baomidou.jobs.core.web.JobsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,7 @@ public class JobLogGlueController extends BaseController {
      * 分页
      */
     @GetMapping("/page")
-    public R<Object> page(JobsLogGlue jobLogGlue) {
+    public JobsResponse<Object> page(JobsLogGlue jobLogGlue) {
         return success(jobLogGlueService.page(request, jobLogGlue));
     }
 }

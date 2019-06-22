@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.router;
 
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.biz.model.TriggerParam;
+import com.baomidou.jobs.core.model.TriggerParam;
+import com.baomidou.jobs.core.web.JobsResponse;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ public abstract class ExecutorRouter {
      * router address
      *
      * @param addressList
-     * @return  ReturnT.content=address
+     * @return  JobsResponse.content=address
      */
-    public abstract ReturnT<String> route(TriggerParam triggerParam, List<String> addressList);
+    public abstract JobsResponse<String> route(TriggerParam triggerParam, List<String> addressList);
 
 }

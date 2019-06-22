@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.controller;
 
-import com.baomidou.jobs.starter.IErrorCode;
-import com.baomidou.jobs.starter.R;
+import com.baomidou.jobs.core.web.IJobsErrorCode;
+import com.baomidou.jobs.core.web.JobsResponse;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +27,8 @@ public class BaseController {
      * @param <T>  对象泛型
      * @return ignore
      */
-    protected <T> R<T> success(T data) {
-        return R.ok(data);
+    protected <T> JobsResponse<T> success(T data) {
+        return JobsResponse.ok(data);
     }
 
     /**
@@ -37,8 +37,8 @@ public class BaseController {
      * @param msg 提示内容
      * @return ignore
      */
-    protected <T> R<T> failed(String msg) {
-        return R.failed(msg);
+    protected <T> JobsResponse<T> failed(String msg) {
+        return JobsResponse.failed(msg);
     }
 
     /**
@@ -47,8 +47,8 @@ public class BaseController {
      * @param errorCode 请求错误码
      * @return ignore
      */
-    protected <T> R<T> failed(IErrorCode errorCode) {
-        return R.failed(errorCode);
+    protected <T> JobsResponse<T> failed(IJobsErrorCode errorCode) {
+        return JobsResponse.failed(errorCode);
     }
 
 }

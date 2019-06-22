@@ -1,20 +1,20 @@
 package com.baomidou.jobs.starter.mybatisplus.service;
 
-import com.baomidou.jobs.core.biz.AdminBiz;
-import com.baomidou.jobs.core.biz.model.HandleCallbackParam;
-import com.baomidou.jobs.core.biz.model.RegistryParam;
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.handler.IJobHandler;
+import com.baomidou.jobs.core.JobsConstant;
+import com.baomidou.jobs.core.model.HandleCallbackParam;
+import com.baomidou.jobs.core.model.RegistryParam;
+import com.baomidou.jobs.core.web.IJobsAdmin;
+import com.baomidou.jobs.core.web.JobsResponse;
+import com.baomidou.jobs.starter.entity.JobsInfo;
+import com.baomidou.jobs.starter.entity.JobsLog;
 import com.baomidou.jobs.starter.service.IJobsInfoService;
+import com.baomidou.jobs.starter.service.IJobsLogService;
+import com.baomidou.jobs.starter.service.IJobsRegistryService;
 import com.baomidou.jobs.starter.trigger.JobsTriggerPool;
+import com.baomidou.jobs.starter.trigger.TriggerTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.baomidou.jobs.starter.entity.JobsInfo;
-import com.baomidou.jobs.starter.entity.JobsLog;
-import com.baomidou.jobs.starter.service.IJobsLogService;
-import com.baomidou.jobs.starter.service.IJobsRegistryService;
-import com.baomidou.jobs.starter.trigger.TriggerTypeEnum;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class AdminBizImpl implements AdminBiz {
+public class JobsAdminImpl implements IJobsAdmin {
     @Autowired
     public IJobsLogService jobLogService;
     @Autowired
@@ -35,30 +35,30 @@ public class AdminBizImpl implements AdminBiz {
 
 
     @Override
-    public ReturnT<String> callback(List<HandleCallbackParam> callbackParamList) {
+    public JobsResponse<String> callback(List<HandleCallbackParam> callbackParamList) {
         for (HandleCallbackParam handleCallbackParam : callbackParamList) {
-            ReturnT<String> callbackResult = callback(handleCallbackParam);
+            JobsResponse<String> callbackResult = callback(handleCallbackParam);
             log.debug(">>>>>>>>> JobApiController.callback {}, handleCallbackParam={}, callbackResult={}",
-                    (callbackResult.getCode() == IJobHandler.SUCCESS.getCode() ? "success" : "fail"), handleCallbackParam, callbackResult);
+                    callbackResult.toString(), handleCallbackParam, callbackResult);
         }
 
-        return ReturnT.SUCCESS;
+        return JobsResponse.ok();
     }
 
-    private ReturnT<String> callback(HandleCallbackParam handleCallbackParam) {
+    private JobsResponse<String> callback(HandleCallbackParam handleCallbackParam) {
         // valid log item
         JobsLog log = jobLogService.getById(handleCallbackParam.getLogId());
         if (log == null) {
-            return new ReturnT<>(ReturnT.FAIL_CODE, "log item not found.");
+            return JobsResponse.failed("log item not found.");
         }
         if (log.getHandleCode() > 0) {
             // avoid repeat callback, trigger child job etc
-            return new ReturnT<>(ReturnT.FAIL_CODE, "log repeate callback.");
+            return JobsResponse.failed("log repeate callback.");
         }
 
         // trigger success, to trigger child job
         String callbackMsg = null;
-        if (IJobHandler.SUCCESS.getCode() == handleCallbackParam.getExecuteResult().getCode()) {
+        if (JobsConstant.CODE_SUCCESS == handleCallbackParam.getExecuteResult().getCode()) {
             JobsInfo xxlJobInfo = jobInfoService.getById(log.getJobId());
             if (xxlJobInfo != null && xxlJobInfo.getChildJobid() != null && xxlJobInfo.getChildJobid().trim().length() > 0) {
                 callbackMsg = "<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>触发子任务<<<<<<<<<<< </span><br>";
@@ -69,14 +69,14 @@ public class AdminBizImpl implements AdminBiz {
                     if (childJobId > 0) {
 
                         JobsTriggerPool.trigger(childJobId, TriggerTypeEnum.PARENT, -1, null, null);
-                        ReturnT<String> triggerChildResult = ReturnT.SUCCESS;
+                        JobsResponse<String> triggerChildResult = JobsResponse.ok();
 
                         // add msg
                         callbackMsg += MessageFormat.format("{0}/{1} [任务ID={2}], 触发{3}, 触发备注: {4} <br>",
                                 (i + 1),
                                 childJobIds.length,
                                 childJobIds[i],
-                                (triggerChildResult.getCode() == ReturnT.SUCCESS_CODE ? "成功" : "失败"),
+                                (triggerChildResult.getCode() == JobsConstant.CODE_SUCCESS ? "成功" : "失败"),
                                 triggerChildResult.getMsg());
                     } else {
                         callbackMsg += MessageFormat.format("{0}/{1} [任务ID={2}], 触发失败, 触发备注: 任务ID格式错误 <br>",
@@ -106,8 +106,7 @@ public class AdminBizImpl implements AdminBiz {
         log.setHandleCode(handleCallbackParam.getExecuteResult().getCode());
         log.setHandleMsg(handleMsg.toString());
         jobLogService.updateById(log);
-
-        return ReturnT.SUCCESS;
+        return JobsResponse.ok();
     }
 
     private boolean isNumeric(String str) {
@@ -120,18 +119,18 @@ public class AdminBizImpl implements AdminBiz {
     }
 
     @Override
-    public ReturnT<String> registry(RegistryParam registryParam) {
+    public JobsResponse<String> registry(RegistryParam registryParam) {
         int ret = jobRegistryService.update(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
         if (ret < 1) {
             jobRegistryService.save(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
         }
-        return ReturnT.SUCCESS;
+        return JobsResponse.ok();
     }
 
     @Override
-    public ReturnT<String> registryRemove(RegistryParam registryParam) {
+    public JobsResponse<String> registryRemove(RegistryParam registryParam) {
         jobRegistryService.remove(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
-        return ReturnT.SUCCESS;
+        return JobsResponse.ok();
     }
 
 }

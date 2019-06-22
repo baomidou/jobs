@@ -1,7 +1,8 @@
 package com.baomidou.jobs.core.thread;
 
 import com.baomidou.jobs.core.util.FileUtil;
-import com.baomidou.jobs.core.log.XxlJobFileAppender;
+import com.baomidou.jobs.core.log.JobsFileAppender;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,11 +18,10 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuxueli 2017-12-29 16:23:43
  */
-public class JobLogFileCleanThread {
-    private static Logger logger = LoggerFactory.getLogger(JobLogFileCleanThread.class);
-
-    private static JobLogFileCleanThread instance = new JobLogFileCleanThread();
-    public static JobLogFileCleanThread getInstance(){
+@Slf4j
+public class JobsLogFileCleanThread {
+    private static JobsLogFileCleanThread instance = new JobsLogFileCleanThread();
+    public static JobsLogFileCleanThread getInstance(){
         return instance;
     }
 
@@ -40,7 +40,7 @@ public class JobLogFileCleanThread {
                 while (!toStop) {
                     try {
                         // clean log dir, over logRetentionDays
-                        File[] childDirs = new File(XxlJobFileAppender.getLogPath()).listFiles();
+                        File[] childDirs = new File(JobsFileAppender.getLogPath()).listFiles();
                         if (childDirs!=null && childDirs.length>0) {
 
                             // today
@@ -68,7 +68,7 @@ public class JobLogFileCleanThread {
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                                     logFileCreateDate = simpleDateFormat.parse(childFile.getName());
                                 } catch (ParseException e) {
-                                    logger.error(e.getMessage(), e);
+                                    log.error(e.getMessage(), e);
                                 }
                                 if (logFileCreateDate == null) {
                                     continue;
@@ -83,7 +83,7 @@ public class JobLogFileCleanThread {
 
                     } catch (Exception e) {
                         if (!toStop) {
-                            logger.error(e.getMessage(), e);
+                            log.error(e.getMessage(), e);
                         }
 
                     }
@@ -92,16 +92,16 @@ public class JobLogFileCleanThread {
                         TimeUnit.DAYS.sleep(1);
                     } catch (InterruptedException e) {
                         if (!toStop) {
-                            logger.error(e.getMessage(), e);
+                            log.error(e.getMessage(), e);
                         }
                     }
                 }
-                logger.info(">>>>>>>>>>> jobs, executor JobLogFileCleanThread thread destory.");
+                log.info(">>>>>>>>>>> jobs, executor JobsLogFileCleanThread thread destory.");
 
             }
         });
         localThread.setDaemon(true);
-        localThread.setName("jobs, executor JobLogFileCleanThread");
+        localThread.setName("jobs, executor JobsLogFileCleanThread");
         localThread.start();
     }
 
@@ -117,8 +117,7 @@ public class JobLogFileCleanThread {
         try {
             localThread.join();
         } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
-
 }

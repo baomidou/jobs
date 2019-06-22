@@ -1,19 +1,20 @@
 package com.baomidou.jobs.starter.trigger;
 
-import com.baomidou.jobs.core.biz.ExecutorBiz;
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.biz.model.TriggerParam;
+import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.enums.ExecutorBlockStrategyEnum;
+import com.baomidou.jobs.core.model.TriggerParam;
+import com.baomidou.jobs.core.runner.IJobsRunner;
+import com.baomidou.jobs.core.web.JobsResponse;
+import com.baomidou.jobs.starter.JobsHelper;
+import com.baomidou.jobs.starter.entity.JobsGroup;
 import com.baomidou.jobs.starter.entity.JobsInfo;
 import com.baomidou.jobs.starter.entity.JobsLog;
 import com.baomidou.jobs.starter.router.ExecutorRouteStrategyEnum;
-import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.starter.JobsScheduler;
 import com.xxl.rpc.util.IpUtil;
 import com.xxl.rpc.util.ThrowableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
-import com.baomidou.jobs.starter.entity.JobsGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,7 +131,7 @@ public class JobsTrigger {
 
         // 3、init address
         String address = null;
-        ReturnT<String> routeAddressResult = null;
+        JobsResponse<String> routeAddressResult = null;
         List<String> registryList = getRegistryList(group.getAddressList());
         if (registryList != null && !registryList.isEmpty()) {
             if (ExecutorRouteStrategyEnum.SHARDING_BROADCAST == executorRouteStrategyEnum) {
@@ -141,20 +142,20 @@ public class JobsTrigger {
                 }
             } else {
                 routeAddressResult = executorRouteStrategyEnum.getRouter().route(triggerParam, registryList);
-                if (routeAddressResult.getCode() == ReturnT.SUCCESS_CODE) {
-                    address = routeAddressResult.getContent();
+                if (routeAddressResult.getCode() == JobsConstant.CODE_SUCCESS) {
+                    address = routeAddressResult.getData();
                 }
             }
         } else {
-            routeAddressResult = new ReturnT<String>(ReturnT.FAIL_CODE, "调度失败：执行器地址为空");
+            routeAddressResult = JobsResponse.failed("调度失败：执行器地址为空");
         }
 
         // 4、trigger remote executor
-        ReturnT<String> triggerResult = null;
+        JobsResponse<String> triggerResult = null;
         if (address != null) {
             triggerResult = runExecutor(triggerParam, address);
         } else {
-            triggerResult = new ReturnT<String>(ReturnT.FAIL_CODE, null);
+            triggerResult = JobsResponse.failed("trigger address is null");
         }
 
         // 5、collection trigger info
@@ -195,14 +196,14 @@ public class JobsTrigger {
      * @param address
      * @return
      */
-    public static ReturnT<String> runExecutor(TriggerParam triggerParam, String address) {
-        ReturnT<String> runResult = null;
+    public static JobsResponse<String> runExecutor(TriggerParam triggerParam, String address) {
+        JobsResponse<String> runResult;
         try {
-            ExecutorBiz executorBiz = JobsScheduler.getExecutorBiz(address);
+            IJobsRunner executorBiz = JobsScheduler.getExecutorBiz(address);
             runResult = executorBiz.run(triggerParam);
         } catch (Exception e) {
             log.error(">>>>>>>>>>> jobs trigger error, please check if the executor[{}] is running.", address, e);
-            runResult = new ReturnT<String>(ReturnT.FAIL_CODE, ThrowableUtil.toString(e));
+            runResult = JobsResponse.failed(ThrowableUtil.toString(e));
         }
 
         StringBuffer runResultSB = new StringBuffer("触发调度：");

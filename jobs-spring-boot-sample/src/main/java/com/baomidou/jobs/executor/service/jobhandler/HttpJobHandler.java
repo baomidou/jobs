@@ -1,9 +1,9 @@
 package com.baomidou.jobs.executor.service.jobhandler;
 
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.handler.IJobHandler;
-import com.baomidou.jobs.core.handler.annotation.JobHandler;
-import com.baomidou.jobs.core.log.XxlJobLogger;
+import com.baomidou.jobs.core.handler.IJobsHandler;
+import com.baomidou.jobs.core.handler.annotation.JobsHandler;
+import com.baomidou.jobs.core.log.JobsLogger;
+import com.baomidou.jobs.core.web.JobsResponse;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -16,12 +16,12 @@ import java.net.URL;
  *
  * @author xuxueli 2018-09-16 03:48:34
  */
-@JobHandler(value = "httpJobHandler")
+@JobsHandler(value = "httpJobHandler")
 @Component
-public class HttpJobHandler extends IJobHandler {
+public class HttpJobHandler extends IJobsHandler {
 
     @Override
-    public ReturnT<String> execute(String param) throws Exception {
+    public JobsResponse<String> execute(String param) throws Exception {
 
         // request
         HttpURLConnection connection = null;
@@ -62,11 +62,11 @@ public class HttpJobHandler extends IJobHandler {
             }
             String responseMsg = result.toString();
 
-            XxlJobLogger.log(responseMsg);
-            return SUCCESS;
+            JobsLogger.log(responseMsg);
+            return JobsResponse.ok();
         } catch (Exception e) {
-            XxlJobLogger.log(e);
-            return FAIL;
+            JobsLogger.log(e);
+            return JobsResponse.failed(e.getMessage());
         } finally {
             try {
                 if (bufferedReader != null) {
@@ -76,7 +76,7 @@ public class HttpJobHandler extends IJobHandler {
                     connection.disconnect();
                 }
             } catch (Exception e2) {
-                XxlJobLogger.log(e2);
+                JobsLogger.log(e2);
             }
         }
 

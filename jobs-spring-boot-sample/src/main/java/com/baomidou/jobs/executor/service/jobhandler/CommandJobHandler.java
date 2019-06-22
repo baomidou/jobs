@@ -1,9 +1,9 @@
 package com.baomidou.jobs.executor.service.jobhandler;
 
-import com.baomidou.jobs.core.biz.model.ReturnT;
-import com.baomidou.jobs.core.handler.IJobHandler;
-import com.baomidou.jobs.core.handler.annotation.JobHandler;
-import com.baomidou.jobs.core.log.XxlJobLogger;
+import com.baomidou.jobs.core.handler.IJobsHandler;
+import com.baomidou.jobs.core.handler.annotation.JobsHandler;
+import com.baomidou.jobs.core.log.JobsLogger;
+import com.baomidou.jobs.core.web.JobsResponse;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedInputStream;
@@ -15,12 +15,12 @@ import java.io.InputStreamReader;
  *
  * @author xuxueli 2018-09-16 03:48:34
  */
-@JobHandler(value="commandJobHandler")
+@JobsHandler(value = "commandJobHandler")
 @Component
-public class CommandJobHandler extends IJobHandler {
+public class CommandJobHandler extends IJobsHandler {
 
     @Override
-    public ReturnT<String> execute(String param) throws Exception {
+    public JobsResponse<String> execute(String param) throws Exception {
         String command = param;
         int exitValue = -1;
 
@@ -34,14 +34,14 @@ public class CommandJobHandler extends IJobHandler {
             // command log
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                XxlJobLogger.log(line);
+                JobsLogger.log(line);
             }
 
             // command exit
             process.waitFor();
             exitValue = process.exitValue();
         } catch (Exception e) {
-            XxlJobLogger.log(e);
+            JobsLogger.log(e);
         } finally {
             if (bufferedReader != null) {
                 bufferedReader.close();
@@ -49,9 +49,9 @@ public class CommandJobHandler extends IJobHandler {
         }
 
         if (exitValue == 0) {
-            return IJobHandler.SUCCESS;
+            return JobsResponse.ok();
         } else {
-            return new ReturnT<>(IJobHandler.FAIL.getCode(), "command exit value(" + exitValue + ") is failed");
+            return JobsResponse.failed("command exit value(" + exitValue + ") is failed");
         }
     }
 

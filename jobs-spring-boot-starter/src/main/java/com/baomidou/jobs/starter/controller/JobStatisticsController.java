@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.jobs.starter.R;
+import com.baomidou.jobs.core.web.JobsResponse;
 
 /**
  * 统计信息
@@ -25,14 +25,14 @@ public class JobStatisticsController extends BaseController {
      * 重要参数数量
      */
     @GetMapping("/important-num")
-    public R<JobsImportantNumVO> importantNum() {
+    public JobsResponse<JobsImportantNumVO> importantNum() {
         return success(statisticsService.getImportantNum());
     }
     /**
      * 成功比例
      */
     @GetMapping("/success-ratio")
-    public R<JobsSuccessRatioVO> successRatio() {
+    public JobsResponse<JobsSuccessRatioVO> successRatio() {
         return success(statisticsService.getSuccessRatio());
     }
 }

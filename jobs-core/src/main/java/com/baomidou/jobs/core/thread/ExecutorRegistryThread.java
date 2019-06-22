@@ -1,10 +1,11 @@
 package com.baomidou.jobs.core.thread;
 
-import com.baomidou.jobs.core.biz.AdminBiz;
+import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.enums.RegistryConfig;
-import com.baomidou.jobs.core.executor.XxlJobExecutor;
-import com.baomidou.jobs.core.biz.model.RegistryParam;
-import com.baomidou.jobs.core.biz.model.ReturnT;
+import com.baomidou.jobs.core.executor.IJobsExecutor;
+import com.baomidou.jobs.core.model.RegistryParam;
+import com.baomidou.jobs.core.web.IJobsAdmin;
+import com.baomidou.jobs.core.web.JobsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ public class ExecutorRegistryThread {
             logger.warn(">>>>>>>>>>> jobs, executor registry config fail, appName is null.");
             return;
         }
-        if (XxlJobExecutor.getAdminBizList() == null) {
+        if (IJobsExecutor.getAdminBizList() == null) {
             logger.warn(">>>>>>>>>>> jobs, executor registry config fail, adminAddresses is null.");
             return;
         }
@@ -43,11 +44,11 @@ public class ExecutorRegistryThread {
                 while (!toStop) {
                     try {
                         RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(), appName, address);
-                        for (AdminBiz adminBiz: XxlJobExecutor.getAdminBizList()) {
+                        for (IJobsAdmin adminBiz: IJobsExecutor.getAdminBizList()) {
                             try {
-                                ReturnT<String> registryResult = adminBiz.registry(registryParam);
-                                if (registryResult!=null && ReturnT.SUCCESS_CODE == registryResult.getCode()) {
-                                    registryResult = ReturnT.SUCCESS;
+                                JobsResponse<String> registryResult = adminBiz.registry(registryParam);
+                                if (registryResult!=null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {
+                                    registryResult = JobsResponse.ok();
                                     logger.debug(">>>>>>>>>>> jobs registry success, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
                                     break;
                                 } else {
@@ -79,11 +80,11 @@ public class ExecutorRegistryThread {
                 // registry remove
                 try {
                     RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(), appName, address);
-                    for (AdminBiz adminBiz: XxlJobExecutor.getAdminBizList()) {
+                    for (IJobsAdmin adminBiz: IJobsExecutor.getAdminBizList()) {
                         try {
-                            ReturnT<String> registryResult = adminBiz.registryRemove(registryParam);
-                            if (registryResult!=null && ReturnT.SUCCESS_CODE == registryResult.getCode()) {
-                                registryResult = ReturnT.SUCCESS;
+                            JobsResponse<String> registryResult = adminBiz.registryRemove(registryParam);
+                            if (registryResult!=null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {
+                                registryResult = JobsResponse.ok();
                                 logger.info(">>>>>>>>>>> jobs registry-remove success, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
                                 break;
                             } else {

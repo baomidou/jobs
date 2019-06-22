@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter;
 
-import com.baomidou.jobs.core.biz.AdminBiz;
+import com.baomidou.jobs.core.web.IJobsAdmin;
 import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
 import com.baomidou.jobs.starter.service.*;
 import com.baomidou.jobs.starter.starter.JobsProperties;
@@ -41,7 +41,7 @@ public class JobsHelper implements InitializingBean {
     @Resource
     private JobsProperties _jobProperties;
     @Resource
-    private AdminBiz _adminBiz;
+    private IJobsAdmin _adminBiz;
     @Resource
     private DataSource _dataSource;
 
@@ -73,7 +73,7 @@ public class JobsHelper implements InitializingBean {
         return JOB_HELPER._jobAlarmHandler;
     }
 
-    public static AdminBiz getAdminBiz() {
+    public static IJobsAdmin getAdminBiz() {
         return JOB_HELPER._adminBiz;
     }
 
