@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 /**
  * 任务信息
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-05-31
  */
 @RestController

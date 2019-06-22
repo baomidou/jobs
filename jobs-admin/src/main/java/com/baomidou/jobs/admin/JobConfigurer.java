@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * MybatisPlus 配置
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-01
  */
 @ControllerAdvice

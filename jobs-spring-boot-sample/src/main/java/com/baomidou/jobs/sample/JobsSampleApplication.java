@@ -6,13 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Spring boot jobs sample
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-22
  */
 @SpringBootApplication
-public class JobsExecutorApplication {
+public class JobsSampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JobsExecutorApplication.class, args);
+        SpringApplication.run(JobsSampleApplication.class, args);
     }
 }

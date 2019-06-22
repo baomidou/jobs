@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Service 控制层父类
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-05-31
  */
 public class BaseController {

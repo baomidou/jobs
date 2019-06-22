@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 管理任务组表
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-05-30
  */
 @Data

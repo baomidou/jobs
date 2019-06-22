@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * 管理任务日志表
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-05-30
  */
 @Data

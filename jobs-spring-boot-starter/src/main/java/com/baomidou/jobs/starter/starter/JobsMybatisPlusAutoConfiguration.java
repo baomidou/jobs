@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Job 启动参数
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-08
  */
 @Configuration

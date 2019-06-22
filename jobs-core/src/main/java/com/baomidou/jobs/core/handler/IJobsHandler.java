@@ -3,11 +3,12 @@ package com.baomidou.jobs.core.handler;
 import com.baomidou.jobs.core.web.JobsResponse;
 
 /**
- * job handler
+ * job handler interface
  *
- * @author xuxueli 2015-12-19 19:06:38
+ * @author xxl jobob
+ * @since 2019-06-22
  */
-public abstract class IJobsHandler {
+public interface IJobsHandler {
 
 
 	/**
@@ -17,13 +18,13 @@ public abstract class IJobsHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract JobsResponse<String> execute(String param) throws Exception;
+	JobsResponse<String> execute(String param) throws Exception;
 
 
 	/**
 	 * init handler, invoked when JobsThread init
 	 */
-	public void init() {
+	default void init() {
 		// do something
 	}
 
@@ -31,7 +32,7 @@ public abstract class IJobsHandler {
 	/**
 	 * destroy handler, invoked when JobsThread destroy
 	 */
-	public void destroy() {
+	default void destroy() {
 		// do something
 	}
 }

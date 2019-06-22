@@ -5,7 +5,7 @@ import com.baomidou.jobs.core.JobsConstant;
 /**
  * REST API 错误码
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-08
  */
 public enum JobsErrorCode implements IJobsErrorCode {

@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 /**
  * 分片广播任务
  *
- * @author xuxueli 2017-07-25 20:56:50
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 @JobsHandler(value="shardingJobHandler")
 @Service
-public class ShardingJobHandler extends IJobsHandler {
+public class ShardingJobHandler implements IJobsHandler {
 
 	@Override
 	public JobsResponse<String> execute(String param) throws Exception {

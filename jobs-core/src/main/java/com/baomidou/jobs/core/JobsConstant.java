@@ -1,7 +1,7 @@
 package com.baomidou.jobs.core;
 
 /**
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-22
  */
 public interface JobsConstant {

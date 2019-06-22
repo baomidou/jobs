@@ -11,7 +11,7 @@ import com.baomidou.jobs.starter.entity.JobsRegistry;
 /**
  * 用户信息
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-05-31
  */
 @RestController

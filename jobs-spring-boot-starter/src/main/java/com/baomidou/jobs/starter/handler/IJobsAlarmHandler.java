@@ -6,7 +6,7 @@ import com.baomidou.jobs.starter.entity.JobsInfo;
 /**
  * Job 报警处理器
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-08
  */
 public interface IJobsAlarmHandler {

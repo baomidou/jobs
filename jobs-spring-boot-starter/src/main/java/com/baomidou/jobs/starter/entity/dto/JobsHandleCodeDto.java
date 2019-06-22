@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 /**
  * JobInfo HandleCode GroupBy VO
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-15
  */
 @Data

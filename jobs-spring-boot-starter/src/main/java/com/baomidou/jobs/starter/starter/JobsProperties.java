@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Job 启动参数
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-08
  */
 @Data

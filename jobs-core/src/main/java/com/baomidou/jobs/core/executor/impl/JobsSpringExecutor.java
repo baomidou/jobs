@@ -27,7 +27,6 @@ public class JobsSpringExecutor extends IJobsExecutor implements ApplicationCont
         // refresh IGlueFactory
         IGlueFactory.refreshInstance(1);
 
-
         // super start
         super.start();
     }
@@ -54,7 +53,6 @@ public class JobsSpringExecutor extends IJobsExecutor implements ApplicationCont
         }
     }
 
-    // ---------------------- applicationContext ----------------------
     private static ApplicationContext applicationContext;
 
     @Override

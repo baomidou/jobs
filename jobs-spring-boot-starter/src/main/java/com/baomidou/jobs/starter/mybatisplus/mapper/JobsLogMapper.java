@@ -7,7 +7,7 @@ import com.baomidou.jobs.starter.entity.JobsLog;
 /**
  * 日志信息 Mapper
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-05-31
  */
 @Mapper

@@ -13,11 +13,12 @@ import java.io.InputStreamReader;
 /**
  * 命令行任务
  *
- * @author xuxueli 2018-09-16 03:48:34
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 @JobsHandler(value = "commandJobHandler")
 @Component
-public class CommandJobHandler extends IJobsHandler {
+public class CommandJobHandler implements IJobsHandler {
 
     @Override
     public JobsResponse<String> execute(String param) throws Exception {
@@ -54,5 +55,4 @@ public class CommandJobHandler extends IJobsHandler {
             return JobsResponse.failed("command exit value(" + exitValue + ") is failed");
         }
     }
-
 }

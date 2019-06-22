@@ -3,7 +3,7 @@ package com.baomidou.jobs.core.web;
 /**
  * REST API 错误码接口
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-08
  */
 public interface IJobsErrorCode {

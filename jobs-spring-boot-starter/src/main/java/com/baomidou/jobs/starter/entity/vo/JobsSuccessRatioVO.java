@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 /**
  * 成功比例统计 VO
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-15
  */
 @Data

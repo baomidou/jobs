@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 /**
  * Spring Boot 相关辅助类
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-08
  */
 @Configuration

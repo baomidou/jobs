@@ -41,16 +41,15 @@ public class JobsConfig {
     @Bean(initMethod = "start", destroyMethod = "destroy")
     public JobsSpringExecutor xxlJobExecutor() {
         logger.info(">>>>>>>>>>> jobs config init.");
-        JobsSpringExecutor xxlJobSpringExecutor = new JobsSpringExecutor();
-        xxlJobSpringExecutor.setAdminAddresses(adminAddresses);
-        xxlJobSpringExecutor.setAppName(appName);
-        xxlJobSpringExecutor.setIp(ip);
-        xxlJobSpringExecutor.setPort(port);
-        xxlJobSpringExecutor.setAccessToken(accessToken);
-        xxlJobSpringExecutor.setLogPath(logPath);
-        xxlJobSpringExecutor.setLogRetentionDays(logRetentionDays);
-
-        return xxlJobSpringExecutor;
+        JobsSpringExecutor jobsSpringExecutor = new JobsSpringExecutor();
+        jobsSpringExecutor.setAdminAddresses(adminAddresses);
+        jobsSpringExecutor.setAppName(appName);
+        jobsSpringExecutor.setIp(ip);
+        jobsSpringExecutor.setPort(port);
+        jobsSpringExecutor.setAccessToken(accessToken);
+        jobsSpringExecutor.setLogPath(logPath);
+        jobsSpringExecutor.setLogRetentionDays(logRetentionDays);
+        return jobsSpringExecutor;
     }
 
     /**

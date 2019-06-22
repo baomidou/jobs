@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 任务组服务接口
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-06-15
  */
 public interface IJobsGroupService<P> {

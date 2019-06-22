@@ -9,7 +9,7 @@ import com.baomidou.jobs.starter.starter.EnableJobsMybatisPlus;
 /**
  * Job Admin
  *
- * @author 青苗
+ * @author xxl jobob
  * @since 2019-05-31
  */
 @EnableJobsMybatisPlus

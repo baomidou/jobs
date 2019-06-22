@@ -14,11 +14,12 @@ import java.net.URL;
 /**
  * 跨平台Http任务
  *
- * @author xuxueli 2018-09-16 03:48:34
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 @JobsHandler(value = "httpJobHandler")
 @Component
-public class HttpJobHandler extends IJobsHandler {
+public class HttpJobHandler implements IJobsHandler {
 
     @Override
     public JobsResponse<String> execute(String param) throws Exception {
