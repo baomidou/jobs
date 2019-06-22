@@ -1,4 +1,4 @@
-package com.baomidou.jobs.executor.core.config;
+package com.baomidou.jobs.sample;
 
 import com.baomidou.jobs.core.executor.impl.JobsSpringExecutor;
 import org.slf4j.Logger;

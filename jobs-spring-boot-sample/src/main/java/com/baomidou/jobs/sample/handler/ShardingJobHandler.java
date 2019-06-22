@@ -1,4 +1,4 @@
-package com.baomidou.jobs.executor.service.jobhandler;
+package com.baomidou.jobs.sample.handler;
 
 import com.baomidou.jobs.core.handler.IJobsHandler;
 import com.baomidou.jobs.core.handler.annotation.JobsHandler;
