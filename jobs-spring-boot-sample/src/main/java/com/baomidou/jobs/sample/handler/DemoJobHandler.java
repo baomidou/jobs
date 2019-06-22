@@ -1,7 +1,6 @@
 package com.baomidou.jobs.sample.handler;
 
 import com.baomidou.jobs.core.handler.IJobsHandler;
-import com.baomidou.jobs.core.handler.annotation.JobsHandler;
 import com.baomidou.jobs.core.log.JobsLogger;
 import com.baomidou.jobs.core.web.JobsResponse;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import java.util.concurrent.TimeUnit;
  * @author xxl jobob
  * @since 2019-06-22
  */
-@JobsHandler(value="demoJobHandler")
 @Component
 public class DemoJobHandler implements IJobsHandler {
 

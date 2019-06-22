@@ -1,7 +1,6 @@
 package com.baomidou.jobs.sample.handler;
 
 import com.baomidou.jobs.core.handler.IJobsHandler;
-import com.baomidou.jobs.core.handler.annotation.JobsHandler;
 import com.baomidou.jobs.core.log.JobsLogger;
 import com.baomidou.jobs.core.util.ShardingUtil;
 import com.baomidou.jobs.core.web.JobsResponse;
@@ -13,13 +12,11 @@ import org.springframework.stereotype.Service;
  * @author xxl jobob
  * @since 2019-06-22
  */
-@JobsHandler(value="shardingJobHandler")
 @Service
 public class ShardingJobHandler implements IJobsHandler {
 
 	@Override
 	public JobsResponse<String> execute(String param) throws Exception {
-
 		// 分片参数
 		ShardingUtil.ShardingVO shardingVO = ShardingUtil.getShardingVo();
 		JobsLogger.log("分片参数：当前分片序号 = {}, 总分片数 = {}", shardingVO.getIndex(), shardingVO.getTotal());
@@ -32,7 +29,6 @@ public class ShardingJobHandler implements IJobsHandler {
 				JobsLogger.log("第 {} 片, 忽略", i);
 			}
 		}
-
 		return JobsResponse.ok();
 	}
 }

@@ -64,12 +64,11 @@ public abstract class JobsAbstractExecutor {
     }
 
     public void destroy() {
-        // destory jobThreadRepository
-        if (jobThreadRepository.size() > 0) {
-            for (Map.Entry<Integer, JobsThread> item : jobThreadRepository.entrySet()) {
-                removeJobThread(item.getKey(), "web container destroy and kill the job.");
+        if (JOBS_THREAD.size() > 0) {
+            for (Map.Entry<Integer, JobsThread> item : JOBS_THREAD.entrySet()) {
+                removeJobsThread(item.getKey(), "web container destroy and kill the job.");
             }
-            jobThreadRepository.clear();
+            JOBS_THREAD.clear();
         }
         JOBS_HANDLER.clear();
 
@@ -214,44 +213,43 @@ public abstract class JobsAbstractExecutor {
      */
     private static Map<String, IJobsHandler> JOBS_HANDLER = new ConcurrentHashMap<>();
 
-    public static IJobsHandler setJobHandler(String name, IJobsHandler jobHandler) {
+    public static IJobsHandler putJobsHandler(String name, IJobsHandler jobHandler) {
         log.debug("jobs handler register success, name:{}", name);
         return JOBS_HANDLER.put(name, jobHandler);
     }
 
-    public static IJobsHandler getJobHandler(String name) {
+    public static IJobsHandler getJobsHandler(String name) {
         return JOBS_HANDLER.get(name);
     }
 
 
-    // ---------------------- job thread repository ----------------------
-    private static ConcurrentHashMap<Integer, JobsThread> jobThreadRepository = new ConcurrentHashMap<Integer, JobsThread>();
+    /**
+     * jobsThread cache
+     */
+    private static Map<Integer, JobsThread> JOBS_THREAD = new ConcurrentHashMap<>();
 
-    public static JobsThread registJobThread(int jobId, IJobsHandler handler, String removeOldReason) {
+    public static JobsThread putJobsThread(int jobId, IJobsHandler handler, String removeOldReason) {
         JobsThread newJobThread = new JobsThread(jobId, handler);
         newJobThread.start();
-        log.info(">>>>>>>>>>> jobs regist JobsThread success, jobId:{}, handler:{}", new Object[]{jobId, handler});
+        log.debug(">>>>>>>>>>> jobs regist JobsThread success, jobId:{}, handler:{}", new Object[]{jobId, handler});
 
-        JobsThread oldJobThread = jobThreadRepository.put(jobId, newJobThread);    // putIfAbsent | oh my god, map's put method return the old value!!!
+        JobsThread oldJobThread = JOBS_THREAD.put(jobId, newJobThread);
         if (oldJobThread != null) {
             oldJobThread.toStop(removeOldReason);
             oldJobThread.interrupt();
         }
-
         return newJobThread;
     }
 
-    public static void removeJobThread(int jobId, String removeOldReason) {
-        JobsThread oldJobThread = jobThreadRepository.remove(jobId);
+    public static void removeJobsThread(int jobId, String removeOldReason) {
+        JobsThread oldJobThread = JOBS_THREAD.remove(jobId);
         if (oldJobThread != null) {
             oldJobThread.toStop(removeOldReason);
             oldJobThread.interrupt();
         }
     }
 
-    public static JobsThread loadJobThread(int jobId) {
-        JobsThread jobThread = jobThreadRepository.get(jobId);
-        return jobThread;
+    public static JobsThread getJobsThread(int jobId) {
+        return JOBS_THREAD.get(jobId);
     }
-
 }

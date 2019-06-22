@@ -37,7 +37,7 @@ public class JobsSpringExecutor extends JobsAbstractExecutor implements Applicat
         String[] jobsHandlerArr = applicationContext.getBeanNamesForType(IJobsHandler.class);
         if (null != jobsHandlerArr && jobsHandlerArr.length > 0) {
             for (String jobsHandler : jobsHandlerArr) {
-                setJobHandler(jobsHandler, (IJobsHandler) applicationContext.getBean(jobsHandler));
+                putJobsHandler(jobsHandler, (IJobsHandler) applicationContext.getBean(jobsHandler));
             }
         }
     }

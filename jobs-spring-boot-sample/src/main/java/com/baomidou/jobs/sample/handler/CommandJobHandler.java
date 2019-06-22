@@ -1,7 +1,6 @@
 package com.baomidou.jobs.sample.handler;
 
 import com.baomidou.jobs.core.handler.IJobsHandler;
-import com.baomidou.jobs.core.handler.annotation.JobsHandler;
 import com.baomidou.jobs.core.log.JobsLogger;
 import com.baomidou.jobs.core.web.JobsResponse;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,6 @@ import java.io.InputStreamReader;
  * @author xxl jobob
  * @since 2019-06-22
  */
-@JobsHandler(value = "commandJobHandler")
 @Component
 public class CommandJobHandler implements IJobsHandler {
 

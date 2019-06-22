@@ -1,6 +1,7 @@
 package com.baomidou.jobs.core.executor.impl;
 
 import com.baomidou.jobs.core.enums.ExecutorBlockStrategyEnum;
+import com.baomidou.jobs.core.executor.IJobsExecutor;
 import com.baomidou.jobs.core.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.core.glue.GlueTypeEnum;
 import com.baomidou.jobs.core.glue.IGlueFactory;
@@ -10,7 +11,6 @@ import com.baomidou.jobs.core.handler.impl.ScriptJobsHandler;
 import com.baomidou.jobs.core.log.JobsFileAppender;
 import com.baomidou.jobs.core.model.LogResult;
 import com.baomidou.jobs.core.model.TriggerParam;
-import com.baomidou.jobs.core.executor.IJobsExecutor;
 import com.baomidou.jobs.core.thread.JobsThread;
 import com.baomidou.jobs.core.web.JobsResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class JobsExecutorImpl implements IJobsExecutor {
 
         // isRunningOrHasQueue
         boolean isRunningOrHasQueue = false;
-        JobsThread jobThread = JobsAbstractExecutor.loadJobThread(jobId);
+        JobsThread jobThread = JobsAbstractExecutor.getJobsThread(jobId);
         if (jobThread != null && jobThread.isRunningOrHasQueue()) {
             isRunningOrHasQueue = true;
         }
@@ -47,9 +47,9 @@ public class JobsExecutorImpl implements IJobsExecutor {
     @Override
     public JobsResponse<String> kill(int jobId) {
         // kill handlerThread, and create new one
-        JobsThread jobThread = JobsAbstractExecutor.loadJobThread(jobId);
+        JobsThread jobThread = JobsAbstractExecutor.getJobsThread(jobId);
         if (jobThread != null) {
-            JobsAbstractExecutor.removeJobThread(jobId, "scheduling center kill job.");
+            JobsAbstractExecutor.removeJobsThread(jobId, "scheduling center kill job.");
             return JobsResponse.ok();
         }
 
@@ -66,7 +66,7 @@ public class JobsExecutorImpl implements IJobsExecutor {
     @Override
     public JobsResponse<String> run(TriggerParam triggerParam) {
         // load old：jobHandler + jobThread
-        JobsThread jobThread = JobsAbstractExecutor.loadJobThread(triggerParam.getJobId());
+        JobsThread jobThread = JobsAbstractExecutor.getJobsThread(triggerParam.getJobId());
         IJobsHandler jobHandler = jobThread != null ? jobThread.getHandler() : null;
         String removeOldReason = null;
 
@@ -75,7 +75,7 @@ public class JobsExecutorImpl implements IJobsExecutor {
         if (GlueTypeEnum.BEAN == glueTypeEnum) {
 
             // new jobhandler
-            IJobsHandler newJobHandler = JobsAbstractExecutor.getJobHandler(triggerParam.getExecutorHandler());
+            IJobsHandler newJobHandler = JobsAbstractExecutor.getJobsHandler(triggerParam.getExecutorHandler());
 
             // valid old jobThread
             if (jobThread != null && jobHandler != newJobHandler) {
@@ -160,7 +160,7 @@ public class JobsExecutorImpl implements IJobsExecutor {
 
         // replace thread (new or exists invalid)
         if (jobThread == null) {
-            jobThread = JobsAbstractExecutor.registJobThread(triggerParam.getJobId(), jobHandler, removeOldReason);
+            jobThread = JobsAbstractExecutor.putJobsThread(triggerParam.getJobId(), jobHandler, removeOldReason);
         }
 
         // push data to queue

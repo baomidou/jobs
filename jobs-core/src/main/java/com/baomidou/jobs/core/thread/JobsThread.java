@@ -163,7 +163,7 @@ public class JobsThread extends Thread{
 
 				} else {
 					if (idleTimes > 30) {
-						JobsAbstractExecutor.removeJobThread(jobId, "excutor idel times over limit.");
+						JobsAbstractExecutor.removeJobsThread(jobId, "excutor idel times over limit.");
 					}
 				}
 			} catch (Throwable e) {
