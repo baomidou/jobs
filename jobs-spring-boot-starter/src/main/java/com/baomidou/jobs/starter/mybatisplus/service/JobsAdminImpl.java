@@ -21,7 +21,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author xuxueli 2017-07-27 21:54:20
+ * Jobs Admin Impl
+ *
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 @Slf4j
 @Service

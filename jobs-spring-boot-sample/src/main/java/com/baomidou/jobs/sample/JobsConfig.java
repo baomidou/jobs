@@ -39,7 +39,7 @@ public class JobsConfig {
 
     @Bean(initMethod = "start", destroyMethod = "destroy")
     public JobsSpringExecutor xxlJobExecutor() {
-        log.info(">>>>>>>>>>> jobs config init.");
+        log.info("Jobs config init.");
         JobsSpringExecutor jobsSpringExecutor = new JobsSpringExecutor();
         jobsSpringExecutor.setAdminAddresses(adminAddresses);
         jobsSpringExecutor.setAppName(appName);

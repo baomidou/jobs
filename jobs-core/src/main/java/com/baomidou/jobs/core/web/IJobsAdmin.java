@@ -6,7 +6,10 @@ import com.baomidou.jobs.core.model.RegistryParam;
 import java.util.List;
 
 /**
- * @author xuxueli 2017-07-27 21:52:49
+ * Jobs Admin
+ *
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 public interface IJobsAdmin {
 
@@ -23,11 +26,8 @@ public interface IJobsAdmin {
      */
     JobsResponse<String> callback(List<HandleCallbackParam> callbackParamList);
 
-
-    // ---------------------- registry ----------------------
-
     /**
-     * registry
+     * 客户端注册
      *
      * @param registryParam
      * @return

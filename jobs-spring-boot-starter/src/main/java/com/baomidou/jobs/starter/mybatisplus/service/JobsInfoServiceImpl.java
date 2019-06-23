@@ -1,19 +1,19 @@
 package com.baomidou.jobs.starter.mybatisplus.service;
 
 import com.baomidou.jobs.starter.cron.CronExpression;
+import com.baomidou.jobs.starter.entity.JobsInfo;
 import com.baomidou.jobs.starter.entity.dto.JobsHandleCodeDto;
 import com.baomidou.jobs.starter.mybatisplus.mapper.JobsInfoMapper;
 import com.baomidou.jobs.starter.service.IJobsInfoService;
 import com.baomidou.jobs.starter.service.IJobsLogGlueService;
 import com.baomidou.jobs.starter.service.IJobsLogService;
-import com.baomidou.jobs.starter.trigger.JobsTriggerPool;
+import com.baomidou.jobs.starter.trigger.JobsTrigger;
+import com.baomidou.jobs.starter.trigger.TriggerTypeEnum;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.baomidou.jobs.starter.entity.JobsInfo;
-import com.baomidou.jobs.starter.trigger.TriggerTypeEnum;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -68,7 +68,9 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
 
     @Override
     public boolean execute(int id, String param) {
-        JobsTriggerPool.trigger(id, TriggerTypeEnum.MANUAL, -1, null, param);
+//        JobsTriggerPool.trigger(id, TriggerTypeEnum.MANUAL, -1, null, param);
+        // 直接触发执行
+        JobsTrigger.trigger(id, TriggerTypeEnum.MANUAL, -1, null, param);
         return true;
     }
 

@@ -19,6 +19,7 @@ public class DemoJobHandler implements IJobsHandler {
 
 	@Override
 	public JobsResponse<String> execute(String param) throws Exception {
+		System.out.println("执行 DemoJobHandler");
 		JobsLogger.log("jobs, Hello World.");
 
 		for (int i = 0; i < 5; i++) {

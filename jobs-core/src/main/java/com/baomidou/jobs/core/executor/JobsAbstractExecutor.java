@@ -1,8 +1,8 @@
 package com.baomidou.jobs.core.executor;
 
+import com.baomidou.jobs.core.executor.impl.JobsExecutorImpl;
 import com.baomidou.jobs.core.handler.IJobsHandler;
 import com.baomidou.jobs.core.log.JobsFileAppender;
-import com.baomidou.jobs.core.executor.impl.JobsExecutorImpl;
 import com.baomidou.jobs.core.thread.ExecutorRegistryThread;
 import com.baomidou.jobs.core.thread.JobsLogFileCleanThread;
 import com.baomidou.jobs.core.thread.JobsThread;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Jobs Executor
-
+ *
  * @author xxl jobob
  * @since 2019-06-22
  */
@@ -41,14 +41,18 @@ public abstract class JobsAbstractExecutor {
     private String logPath;
     private int logRetentionDays;
 
-    // ---------------------- start + stop ----------------------
+    /**
+     * 启动
+     *
+     * @throws Exception
+     */
     public void start() throws Exception {
 
         // init logpath
         JobsFileAppender.initLogPath(logPath);
 
         // init invoker, admin-client
-        initAdminBizList(adminAddresses, accessToken);
+        initJobsAdminList(adminAddresses, accessToken);
 
 
         // init JobsLogFileCleanThread
@@ -63,6 +67,9 @@ public abstract class JobsAbstractExecutor {
         initRpcProvider(ip, port, appName, accessToken);
     }
 
+    /**
+     * 销毁
+     */
     public void destroy() {
         if (JOBS_THREAD.size() > 0) {
             for (Map.Entry<Integer, JobsThread> item : JOBS_THREAD.entrySet()) {
@@ -87,19 +94,23 @@ public abstract class JobsAbstractExecutor {
     }
 
 
-    // ---------------------- admin-client (rpc invoker) ----------------------
-    private static List<IJobsAdmin> adminBizList;
+    /**
+     * Jobs Admin
+     */
+    private static List<IJobsAdmin> JOBS_ADMIN;
     private static Serializer serializer;
 
-    private void initAdminBizList(String adminAddresses, String accessToken) throws Exception {
+    private void initJobsAdminList(String adminAddresses, String accessToken) throws Exception {
         serializer = Serializer.SerializeEnum.HESSIAN.getSerializer();
         if (adminAddresses != null && adminAddresses.trim().length() > 0) {
-            for (String address : adminAddresses.trim().split(",")) {
+            if (JOBS_ADMIN == null) {
+                JOBS_ADMIN = new ArrayList<>();
+            }
+            String[] addressArr = adminAddresses.trim().split(",");
+            for (String address : addressArr) {
                 if (address != null && address.trim().length() > 0) {
-
                     String addressUrl = address.concat(IJobsAdmin.MAPPING);
-
-                    IJobsAdmin adminBiz = (IJobsAdmin) new XxlRpcReferenceBean(
+                    IJobsAdmin jobsAdmin = (IJobsAdmin) new XxlRpcReferenceBean(
                             NetEnum.NETTY_HTTP,
                             serializer,
                             CallType.SYNC,
@@ -112,11 +123,7 @@ public abstract class JobsAbstractExecutor {
                             null,
                             null
                     ).getObject();
-
-                    if (adminBizList == null) {
-                        adminBizList = new ArrayList<IJobsAdmin>();
-                    }
-                    adminBizList.add(adminBiz);
+                    JOBS_ADMIN.add(jobsAdmin);
                 }
             }
         }
@@ -131,8 +138,8 @@ public abstract class JobsAbstractExecutor {
         }
     }
 
-    public static List<IJobsAdmin> getAdminBizList() {
-        return adminBizList;
+    public static List<IJobsAdmin> getJobsAdminList() {
+        return JOBS_ADMIN;
     }
 
     public static Serializer getSerializer() {
@@ -140,28 +147,33 @@ public abstract class JobsAbstractExecutor {
     }
 
 
-    // ---------------------- executor-server (rpc provider) ----------------------
-    private XxlRpcProviderFactory xxlRpcProviderFactory = null;
+    /**
+     * rpc provider factory
+     */
+    private XxlRpcProviderFactory XXL_RPC_PROVIDER_FACTORY = null;
 
     private void initRpcProvider(String ip, int port, String appName, String accessToken) throws Exception {
 
         // init, provider factory
-        String address = IpUtil.getIpPort(ip, port);
-        Map<String, String> serviceRegistryParam = new HashMap<String, String>();
+        Map<String, String> serviceRegistryParam = new HashMap<>(16);
         serviceRegistryParam.put("appName", appName);
-        serviceRegistryParam.put("address", address);
+        serviceRegistryParam.put("address", IpUtil.getIpPort(ip, port));
 
-        xxlRpcProviderFactory = new XxlRpcProviderFactory();
-        xxlRpcProviderFactory.initConfig(NetEnum.NETTY_HTTP, Serializer.SerializeEnum.HESSIAN.getSerializer(), ip, port, accessToken, ExecutorServiceRegistry.class, serviceRegistryParam);
+        XXL_RPC_PROVIDER_FACTORY = new XxlRpcProviderFactory();
+        XXL_RPC_PROVIDER_FACTORY.initConfig(NetEnum.NETTY_HTTP, Serializer.SerializeEnum.HESSIAN.getSerializer(),
+                ip, port, accessToken, ExecutorServiceRegistry.class, serviceRegistryParam);
 
         // add services
-        xxlRpcProviderFactory.addService(IJobsExecutor.class.getName(), null, new JobsExecutorImpl());
+        XXL_RPC_PROVIDER_FACTORY.addService(IJobsExecutor.class.getName(), null, new JobsExecutorImpl());
 
         // start
-        xxlRpcProviderFactory.start();
+        XXL_RPC_PROVIDER_FACTORY.start();
 
     }
 
+    /**
+     * RPC Client 节点注册
+     */
     public static class ExecutorServiceRegistry extends ServiceRegistry {
 
         @Override
@@ -201,7 +213,7 @@ public abstract class JobsAbstractExecutor {
     private void stopRpcProvider() {
         // stop provider factory
         try {
-            xxlRpcProviderFactory.stop();
+            XXL_RPC_PROVIDER_FACTORY.stop();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -231,7 +243,7 @@ public abstract class JobsAbstractExecutor {
     public static JobsThread putJobsThread(int jobId, IJobsHandler handler, String removeOldReason) {
         JobsThread newJobThread = new JobsThread(jobId, handler);
         newJobThread.start();
-        log.debug(">>>>>>>>>>> jobs regist JobsThread success, jobId:{}, handler:{}", new Object[]{jobId, handler});
+        log.debug("Jobs register JobsThread success, jobId:{}, handler:{}", new Object[]{jobId, handler});
 
         JobsThread oldJobThread = JOBS_THREAD.put(jobId, newJobThread);
         if (oldJobThread != null) {
