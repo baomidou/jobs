@@ -1,5 +1,5 @@
 dependencies {
-    api project(":jobs-core")
+    api project(":jobs-spring-boot-starter")
     api "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 
 }

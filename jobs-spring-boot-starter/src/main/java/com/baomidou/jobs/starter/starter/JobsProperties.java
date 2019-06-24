@@ -17,5 +17,31 @@ public class JobsProperties {
      * 访问票据
      */
     private String accessToken;
+    /**
+     * Jobs admin address, such as "http://address" or "http://address01,http://address02"
+     */
+    private String adminAddress;
+    /**
+     * 客户端相关配置
+     */
+    private App app;
 
+    /**
+     * 客户端参数
+     */
+    @Data
+    public static class App {
+        /**
+         * APP 服务名
+         */
+        private String name;
+        /**
+         * IP 地址
+         */
+        private String ip;
+        /**
+         * 端口
+         */
+        private int port;
+    }
 }

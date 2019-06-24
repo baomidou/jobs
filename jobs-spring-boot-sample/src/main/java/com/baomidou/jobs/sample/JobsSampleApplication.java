@@ -1,14 +1,16 @@
 package com.baomidou.jobs.sample;
 
+import com.baomidou.jobs.starter.starter.EnableJobs;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Spring boot jobs sample
  *
- * @author xxl jobob
- * @since 2019-06-22
+ * @author jobob
+ * @since 2019-06-25
  */
+@EnableJobs
 @SpringBootApplication
 public class JobsSampleApplication {
 

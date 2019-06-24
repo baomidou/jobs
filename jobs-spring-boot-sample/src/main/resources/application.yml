@@ -1,0 +1,14 @@
+# web port
+server:
+  port: 8081
+
+### jobs
+jobs:
+  admin-address: http://127.0.0.1:8088
+  app:
+    name: jobs-executor-sample
+    port: 9999
+
+# log config
+logging:
+  config: classpath:logback.xml

@@ -10,15 +10,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 启动 Redis 分布式锁
+ * 启动 Jobs Admin
  *
- * @author hubin
- * @since 2019-07-23
+ * @author jobob
+ * @since 2019-06-08
  */
 @Configuration
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({JobsHelper.class, JobsScheduler.class, JobsMybatisPlusAutoConfiguration.class})
-public @interface EnableJobsMybatisPlus {
+@Import({JobsHelper.class, JobsScheduler.class, JobsAdminAutoConfiguration.class})
+public @interface EnableJobsAdmin {
 
 }

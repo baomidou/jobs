@@ -4,15 +4,15 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import com.baomidou.jobs.starter.starter.EnableJobsMybatisPlus;
+import com.baomidou.jobs.starter.starter.EnableJobsAdmin;
 
 /**
  * Job Admin
  *
- * @author xxl jobob
+ * @author jobob
  * @since 2019-05-31
  */
-@EnableJobsMybatisPlus
+@EnableJobsAdmin
 @EnableTransactionManagement
 @SpringBootApplication
 public class JobsAdminApplication {

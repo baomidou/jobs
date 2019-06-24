@@ -10,9 +10,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Job 启动参数
+ * Jobs 启动参数
  *
- * @author xxl jobob
+ * @author jobob
  * @since 2019-06-08
  */
 @Configuration
@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
         "com.baomidou.jobs.starter.mybatisplus.service",
         "com.baomidou.jobs.starter.controller"
 })
-public class JobsMybatisPlusAutoConfiguration {
+public class JobsAdminAutoConfiguration {
 
     /**
      * mybatis-plus分页插件<br>
