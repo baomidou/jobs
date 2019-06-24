@@ -23,7 +23,9 @@ import java.util.List;
 
 /**
  * jobs trigger
- * Created by xuxueli on 17/7/13.
+ *
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 @Slf4j
 public class JobsTrigger {
@@ -43,7 +45,7 @@ public class JobsTrigger {
         // load data
         JobsInfo jobInfo = JobsHelper.getJobInfoService().getById(jobId);
         if (jobInfo == null) {
-            log.warn(">>>>>>>>>>>> trigger fail, jobId invalid，jobId={}", jobId);
+            log.warn("Trigger fail, jobId invalid，jobId={}", jobId);
             return;
         }
         if (executorParam != null) {
@@ -112,7 +114,7 @@ public class JobsTrigger {
         jobLog.setHandleCode(0);
         jobLog.setTriggerCode(0);
         JobsHelper.getJobLogService().save(jobLog);
-        log.debug(">>>>>>>>>>> jobs trigger start, jobId:{}", jobLog.getId());
+        log.debug("Jobs trigger start, jobId:{}", jobLog.getId());
 
         // 2、init trigger-param
         TriggerParam triggerParam = new TriggerParam();
@@ -155,7 +157,7 @@ public class JobsTrigger {
         if (address != null) {
             triggerResult = runExecutor(triggerParam, address);
         } else {
-            triggerResult = JobsResponse.failed("trigger address is null");
+            triggerResult = JobsResponse.failed("Trigger address is null");
         }
 
         // 5、collection trigger info
@@ -171,9 +173,8 @@ public class JobsTrigger {
         triggerMsgSb.append("<br>阻塞处理策略：").append(blockStrategy.getTitle());
         triggerMsgSb.append("<br>任务超时时间：").append(jobInfo.getExecutorTimeout());
         triggerMsgSb.append("<br>失败重试次数：").append(finalFailRetryCount);
-
-        triggerMsgSb.append("<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>触发调度<<<<<<<<<<< </span><br>")
-                .append((routeAddressResult != null && routeAddressResult.getMsg() != null) ? routeAddressResult.getMsg() + "<br><br>" : "").append(triggerResult.getMsg() != null ? triggerResult.getMsg() : "");
+        triggerMsgSb.append("<br>触发调度").append((routeAddressResult != null && routeAddressResult.getMsg() != null) ? routeAddressResult.getMsg() + "<br>" : "")
+                .append(triggerResult.getMsg() != null ? triggerResult.getMsg() : "");
 
         // 6、save log trigger-info
         jobLog.setExecutorAddress(address);
@@ -181,12 +182,11 @@ public class JobsTrigger {
         jobLog.setExecutorParam(jobInfo.getExecutorParam());
         jobLog.setExecutorShardingParam(shardingParam);
         jobLog.setExecutorFailRetryCount(finalFailRetryCount);
-        //jobLog.setTriggerTime();
         jobLog.setTriggerCode(triggerResult.getCode());
         jobLog.setTriggerMsg(triggerMsgSb.toString());
         JobsHelper.getJobLogService().updateById(jobLog);
 
-        log.debug(">>>>>>>>>>> jobs trigger end, jobId:{}", jobLog.getId());
+        log.debug("Jobs trigger end, jobId:{}", jobLog.getId());
     }
 
     /**
@@ -202,7 +202,7 @@ public class JobsTrigger {
             IJobsExecutor jobsExecutor = JobsScheduler.getJobsExecutor(address);
             runResult = jobsExecutor.run(triggerParam);
         } catch (Exception e) {
-            log.error(">>>>>>>>>>> jobs trigger error, please check if the executor[{}] is running.", address, e);
+            log.error("Trigger error, please check if the executor[{}] is running.", address, e);
             runResult = JobsResponse.failed(ThrowableUtil.toString(e));
         }
 

@@ -5,7 +5,10 @@ import com.baomidou.jobs.core.model.TriggerParam;
 import com.baomidou.jobs.core.web.JobsResponse;
 
 /**
- * Created by xuxueli on 17/3/1.
+ * Jobs executor interface
+ * 
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 public interface IJobsExecutor {
 

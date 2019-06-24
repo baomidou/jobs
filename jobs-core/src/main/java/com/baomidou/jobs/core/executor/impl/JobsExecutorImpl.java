@@ -18,7 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
 
 /**
- * Created by xuxueli on 17/3/1.
+ * Jobs 执行器实现
+ *
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 @Slf4j
 public class JobsExecutorImpl implements IJobsExecutor {

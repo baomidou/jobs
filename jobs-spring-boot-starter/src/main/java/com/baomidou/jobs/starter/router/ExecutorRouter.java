@@ -17,5 +17,4 @@ public abstract class ExecutorRouter {
      * @return  JobsResponse.content=address
      */
     public abstract JobsResponse<String> route(TriggerParam triggerParam, List<String> addressList);
-
 }

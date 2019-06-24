@@ -18,10 +18,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.*;
 
-
 /**
  * handler thread
- * @author xuxueli 2016-1-16 19:52:47
+ *
+ * @author xxl jobob
+ * @since 2019-06-22
  */
 @Slf4j
 public class JobsThread extends Thread{
