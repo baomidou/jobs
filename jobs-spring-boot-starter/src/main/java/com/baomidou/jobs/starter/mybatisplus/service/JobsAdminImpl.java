@@ -7,6 +7,7 @@ import com.baomidou.jobs.core.web.IJobsAdmin;
 import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.entity.JobsInfo;
 import com.baomidou.jobs.starter.entity.JobsLog;
+import com.baomidou.jobs.starter.service.IJobsGroupService;
 import com.baomidou.jobs.starter.service.IJobsInfoService;
 import com.baomidou.jobs.starter.service.IJobsLogService;
 import com.baomidou.jobs.starter.service.IJobsRegistryService;
@@ -32,15 +33,17 @@ public class JobsAdminImpl implements IJobsAdmin {
     @Autowired
     public IJobsLogService jobLogService;
     @Autowired
+    private IJobsGroupService jobsGroupService;
+    @Autowired
     private IJobsInfoService jobInfoService;
     @Autowired
     private IJobsRegistryService jobRegistryService;
 
 
     @Override
-    public JobsResponse<String> callback(List<HandleCallbackParam> callbackParamList) {
+    public JobsResponse<Boolean> callback(List<HandleCallbackParam> callbackParamList) {
         for (HandleCallbackParam handleCallbackParam : callbackParamList) {
-            JobsResponse<String> callbackResult = callback(handleCallbackParam);
+            JobsResponse<Boolean> callbackResult = callback(handleCallbackParam);
             log.debug(">>>>>>>>> JobApiController.callback {}, handleCallbackParam={}, callbackResult={}",
                     callbackResult.toString(), handleCallbackParam, callbackResult);
         }
@@ -48,7 +51,7 @@ public class JobsAdminImpl implements IJobsAdmin {
         return JobsResponse.ok();
     }
 
-    private JobsResponse<String> callback(HandleCallbackParam handleCallbackParam) {
+    private JobsResponse<Boolean> callback(HandleCallbackParam handleCallbackParam) {
         // valid log item
         JobsLog log = jobLogService.getById(handleCallbackParam.getLogId());
         if (log == null) {
@@ -122,18 +125,17 @@ public class JobsAdminImpl implements IJobsAdmin {
     }
 
     @Override
-    public JobsResponse<String> registry(RegistryParam registryParam) {
-        int ret = jobRegistryService.update(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+    public JobsResponse<Boolean> registry(RegistryParam registryParam) {
+        int ret = jobRegistryService.update(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
         if (ret < 1) {
-            jobRegistryService.save(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+            jobRegistryService.save(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
         }
-        return JobsResponse.ok();
+        return JobsResponse.ok(jobsGroupService.registry(registryParam));
     }
 
     @Override
-    public JobsResponse<String> registryRemove(RegistryParam registryParam) {
-        jobRegistryService.remove(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+    public JobsResponse<Boolean> registryRemove(RegistryParam registryParam) {
+        jobRegistryService.remove(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
         return JobsResponse.ok();
     }
-
 }

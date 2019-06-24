@@ -1,8 +1,8 @@
 package com.baomidou.jobs.sample.handler;
 
 import com.baomidou.jobs.core.handler.IJobsHandler;
-import com.baomidou.jobs.core.log.JobsLogger;
 import com.baomidou.jobs.core.web.JobsResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -14,16 +14,17 @@ import java.util.concurrent.TimeUnit;
  * @author xxl jobob
  * @since 2019-06-22
  */
+@Slf4j
 @Component
 public class DemoJobHandler implements IJobsHandler {
 
 	@Override
 	public JobsResponse<String> execute(String param) throws Exception {
 		System.out.println("执行 DemoJobHandler");
-		JobsLogger.log("jobs, Hello World.");
+		log.info("jobs, Hello World.");
 
 		for (int i = 0; i < 5; i++) {
-			JobsLogger.log("beat at:" + i);
+			log.info("beat at:" + i);
 			TimeUnit.SECONDS.sleep(2);
 		}
 		return JobsResponse.ok();

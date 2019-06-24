@@ -1,6 +1,5 @@
 package com.baomidou.jobs.core.executor;
 
-import com.baomidou.jobs.core.model.LogResult;
 import com.baomidou.jobs.core.model.TriggerParam;
 import com.baomidou.jobs.core.web.JobsResponse;
 
@@ -34,16 +33,6 @@ public interface IJobsExecutor {
      * @return
      */
     JobsResponse<String> kill(int jobId);
-
-    /**
-     * log
-     *
-     * @param logDateTim
-     * @param logId
-     * @param fromLineNum
-     * @return
-     */
-    JobsResponse<LogResult> log(long logDateTim, int logId, int fromLineNum);
 
     /**
      * run

@@ -36,7 +36,7 @@ public class JobsStatisticsServiceImpl implements IJobsStatisticsService {
         if (jobGroupList != null && !jobGroupList.isEmpty()) {
             Set<String> addressSet = new HashSet<>();
             for (JobsGroup jobGroup : jobGroupList) {
-                String addressList = jobGroup.getAddressList();
+                String addressList = jobGroup.getAddress();
                 if (null != addressList) {
                     addressSet.addAll(Arrays.asList(addressList.split(",")));
                 }

@@ -15,8 +15,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class JobsGroup implements Serializable {
     private Integer id;
-    private String appName;
-    private String title;
+    private String app;
     /**
      * 排序
      */
@@ -24,10 +23,10 @@ public class JobsGroup implements Serializable {
     /**
      * 执行器地址类型：0=自动注册、1=手动录入
      */
-    private Integer addressType;
+    private Integer type;
     /**
      * 执行器地址列表，多地址逗号分隔(手动录入)
      */
-    private String addressList;
+    private String address;
 
 }

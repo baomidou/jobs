@@ -1,6 +1,9 @@
 package com.baomidou.jobs.starter.service;
 
+import com.baomidou.jobs.core.JobsConstant;
+import com.baomidou.jobs.core.model.RegistryParam;
 import com.baomidou.jobs.starter.entity.JobsGroup;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -40,7 +43,37 @@ public interface IJobsGroupService<P> {
      */
     boolean remove(int id);
 
+    boolean save(JobsGroup jobsGroup);
+
     JobsGroup getById(int id);
 
+    JobsGroup getByApp(String appName);
+
     boolean updateById(JobsGroup group);
+
+    default boolean registry(RegistryParam registryParam) {
+        if (!StringUtils.isEmpty(registryParam.getRegistryKey())
+                && !StringUtils.isEmpty(registryParam.getRegistryValue())) {
+            JobsGroup jobsGroup = getByApp(registryParam.getRegistryKey());
+            if (null == jobsGroup) {
+                // 不存在新增
+                jobsGroup = new JobsGroup();
+                jobsGroup.setApp(registryParam.getRegistryKey());
+                jobsGroup.setType(0);
+                jobsGroup.setAddress(registryParam.getRegistryValue());
+                return save(jobsGroup);
+            }
+            if (jobsGroup.getAddress().contains(registryParam.getRegistryValue())) {
+                // 存在直接返回
+                return true;
+            }
+            // 新增节点
+            JobsGroup temp = new JobsGroup();
+            temp.setId(jobsGroup.getId());
+            temp.setAddress(jobsGroup.getAddress() + JobsConstant.COMMA
+                    + registryParam.getRegistryValue());
+            return updateById(temp);
+        }
+        return false;
+    }
 }

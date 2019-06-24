@@ -24,7 +24,7 @@ public interface IJobsAdmin {
      * @param callbackParamList
      * @return
      */
-    JobsResponse<String> callback(List<HandleCallbackParam> callbackParamList);
+    JobsResponse<Boolean> callback(List<HandleCallbackParam> callbackParamList);
 
     /**
      * 客户端注册
@@ -32,7 +32,7 @@ public interface IJobsAdmin {
      * @param registryParam
      * @return
      */
-    JobsResponse<String> registry(RegistryParam registryParam);
+    JobsResponse<Boolean> registry(RegistryParam registryParam);
 
     /**
      * registry remove
@@ -40,6 +40,6 @@ public interface IJobsAdmin {
      * @param registryParam
      * @return
      */
-    JobsResponse<String> registryRemove(RegistryParam registryParam);
+    JobsResponse<Boolean> registryRemove(RegistryParam registryParam);
 
 }

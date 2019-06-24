@@ -2,8 +2,8 @@ package com.baomidou.jobs.starter.trigger;
 
 import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.enums.ExecutorBlockStrategyEnum;
-import com.baomidou.jobs.core.model.TriggerParam;
 import com.baomidou.jobs.core.executor.IJobsExecutor;
+import com.baomidou.jobs.core.model.TriggerParam;
 import com.baomidou.jobs.core.web.JobsResponse;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.entity.JobsGroup;
@@ -65,9 +65,9 @@ public class JobsTrigger {
             }
         }
         if (ExecutorRouteStrategyEnum.SHARDING_BROADCAST == ExecutorRouteStrategyEnum.match(jobInfo.getExecutorRouteStrategy(), null)
-                && !StringUtils.isEmpty(group.getAddressList())
+                && !StringUtils.isEmpty(group.getAddress())
                 && shardingParam == null) {
-            int size = group.getAddressList().split(",").length;
+            int size = group.getAddress().split(JobsConstant.COMMA).length;
             for (int i = 0; i < size; i++) {
                 processTrigger(group, jobInfo, finalFailRetryCount, triggerType, i, size);
             }
@@ -134,7 +134,7 @@ public class JobsTrigger {
         // 3、init address
         String address = null;
         JobsResponse<String> routeAddressResult = null;
-        List<String> registryList = getRegistryList(group.getAddressList());
+        List<String> registryList = getRegistryList(group.getAddress());
         if (registryList != null && !registryList.isEmpty()) {
             if (ExecutorRouteStrategyEnum.SHARDING_BROADCAST == executorRouteStrategyEnum) {
                 if (index < registryList.size()) {
@@ -164,8 +164,8 @@ public class JobsTrigger {
         StringBuffer triggerMsgSb = new StringBuffer();
         triggerMsgSb.append("任务触发类型：").append(triggerType.getTitle());
         triggerMsgSb.append("<br>调度机器：").append(IpUtil.getIp());
-        triggerMsgSb.append("<br>执行器-注册方式：").append((group.getAddressType() == 0) ? "自动注册" : "手动录入");
-        triggerMsgSb.append("<br>执行器-地址列表：").append(getRegistryList(group.getAddressList()));
+        triggerMsgSb.append("<br>执行器-注册方式：").append((group.getType() == 0) ? "自动注册" : "手动录入");
+        triggerMsgSb.append("<br>执行器-地址列表：").append(getRegistryList(group.getAddress()));
         triggerMsgSb.append("<br>路由策略：").append(executorRouteStrategyEnum.getTitle());
         if (shardingParam != null) {
             triggerMsgSb.append("(" + shardingParam + ")");

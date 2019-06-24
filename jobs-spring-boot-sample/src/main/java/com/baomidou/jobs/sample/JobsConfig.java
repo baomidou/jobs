@@ -15,11 +15,11 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 public class JobsConfig {
-    @Value("${xxl.job.admin.addresses}")
-    private String adminAddresses;
+    @Value("${xxl.job.admin.address}")
+    private String adminAddress;
 
-    @Value("${xxl.job.executor.appname}")
-    private String appName;
+    @Value("${xxl.job.executor.app}")
+    private String app;
 
     @Value("${xxl.job.executor.ip}")
     private String ip;
@@ -30,24 +30,16 @@ public class JobsConfig {
     @Value("${xxl.job.accessToken}")
     private String accessToken;
 
-    @Value("${xxl.job.executor.logpath}")
-    private String logPath;
-
-    @Value("${xxl.job.executor.logretentiondays}")
-    private int logRetentionDays;
-
 
     @Bean(initMethod = "start", destroyMethod = "destroy")
     public JobsSpringExecutor xxlJobExecutor() {
         log.info("Jobs config init.");
         JobsSpringExecutor jobsSpringExecutor = new JobsSpringExecutor();
-        jobsSpringExecutor.setAdminAddresses(adminAddresses);
-        jobsSpringExecutor.setAppName(appName);
+        jobsSpringExecutor.setAdminAddress(adminAddress);
+        jobsSpringExecutor.setApp(app);
         jobsSpringExecutor.setIp(ip);
         jobsSpringExecutor.setPort(port);
         jobsSpringExecutor.setAccessToken(accessToken);
-        jobsSpringExecutor.setLogPath(logPath);
-        jobsSpringExecutor.setLogRetentionDays(logRetentionDays);
         return jobsSpringExecutor;
     }
 

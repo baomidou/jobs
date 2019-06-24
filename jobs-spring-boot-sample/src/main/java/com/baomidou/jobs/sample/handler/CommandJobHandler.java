@@ -1,8 +1,8 @@
 package com.baomidou.jobs.sample.handler;
 
 import com.baomidou.jobs.core.handler.IJobsHandler;
-import com.baomidou.jobs.core.log.JobsLogger;
 import com.baomidou.jobs.core.web.JobsResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedInputStream;
@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
  * @author xxl jobob
  * @since 2019-06-22
  */
+@Slf4j
 @Component
 public class CommandJobHandler implements IJobsHandler {
 
@@ -33,14 +34,14 @@ public class CommandJobHandler implements IJobsHandler {
             // command log
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                JobsLogger.log(line);
+                log.info(line);
             }
 
             // command exit
             process.waitFor();
             exitValue = process.exitValue();
         } catch (Exception e) {
-            JobsLogger.log(e);
+            log.error(e.getMessage());
         } finally {
             if (bufferedReader != null) {
                 bufferedReader.close();

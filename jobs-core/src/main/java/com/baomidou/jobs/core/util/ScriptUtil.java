@@ -1,6 +1,6 @@
 package com.baomidou.jobs.core.util;
 
-import com.baomidou.jobs.core.log.JobsLogger;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
@@ -16,6 +16,7 @@ import java.io.IOException;
  *
  * Created by xuxueli on 17/2/25.
  */
+@Slf4j
 public class ScriptUtil {
 
     /**
@@ -77,21 +78,21 @@ public class ScriptUtil {
             DefaultExecutor exec = new DefaultExecutor();
             exec.setExitValues(null);
             exec.setStreamHandler(streamHandler);
-            int exitValue = exec.execute(commandline);  // exit code: 0=success, 1=error
+            // exit code: 0=success, 1=error
+            int exitValue = exec.execute(commandline);
             return exitValue;
         } catch (Exception e) {
-            JobsLogger.log(e);
+            log.error("execToFile error", e);
             return -1;
         } finally {
             if (fileOutputStream != null) {
                 try {
                     fileOutputStream.close();
                 } catch (IOException e) {
-                    JobsLogger.log(e);
+                    log.error("execToFile error", e);
                 }
 
             }
         }
     }
-
 }

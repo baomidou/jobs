@@ -1,12 +1,10 @@
 package com.baomidou.jobs.core.executor;
 
+import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.executor.impl.JobsExecutorImpl;
 import com.baomidou.jobs.core.handler.IJobsHandler;
-import com.baomidou.jobs.core.log.JobsFileAppender;
 import com.baomidou.jobs.core.thread.ExecutorRegistryThread;
-import com.baomidou.jobs.core.thread.JobsLogFileCleanThread;
 import com.baomidou.jobs.core.thread.JobsThread;
-import com.baomidou.jobs.core.thread.TriggerCallbackThread;
 import com.baomidou.jobs.core.web.IJobsAdmin;
 import com.xxl.rpc.registry.ServiceRegistry;
 import com.xxl.rpc.remoting.invoker.XxlRpcInvokerFactory;
@@ -20,6 +18,7 @@ import com.xxl.rpc.util.IpUtil;
 import com.xxl.rpc.util.NetUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,13 +32,26 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Data
 public abstract class JobsAbstractExecutor {
-    private String adminAddresses;
-    private String appName;
+    /**
+     * jobs admin address, such as "http://address" or "http://address01,http://address02"
+     */
+    private String adminAddress;
+    /**
+     * 服务 APP
+     */
+    private String app;
+    /**
+     * IP 地址
+     */
     private String ip;
+    /**
+     * 端口
+     */
     private int port;
+    /**
+     * 访问 Token
+     */
     private String accessToken;
-    private String logPath;
-    private int logRetentionDays;
 
     /**
      * 启动
@@ -48,23 +60,13 @@ public abstract class JobsAbstractExecutor {
      */
     public void start() throws Exception {
 
-        // init logpath
-        JobsFileAppender.initLogPath(logPath);
-
         // init invoker, admin-client
-        initJobsAdminList(adminAddresses, accessToken);
-
-
-        // init JobsLogFileCleanThread
-        JobsLogFileCleanThread.getInstance().start(logRetentionDays);
-
-        // init TriggerCallbackThread
-        TriggerCallbackThread.getInstance().start();
+        initJobsAdminList(adminAddress, accessToken);
 
         // init executor-server
         port = port > 0 ? port : NetUtil.findAvailablePort(9999);
         ip = (ip != null && ip.trim().length() > 0) ? ip : IpUtil.getIp();
-        initRpcProvider(ip, port, appName, accessToken);
+        initRpcProvider(ip, port, app, accessToken);
     }
 
     /**
@@ -78,13 +80,6 @@ public abstract class JobsAbstractExecutor {
             JOBS_THREAD.clear();
         }
         JOBS_HANDLER.clear();
-
-
-        // destory JobsLogFileCleanThread
-        JobsLogFileCleanThread.getInstance().toStop();
-
-        // destory TriggerCallbackThread
-        TriggerCallbackThread.getInstance().toStop();
 
         // destory executor-server
         stopRpcProvider();
@@ -100,13 +95,13 @@ public abstract class JobsAbstractExecutor {
     private static List<IJobsAdmin> JOBS_ADMIN;
     private static Serializer serializer;
 
-    private void initJobsAdminList(String adminAddresses, String accessToken) throws Exception {
+    private void initJobsAdminList(String adminAddress, String accessToken) throws Exception {
         serializer = Serializer.SerializeEnum.HESSIAN.getSerializer();
-        if (adminAddresses != null && adminAddresses.trim().length() > 0) {
+        if (!StringUtils.isEmpty(adminAddress)) {
             if (JOBS_ADMIN == null) {
                 JOBS_ADMIN = new ArrayList<>();
             }
-            String[] addressArr = adminAddresses.trim().split(",");
+            String[] addressArr = adminAddress.trim().split(JobsConstant.COMMA);
             for (String address : addressArr) {
                 if (address != null && address.trim().length() > 0) {
                     String addressUrl = address.concat(IJobsAdmin.MAPPING);

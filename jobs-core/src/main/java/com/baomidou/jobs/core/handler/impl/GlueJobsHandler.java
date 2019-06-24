@@ -1,14 +1,15 @@
 package com.baomidou.jobs.core.handler.impl;
 
 import com.baomidou.jobs.core.handler.IJobsHandler;
-import com.baomidou.jobs.core.log.JobsLogger;
 import com.baomidou.jobs.core.web.JobsResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * glue job handler
  *
  * @author xuxueli 2016-5-19 21:05:45
  */
+@Slf4j
 public class GlueJobsHandler implements IJobsHandler {
 
     private long glueUpdatetime;
@@ -25,7 +26,7 @@ public class GlueJobsHandler implements IJobsHandler {
 
     @Override
     public JobsResponse<String> execute(String param) throws Exception {
-        JobsLogger.log("----------- glue.version:" + glueUpdatetime + " -----------");
+        log.debug("glue.version:{}", glueUpdatetime);
         return jobHandler.execute(param);
     }
 }

@@ -7,8 +7,6 @@ import com.baomidou.jobs.core.model.RegistryParam;
 import com.baomidou.jobs.core.web.IJobsAdmin;
 import com.baomidou.jobs.core.web.JobsResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +47,7 @@ public class ExecutorRegistryThread {
                     RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(), appName, address);
                     for (IJobsAdmin jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
                         try {
-                            JobsResponse<String> registryResult = jobsAdmin.registry(registryParam);
+                            JobsResponse<Boolean> registryResult = jobsAdmin.registry(registryParam);
                             if (registryResult != null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {
                                 registryResult = JobsResponse.ok();
                                 log.debug("Jobs registry success, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
@@ -85,7 +83,7 @@ public class ExecutorRegistryThread {
                 RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(), appName, address);
                 for (IJobsAdmin jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
                     try {
-                        JobsResponse<String> registryResult = jobsAdmin.registryRemove(registryParam);
+                        JobsResponse<Boolean> registryResult = jobsAdmin.registryRemove(registryParam);
                         if (registryResult != null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {
                             registryResult = JobsResponse.ok();
                             log.info("Jobs registry-remove success, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});

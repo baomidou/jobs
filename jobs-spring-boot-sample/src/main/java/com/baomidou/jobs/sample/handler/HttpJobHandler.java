@@ -1,8 +1,8 @@
 package com.baomidou.jobs.sample.handler;
 
 import com.baomidou.jobs.core.handler.IJobsHandler;
-import com.baomidou.jobs.core.log.JobsLogger;
 import com.baomidou.jobs.core.web.JobsResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -16,6 +16,7 @@ import java.net.URL;
  * @author xxl jobob
  * @since 2019-06-22
  */
+@Slf4j
 @Component
 public class HttpJobHandler implements IJobsHandler {
 
@@ -59,10 +60,10 @@ public class HttpJobHandler implements IJobsHandler {
             }
             String responseMsg = result.toString();
 
-            JobsLogger.log(responseMsg);
+            log.info(responseMsg);
             return JobsResponse.ok();
         } catch (Exception e) {
-            JobsLogger.log(e);
+            log.error(e.getMessage());
             return JobsResponse.failed(e.getMessage());
         } finally {
             try {
@@ -73,7 +74,7 @@ public class HttpJobHandler implements IJobsHandler {
                     connection.disconnect();
                 }
             } catch (Exception e2) {
-                JobsLogger.log(e2);
+                log.error(e2.getMessage());
             }
         }
     }

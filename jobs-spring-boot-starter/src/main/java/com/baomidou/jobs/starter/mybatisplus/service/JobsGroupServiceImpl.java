@@ -34,7 +34,7 @@ public class JobsGroupServiceImpl implements IJobsGroupService<IPage> {
     @Override
     public List<JobsGroup> listByAddressType(int addressType) {
         return jobGroupMapper.selectList(Wrappers.<JobsGroup>lambdaQuery()
-                .eq(JobsGroup::getAddressType, addressType)
+                .eq(JobsGroup::getType, addressType)
                 .orderByAsc(JobsGroup::getSort));
     }
 
@@ -53,6 +53,11 @@ public class JobsGroupServiceImpl implements IJobsGroupService<IPage> {
     }
 
     @Override
+    public boolean save(JobsGroup jobsGroup) {
+        return jobGroupMapper.insert(jobsGroup) > 0;
+    }
+
+    @Override
     public boolean updateById(JobsGroup group) {
         return jobGroupMapper.updateById(group) > 0;
     }
@@ -60,5 +65,11 @@ public class JobsGroupServiceImpl implements IJobsGroupService<IPage> {
     @Override
     public JobsGroup getById(int id) {
         return jobGroupMapper.selectById(id);
+    }
+
+    @Override
+    public JobsGroup getByApp(String app) {
+        return jobGroupMapper.selectOne(Wrappers.<JobsGroup>lambdaQuery()
+                .eq(JobsGroup::getApp, app));
     }
 }

@@ -6,20 +6,24 @@ import lombok.ToString;
 import java.io.Serializable;
 
 /**
- * Created by xuxueli on 2017-05-10 20:22:42
+ * 注册参数
+ *
+ * @author xxl jobob
+ * @since 2019-06-15
  */
 @Data
 @ToString
 public class RegistryParam implements Serializable {
-    private String registGroup;
+    private String registryGroup;
     private String registryKey;
     private String registryValue;
 
     public RegistryParam() {
+        // to do nothing
     }
 
-    public RegistryParam(String registGroup, String registryKey, String registryValue) {
-        this.registGroup = registGroup;
+    public RegistryParam(String registryGroup, String registryKey, String registryValue) {
+        this.registryGroup = registryGroup;
         this.registryKey = registryKey;
         this.registryValue = registryValue;
     }
