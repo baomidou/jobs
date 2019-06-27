@@ -57,9 +57,8 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
 
     @Override
     public List<JobsInfo> scheduleJobQuery(long maxNextTime) {
-        return jobInfoMapper.selectList(null);
-//        return jobInfoMapper.selectList(Wrappers.<JobsInfo>lambdaQuery()
-//                .le(JobsInfo::getTriggerNextTime, maxNextTime));
+        return jobInfoMapper.selectList(Wrappers.<JobsInfo>lambdaQuery()
+                .le(JobsInfo::getTriggerNextTime, maxNextTime));
     }
 
     @Override
@@ -69,8 +68,6 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
 
     @Override
     public boolean execute(int id, String param) {
-//        JobsTriggerPool.trigger(id, TriggerTypeEnum.MANUAL, -1, null, param);
-        // 直接触发执行
         JobsTrigger.trigger(id, TriggerTypeEnum.MANUAL, -1, null, param);
         return true;
     }

@@ -56,7 +56,7 @@ public class JobsThread extends Thread {
     public JobsResponse<String> pushTriggerQueue(TriggerParam triggerParam) {
         // avoid repeat
         if (triggerLogIdSet.contains(triggerParam.getLogId())) {
-            log.info(">>>>>>>>>>> repeate trigger job, logId:{}", triggerParam.getLogId());
+            log.info("Repeat trigger job, logId:{}", triggerParam.getLogId());
             return JobsResponse.failed("repeate trigger job, logId:" + triggerParam.getLogId());
         }
 
@@ -117,7 +117,7 @@ public class JobsThread extends Thread {
                     ShardingUtil.setShardingVo(new ShardingUtil.ShardingVO(triggerParam.getBroadcastIndex(), triggerParam.getBroadcastTotal()));
 
                     // execute
-                    log.debug("<br>----------- jobs job execute start -----------<br>----------- Param:" + triggerParam.getExecutorParams());
+                    log.debug("Jobs job execute param:" + triggerParam.getExecutorParams());
 
                     if (triggerParam.getExecutorTimeout() > 0) {
                         // limit timeout

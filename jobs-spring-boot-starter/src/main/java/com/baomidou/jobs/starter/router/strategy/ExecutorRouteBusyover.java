@@ -4,7 +4,7 @@ import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.model.TriggerParam;
 import com.baomidou.jobs.core.executor.IJobsExecutor;
 import com.baomidou.jobs.core.web.JobsResponse;
-import com.baomidou.jobs.starter.router.ExecutorRouter;
+import com.baomidou.jobs.starter.router.IExecutorRouter;
 import com.baomidou.jobs.starter.starter.JobsScheduler;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by xuxueli on 17/3/10.
  */
 @Slf4j
-public class ExecutorRouteBusyover extends ExecutorRouter {
+public class ExecutorRouteBusyover implements IExecutorRouter {
 
     @Override
     public JobsResponse<String> route(TriggerParam triggerParam, List<String> addressList) {
@@ -29,7 +29,7 @@ public class ExecutorRouteBusyover extends ExecutorRouter {
                 log.error(e.getMessage(), e);
                 idleBeatResult = JobsResponse.failed(e.getMessage());
             }
-            idleBeatResultSB.append( (idleBeatResultSB.length()>0)?"<br><br>":"")
+            idleBeatResultSB.append((idleBeatResultSB.length() > 0) ? "<br><br>" : "")
                     .append("空闲检测：")
                     .append("<br>address：").append(address)
                     .append("<br>code：").append(idleBeatResult.getCode())

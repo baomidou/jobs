@@ -77,12 +77,12 @@ public class JobsFailMonitor {
                     TimeUnit.SECONDS.sleep(10);
                 } catch (Exception e) {
                     if (!toStop) {
-                        log.error(">>>>>>>>>>> jobs, job fail monitor monitor error:{}", e);
+                        log.error("Jobs, job fail monitor monitor error:{}", e);
                     }
                 }
             }
 
-            log.info(">>>>>>>>>>> jobs, job fail monitor monitor stop");
+            log.info("Jobs, job fail monitor monitor stop");
 
         });
         monitorThread.setDaemon(true);

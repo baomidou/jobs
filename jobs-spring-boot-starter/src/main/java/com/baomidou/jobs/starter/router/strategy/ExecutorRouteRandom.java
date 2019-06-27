@@ -2,7 +2,7 @@ package com.baomidou.jobs.starter.router.strategy;
 
 import com.baomidou.jobs.core.model.TriggerParam;
 import com.baomidou.jobs.core.web.JobsResponse;
-import com.baomidou.jobs.starter.router.ExecutorRouter;
+import com.baomidou.jobs.starter.router.IExecutorRouter;
 
 import java.util.List;
 import java.util.Random;
@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * Created by xuxueli on 17/3/10.
  */
-public class ExecutorRouteRandom extends ExecutorRouter {
+public class ExecutorRouteRandom implements IExecutorRouter {
 
     private static Random localRandom = new Random();
 

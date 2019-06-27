@@ -15,8 +15,12 @@ public interface IJobsAdmin {
 
     String MAPPING = "/api";
 
-
-    // ---------------------- callback ----------------------
+    /**
+     * 数据库行锁 SQL
+     *
+     * @return
+     */
+    String lockSql();
 
     /**
      * callback

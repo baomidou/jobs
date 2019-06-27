@@ -3,6 +3,7 @@ package com.baomidou.jobs.starter.monitor;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.cron.CronExpression;
 import com.baomidou.jobs.starter.entity.JobsInfo;
+import com.baomidou.jobs.starter.exception.JobsException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -21,16 +22,15 @@ public class JobsHeartbeat implements Runnable {
 
     @Override
     public void run() {
+        log.debug("Jobs, JobsHeartbeat begin");
         // 扫描任务
-        Connection conn = null;
         PreparedStatement preparedStatement = null;
-        try {
-            if (conn == null || conn.isClosed()) {
-                conn = JobsHelper.getDataSource().getConnection();
+        try (Connection connection = JobsHelper.getDataSource().getConnection()) {
+            if (null == connection) {
+                throw new JobsException("Jobs heartbeat connection is null.");
             }
-            conn.setAutoCommit(false);
-
-            preparedStatement = conn.prepareStatement("SELECT * FROM jobs_lock WHERE lock_name = 'schedule_lock' FOR UPDATE");
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(JobsHelper.getJobsAdmin().lockSql());
             preparedStatement.execute();
 
             // tx start
@@ -51,38 +51,34 @@ public class JobsHeartbeat implements Runnable {
                         // 未过期：等待下次循环
                         continue;
                     }
-                    jobInfo.setTriggerLastTime(jobInfo.getTriggerNextTime());
-                    jobInfo.setTriggerNextTime(new CronExpression(jobInfo.getJobCron())
+                    JobsInfo tempJobsInfo = new JobsInfo();
+                    tempJobsInfo.setId(jobInfo.getId());
+                    tempJobsInfo.setTriggerLastTime(jobInfo.getTriggerNextTime());
+                    tempJobsInfo.setTriggerNextTime(new CronExpression(jobInfo.getJobCron())
                             .getNextValidTimeAfter(new Date()).getTime());
                     if (waitSecond >= 0) {
-                        System.out.println("触发执行：" + jobInfo.getJobCron() + "==waitSecond===" + waitSecond);
                         // 推送任务消息
                         JobsHelper.getJobsDisruptorTemplate().publish(jobInfo, waitSecond);
                     }
                     // 更新任务状态
-                    JobsHelper.getJobInfoService().updateById(jobInfo);
+                    JobsHelper.getJobInfoService().updateById(tempJobsInfo);
                 }
 
             }
 
             // tx stop
-            conn.commit();
+            connection.commit();
         } catch (Exception e) {
-            log.error("Jobs, JobsScheduleHelper#scheduleThread error:{}", e);
+            log.error("Jobs, JobsHeartbeat error:{}", e);
         } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
             if (null != preparedStatement) {
                 try {
                     preparedStatement.close();
-                } catch (SQLException ignore) {
+                } catch (SQLException e) {
+                    // to do nothing
                 }
             }
         }
-        log.info("Jobs, JobsScheduleHelper#scheduleThread stop");
+        log.debug("Jobs, JobsHeartbeat end");
     }
 }

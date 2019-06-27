@@ -50,7 +50,7 @@ public class JobsRegistryMonitor {
                                     String appName = item.getRegistryKey();
                                     List<String> registryList = appAddressMap.get(appName);
                                     if (registryList == null) {
-                                        registryList = new ArrayList<String>();
+                                        registryList = new ArrayList<>();
                                     }
 
                                     if (!registryList.contains(item.getRegistryValue())) {

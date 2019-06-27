@@ -3,10 +3,12 @@ package com.baomidou.jobs.starter.router;
 import com.baomidou.jobs.starter.router.strategy.*;
 
 /**
- * Created by xuxueli on 17/3/10.
+ * 执行器路由策略枚举
+ *
+ * @author xxl jobob
+ * @since 2019-06-27
  */
 public enum ExecutorRouteStrategyEnum {
-
     FIRST("第一个", new ExecutorRouteFirst()),
     LAST("最后一个", new ExecutorRouteLast()),
     ROUND("轮询", new ExecutorRouteRound()),
@@ -18,19 +20,19 @@ public enum ExecutorRouteStrategyEnum {
     BUSYOVER("忙碌转移", new ExecutorRouteBusyover()),
     SHARDING_BROADCAST("分片广播", null);
 
-    ExecutorRouteStrategyEnum(String title, ExecutorRouter router) {
+    ExecutorRouteStrategyEnum(String title, IExecutorRouter router) {
         this.title = title;
         this.router = router;
     }
 
     private String title;
-    private ExecutorRouter router;
+    private IExecutorRouter router;
 
     public String getTitle() {
         return title;
     }
 
-    public ExecutorRouter getRouter() {
+    public IExecutorRouter getRouter() {
         return router;
     }
 

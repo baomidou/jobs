@@ -39,12 +39,16 @@ public class JobsAdminImpl implements IJobsAdmin {
     @Autowired
     private IJobsRegistryService jobRegistryService;
 
+    @Override
+    public String lockSql() {
+        return "SELECT * FROM jobs_lock WHERE lock_name = 'schedule_lock' FOR UPDATE";
+    }
 
     @Override
     public JobsResponse<Boolean> callback(List<HandleCallbackParam> callbackParamList) {
         for (HandleCallbackParam handleCallbackParam : callbackParamList) {
             JobsResponse<Boolean> callbackResult = callback(handleCallbackParam);
-            log.debug(">>>>>>>>> JobApiController.callback {}, handleCallbackParam={}, callbackResult={}",
+            log.debug("callback {}, handleCallbackParam={}, callbackResult={}",
                     callbackResult.toString(), handleCallbackParam, callbackResult);
         }
 
