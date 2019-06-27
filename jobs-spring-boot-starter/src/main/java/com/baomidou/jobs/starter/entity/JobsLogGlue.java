@@ -1,6 +1,7 @@
 package com.baomidou.jobs.starter.entity;
 
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @since 2019-05-30
  */
 @Data
+@ToString
 @Accessors(chain = true)
 public class JobsLogGlue implements Serializable {
 	private Integer id;

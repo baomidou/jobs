@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Jobs 启动参数
+ * Jobs Admin 启动配置
  *
  * @author jobob
  * @since 2019-06-08
@@ -38,9 +38,5 @@ public class JobsAdminAutoConfiguration {
     public IJobsAlarmHandler xxlJobAlarmHandler() {
         return new JobsAlarmSimpleHandler();
     }
-//
-//    @Bean
-//    public XxlJobHelper XxlJobHelper() {
-//        return new XxlJobHelper();
-//    }
+
 }

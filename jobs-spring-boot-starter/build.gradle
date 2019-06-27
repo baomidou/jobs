@@ -1,5 +1,6 @@
 dependencies {
     api project(":jobs-core")
+    api "${lib.'disruptor'}"
     compileOnly "${lib.'mybatis-plus-boot-starter'}"
     compileOnly "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"
     implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}" as String))

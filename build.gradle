@@ -33,6 +33,7 @@ ext {
             "mybatis-plus-boot-starter"  : "com.baomidou:mybatis-plus-boot-starter:${mybatisPlusVersion}",
             "mysql-connector-java"  : "mysql:mysql-connector-java:8.0.16",
             "p6spy"                 : "p6spy:p6spy:3.8.2",
+            "disruptor"             : "com.lmax:disruptor:3.4.2",
 
             "javax.servlet-api"     : "javax.servlet:javax.servlet-api:4.0.1",
             "aspectjweaver"         : "org.aspectj:aspectjweaver:1.9.2",

@@ -4,9 +4,8 @@ import com.baomidou.jobs.core.executor.IJobsExecutor;
 import com.baomidou.jobs.core.web.IJobsAdmin;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.monitor.JobsFailMonitor;
+import com.baomidou.jobs.starter.monitor.JobsHeartbeat;
 import com.baomidou.jobs.starter.monitor.JobsRegistryMonitor;
-import com.baomidou.jobs.starter.monitor.JobsScheduleHelper;
-import com.baomidou.jobs.starter.trigger.JobsTriggerPool;
 import com.xxl.rpc.remoting.invoker.XxlRpcInvokerFactory;
 import com.xxl.rpc.remoting.invoker.call.CallType;
 import com.xxl.rpc.remoting.invoker.reference.XxlRpcReferenceBean;
@@ -26,6 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Jobs Scheduler
@@ -36,6 +38,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Configuration
 public class JobsScheduler implements InitializingBean, DisposableBean {
+
+    private ScheduledExecutorService executor;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -48,19 +52,22 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
         // admin-server
         initRpcProvider();
 
-        // start-schedule
-        JobsScheduleHelper.getInstance().start();
+        /**
+         * jobs 执行心跳
+         * 1 秒后第一次执行，之后每隔 1 秒执行一次
+         */
+        executor = new ScheduledThreadPoolExecutor(5);
+        executor.scheduleAtFixedRate(new JobsHeartbeat(), 1, 1, TimeUnit.SECONDS);
 
-        log.debug(">>>>>>>>> init jobs admin success.");
+        log.debug("init jobs admin success.");
     }
 
     @Override
     public void destroy() throws Exception {
         // stop-schedule
-        JobsScheduleHelper.getInstance().toStop();
-
-        // admin trigger pool stop
-        JobsTriggerPool.toStop();
+        if (null != executor) {
+            executor.shutdown();
+        }
 
         // admin registry stop
         JobsRegistryMonitor.getInstance().toStop();

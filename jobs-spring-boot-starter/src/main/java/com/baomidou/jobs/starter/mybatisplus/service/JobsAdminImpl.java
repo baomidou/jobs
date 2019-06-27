@@ -11,7 +11,7 @@ import com.baomidou.jobs.starter.service.IJobsGroupService;
 import com.baomidou.jobs.starter.service.IJobsInfoService;
 import com.baomidou.jobs.starter.service.IJobsLogService;
 import com.baomidou.jobs.starter.service.IJobsRegistryService;
-import com.baomidou.jobs.starter.trigger.JobsTriggerPool;
+import com.baomidou.jobs.starter.trigger.JobsTrigger;
 import com.baomidou.jobs.starter.trigger.TriggerTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +74,7 @@ public class JobsAdminImpl implements IJobsAdmin {
                     int childJobId = (childJobIds[i] != null && childJobIds[i].trim().length() > 0 && isNumeric(childJobIds[i])) ? Integer.valueOf(childJobIds[i]) : -1;
                     if (childJobId > 0) {
 
-                        JobsTriggerPool.trigger(childJobId, TriggerTypeEnum.PARENT, -1, null, null);
+                        JobsTrigger.trigger(childJobId, TriggerTypeEnum.PARENT, -1, null, null);
                         JobsResponse<String> triggerChildResult = JobsResponse.ok();
 
                         // add msg

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Job 启动参数
+ * Job 启动配置
  *
  * @author jobob
  * @since 2019-06-08

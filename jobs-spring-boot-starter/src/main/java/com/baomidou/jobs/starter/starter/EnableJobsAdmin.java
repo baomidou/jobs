@@ -1,6 +1,7 @@
 package com.baomidou.jobs.starter.starter;
 
 import com.baomidou.jobs.starter.JobsHelper;
+import com.baomidou.jobs.starter.disruptor.JobsDisruptorAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -18,7 +19,7 @@ import java.lang.annotation.Target;
 @Configuration
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({JobsHelper.class, JobsScheduler.class, JobsAdminAutoConfiguration.class})
+@Import({JobsDisruptorAutoConfiguration.class, JobsHelper.class, JobsScheduler.class, JobsAdminAutoConfiguration.class})
 public @interface EnableJobsAdmin {
 
 }

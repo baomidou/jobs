@@ -1,6 +1,7 @@
 package com.baomidou.jobs.starter;
 
 import com.baomidou.jobs.core.web.IJobsAdmin;
+import com.baomidou.jobs.starter.disruptor.JobsDisruptorTemplate;
 import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
 import com.baomidou.jobs.starter.service.*;
 import com.baomidou.jobs.starter.starter.JobsProperties;
@@ -44,6 +45,8 @@ public class JobsHelper implements InitializingBean {
     private IJobsAdmin _jobsAdmin;
     @Resource
     private DataSource _dataSource;
+    @Resource
+    private JobsDisruptorTemplate _jobsDisruptorTemplate;
 
     public static JobsProperties getJobProperties() {
         return JOB_HELPER._jobProperties;
@@ -79,5 +82,9 @@ public class JobsHelper implements InitializingBean {
 
     public static DataSource getDataSource() {
         return JOB_HELPER._dataSource;
+    }
+
+    public static JobsDisruptorTemplate getJobsDisruptorTemplate() {
+        return JOB_HELPER._jobsDisruptorTemplate;
     }
 }

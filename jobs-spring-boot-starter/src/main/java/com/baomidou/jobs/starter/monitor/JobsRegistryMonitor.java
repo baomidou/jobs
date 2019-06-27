@@ -25,7 +25,8 @@ public class JobsRegistryMonitor {
     private volatile boolean toStop = false;
 
     private static JobsRegistryMonitor instance = new JobsRegistryMonitor();
-    public static JobsRegistryMonitor getInstance(){
+
+    public static JobsRegistryMonitor getInstance() {
         return instance;
     }
 
