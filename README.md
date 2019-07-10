@@ -4,6 +4,9 @@
 VUE 前端：JAVA 后台：<a target="_blank" href="https://gitee.com/baomidou/jobs-admin-web">jobs</a>
 
 
+# 鸣谢
+Jobs 参考 <a target="_blank" href="https://github.com/xuxueli/xxl-job">xxl-job</a> 可以理解为它的分支，目的是构建类似 Swagger 模式的插拔组件。
+
 ### 界面效果
 
 <img src="https://gitee.com/baomidou/jobs-admin-web/raw/master/doc/0.png"/>
@@ -12,5 +15,3 @@ VUE 前端：JAVA 后台：<a target="_blank" href="https://gitee.com/baomidou/j
 
 <img src="https://gitee.com/baomidou/jobs-admin-web/raw/master/doc/2.jpeg"/>
 
-# 鸣谢
-jobs 参考：<a target="_blank" href="https://github.com/xuxueli/xxl-job">jobs</a>
