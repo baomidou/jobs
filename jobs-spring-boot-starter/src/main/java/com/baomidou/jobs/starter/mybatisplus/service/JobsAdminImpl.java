@@ -74,16 +74,16 @@ public class JobsAdminImpl implements IJobsAdmin {
 
     @Override
     public JobsResponse<Boolean> registry(RegistryParam registryParam) {
-        int ret = jobRegistryService.update(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+        int ret = jobRegistryService.update(registryParam.getApp(), registryParam.getAddress());
         if (ret < 1) {
-            ret = jobRegistryService.save(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+            ret = jobRegistryService.save(registryParam.getApp(), registryParam.getAddress());
         }
         return JobsResponse.ok(ret > 0);
     }
 
     @Override
     public JobsResponse<Boolean> registryRemove(RegistryParam registryParam) {
-        jobRegistryService.remove(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+        jobRegistryService.remove(registryParam.getApp(), registryParam.getAddress());
         return JobsResponse.ok();
     }
 }

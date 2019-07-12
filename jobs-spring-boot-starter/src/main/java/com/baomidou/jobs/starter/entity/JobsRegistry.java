@@ -26,13 +26,9 @@ public class JobsRegistry implements Serializable {
      */
     private String app;
     /**
-     * IP 地址
+     * 地址 = IP:PORT 例如：127.0.0.1:9999
      */
-    private String ip;
-    /**
-     * 端口
-     */
-    private String port;
+    private String address;
     /**
      * 更新时间
      */

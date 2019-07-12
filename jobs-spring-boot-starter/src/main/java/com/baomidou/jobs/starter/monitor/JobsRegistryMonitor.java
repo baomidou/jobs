@@ -1,15 +1,8 @@
 package com.baomidou.jobs.starter.monitor;
 
 import com.baomidou.jobs.core.JobsConstant;
-import com.baomidou.jobs.core.enums.RegistryConfig;
-import com.baomidou.jobs.starter.JobsHelper;
 import lombok.extern.slf4j.Slf4j;
-import com.baomidou.jobs.starter.entity.JobsRegistry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,7 +37,7 @@ public class JobsRegistryMonitor {
                     }
                 }
                 try {
-                    TimeUnit.SECONDS.sleep(RegistryConfig.BEAT_TIMEOUT);
+                    TimeUnit.SECONDS.sleep(JobsConstant.BEAT_TIMEOUT);
                 } catch (InterruptedException e) {
                     if (!toStop) {
                         log.error("Jobs registry monitor monitor error:{}", e);

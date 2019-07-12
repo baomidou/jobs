@@ -1,12 +1,18 @@
 package com.baomidou.jobs.core;
 
 /**
- * @author xxl jobob
- * @since 2019-06-22
+ * 常量
+ *
+ * @author jobob
+ * @since 2019-07-13
  */
 public interface JobsConstant {
     int CODE_SUCCESS = 0;
     int CODE_FAILED = -1;
+    /**
+     * 心跳时长
+     */
+    int BEAT_TIMEOUT = 30;
     String COMMA = ",";
 
 }

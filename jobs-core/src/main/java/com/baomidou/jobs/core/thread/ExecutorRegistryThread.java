@@ -1,7 +1,6 @@
 package com.baomidou.jobs.core.thread;
 
 import com.baomidou.jobs.core.JobsConstant;
-import com.baomidou.jobs.core.enums.RegistryConfig;
 import com.baomidou.jobs.core.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.core.model.RegistryParam;
 import com.baomidou.jobs.core.web.IJobsAdmin;
@@ -44,7 +43,7 @@ public class ExecutorRegistryThread {
             // registry
             while (!toStop) {
                 try {
-                    RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(), appName, address);
+                    RegistryParam registryParam = new RegistryParam(appName, address);
                     for (IJobsAdmin jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
                         try {
                             JobsResponse<Boolean> registryResult = jobsAdmin.registry(registryParam);
@@ -69,7 +68,7 @@ public class ExecutorRegistryThread {
 
                 try {
                     if (!toStop) {
-                        TimeUnit.SECONDS.sleep(RegistryConfig.BEAT_TIMEOUT);
+                        TimeUnit.SECONDS.sleep(JobsConstant.BEAT_TIMEOUT);
                     }
                 } catch (InterruptedException e) {
                     if (!toStop) {
@@ -80,7 +79,7 @@ public class ExecutorRegistryThread {
 
             // registry remove
             try {
-                RegistryParam registryParam = new RegistryParam(RegistryConfig.RegistType.EXECUTOR.name(), appName, address);
+                RegistryParam registryParam = new RegistryParam(appName, address);
                 for (IJobsAdmin jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
                     try {
                         JobsResponse<Boolean> registryResult = jobsAdmin.registryRemove(registryParam);

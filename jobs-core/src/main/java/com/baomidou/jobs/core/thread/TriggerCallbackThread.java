@@ -1,6 +1,6 @@
 package com.baomidou.jobs.core.thread;
 
-import com.baomidou.jobs.core.enums.RegistryConfig;
+import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.core.model.HandleCallbackParam;
 import com.baomidou.jobs.core.web.IJobsAdmin;
@@ -101,7 +101,7 @@ public class TriggerCallbackThread {
         triggerRetryCallbackThread = new Thread(() -> {
             while (!toStop) {
                 try {
-                    TimeUnit.SECONDS.sleep(RegistryConfig.BEAT_TIMEOUT);
+                    TimeUnit.SECONDS.sleep(JobsConstant.BEAT_TIMEOUT);
                 } catch (InterruptedException e) {
                     if (!toStop) {
                         log.error(e.getMessage(), e);

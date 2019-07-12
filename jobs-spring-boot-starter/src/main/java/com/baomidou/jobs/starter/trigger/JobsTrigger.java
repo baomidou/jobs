@@ -34,10 +34,10 @@ public class JobsTrigger {
      *
      * @param jobId
      * @param triggerType
-     * @param failRetryCount        >=0: use this param
-     *                              <0: use param from job info config
-     * @param executorParam         null: use job param
-     *                              not null: cover job param
+     * @param failRetryCount >=0: use this param
+     *                       <0: use param from job info config
+     * @param executorParam  null: use job param
+     *                       not null: cover job param
      */
     public static boolean trigger(int jobId, TriggerTypeEnum triggerType, int failRetryCount, String executorParam) {
         // load data
@@ -90,7 +90,10 @@ public class JobsTrigger {
         triggerParam.setLogDateTim(jobLog.getTriggerTime().getTime());
         triggerParam.setGlueType(jobsInfo.getGlueType());
         triggerParam.setGlueSource(jobsInfo.getGlueSource());
-        triggerParam.setGlueTime(jobsInfo.getGlueTime().getTime());
+        Date glueTime = jobsInfo.getGlueTime();
+        if (null != glueTime) {
+            triggerParam.setGlueTime(glueTime.getTime());
+        }
 
 
         // 3、init address

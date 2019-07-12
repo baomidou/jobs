@@ -33,11 +33,11 @@ public interface IJobsRegistryService<P extends Serializable> {
      */
     List<String> listAddress(String app);
 
-    int update(String app, String ip, String port);
+    int update(String app, String address);
 
-    int save(String app, String ip, String port);
+    int save(String app, String address);
 
-    int remove(String app, String ip, String port);
+    int remove(String app, String address);
 
     /**
      * 超时数据列表

@@ -35,29 +35,27 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService<IPage> {
         List<JobsRegistry> jobsRegistryList = jobRegistryMapper.selectList(Wrappers.<JobsRegistry>lambdaQuery()
                 .eq(JobsRegistry::getApp, app));
         return CollectionUtils.isEmpty(jobsRegistryList) ? null : jobsRegistryList.stream()
-                .map(j -> j.getIp() + ":" + j.getPort()).collect(Collectors.toList());
+                .map(j -> j.getAddress()).collect(Collectors.toList());
     }
 
     @Override
-    public int update(String app, String ip, String port) {
+    public int update(String app, String address) {
         return jobRegistryMapper.update(new JobsRegistry().setUpdateTime(new Date()),
                 Wrappers.<JobsRegistry>lambdaQuery().eq(JobsRegistry::getApp, app)
-                        .eq(JobsRegistry::getIp, ip)
-                        .eq(JobsRegistry::getPort, port));
+                        .eq(JobsRegistry::getAddress, address));
     }
 
     @Override
-    public int save(String app, String ip, String port) {
+    public int save(String app, String address) {
         return jobRegistryMapper.insert(new JobsRegistry().setApp(app)
-                .setIp(ip).setPort(port).setUpdateTime(new Date()));
+                .setAddress(address).setUpdateTime(new Date()));
     }
 
     @Override
-    public int remove(String app, String ip, String port) {
+    public int remove(String app, String address) {
         return jobRegistryMapper.delete(Wrappers.<JobsRegistry>lambdaQuery()
                 .eq(JobsRegistry::getApp, app)
-                .eq(JobsRegistry::getIp, ip)
-                .eq(JobsRegistry::getPort, port));
+                .eq(JobsRegistry::getAddress, address));
     }
 
     @Override

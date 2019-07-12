@@ -8,23 +8,21 @@ import java.io.Serializable;
 /**
  * 注册参数
  *
- * @author xxl jobob
- * @since 2019-06-15
+ * @author jobob
+ * @since 2019-07-13
  */
 @Data
 @ToString
 public class RegistryParam implements Serializable {
-    private String registryGroup;
-    private String registryKey;
-    private String registryValue;
+    private String app;
+    private String address;
 
     public RegistryParam() {
         // to do nothing
     }
 
-    public RegistryParam(String registryGroup, String registryKey, String registryValue) {
-        this.registryGroup = registryGroup;
-        this.registryKey = registryKey;
-        this.registryValue = registryValue;
+    public RegistryParam(String app, String address) {
+        this.app = app;
+        this.address = address;
     }
 }
