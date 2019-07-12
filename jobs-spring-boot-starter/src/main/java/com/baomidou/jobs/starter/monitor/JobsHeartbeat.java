@@ -39,26 +39,26 @@ public class JobsHeartbeat implements Runnable {
             List<JobsInfo> scheduleList = JobsHelper.getJobInfoService().scheduleJobQuery(nowTime + 10000);
             if (scheduleList != null && scheduleList.size() > 0) {
                 // 2、推送时间轮
-                for (JobsInfo jobInfo : scheduleList) {
+                for (JobsInfo jobsInfo : scheduleList) {
                     long waitSecond;
-                    if (jobInfo.getTriggerNextTime() < nowTime - 10000) {
+                    if (jobsInfo.getNextTime() < nowTime - 10000) {
                         // 过期超10s：本地忽略，当前时间开始计算下次触发时间
                         waitSecond = -1;
-                    } else if (jobInfo.getTriggerNextTime() < nowTime) {
+                    } else if (jobsInfo.getNextTime() < nowTime) {
                         // 过期10s内：立即触发，计算延迟触发时长
-                        waitSecond = nowTime - jobInfo.getTriggerLastTime();
+                        waitSecond = nowTime - jobsInfo.getLastTime();
                     } else {
                         // 未过期：等待下次循环
                         continue;
                     }
                     JobsInfo tempJobsInfo = new JobsInfo();
-                    tempJobsInfo.setId(jobInfo.getId());
-                    tempJobsInfo.setTriggerLastTime(jobInfo.getTriggerNextTime());
-                    tempJobsInfo.setTriggerNextTime(new CronExpression(jobInfo.getJobCron())
+                    tempJobsInfo.setId(jobsInfo.getId());
+                    tempJobsInfo.setLastTime(jobsInfo.getNextTime());
+                    tempJobsInfo.setNextTime(new CronExpression(jobsInfo.getCron())
                             .getNextValidTimeAfter(new Date()).getTime());
                     if (waitSecond >= 0) {
                         // 推送任务消息
-                        JobsHelper.getJobsDisruptorTemplate().publish(jobInfo, waitSecond);
+                        JobsHelper.getJobsDisruptorTemplate().publish(jobsInfo, waitSecond);
                     }
                     // 更新任务状态
                     JobsHelper.getJobInfoService().updateById(tempJobsInfo);

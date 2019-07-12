@@ -25,11 +25,19 @@ public interface IJobsRegistryService<P extends Serializable> {
      */
     int removeTimeOut(int timeout);
 
-    int update(String registryGroup, String registryKey, String registryValue);
+    /**
+     * 查询注册地址列表
+     *
+     * @param app 客户端 APP 名称
+     * @return
+     */
+    List<String> listAddress(String app);
 
-    int save(String registryGroup, String registryKey, String registryValue);
+    int update(String app, String ip, String port);
 
-    int remove(String registryGroup, String registryKey, String registryValue);
+    int save(String app, String ip, String port);
+
+    int remove(String app, String ip, String port);
 
     /**
      * 超时数据列表

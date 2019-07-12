@@ -51,7 +51,7 @@ public class JobsFailMonitor {
 
                             // 1、fail retry monitor
                             if (jobLog.getExecutorFailRetryCount() > 0) {
-                                JobsTrigger.trigger(jobLog.getJobId(), TriggerTypeEnum.RETRY, (jobLog.getExecutorFailRetryCount() - 1), jobLog.getExecutorShardingParam(), null);
+                                JobsTrigger.trigger(jobLog.getJobId(), TriggerTypeEnum.RETRY, (jobLog.getExecutorFailRetryCount() - 1), null);
                                 String retryMsg = "<br><br><span style=\"color:#F39C12;\" > >>>>>>>>>>>失败重试触发<<<<<<<<<<< </span><br>";
                                 jobLog.setTriggerMsg(jobLog.getTriggerMsg() + retryMsg);
                                 JobsHelper.getJobLogService().updateById(jobLog);

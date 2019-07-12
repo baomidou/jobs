@@ -38,9 +38,9 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
     }
 
     @Override
-    public List<JobsInfo> getJobsByGroup(int jobGroup) {
+    public List<JobsInfo> getJobsByApp(String app) {
         return jobInfoMapper.selectList(Wrappers.<JobsInfo>lambdaQuery()
-                .eq(JobsInfo::getJobGroup, jobGroup));
+                .eq(JobsInfo::getApp, app));
     }
 
     @Override
@@ -49,16 +49,16 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
     }
 
     @Override
-    public int count(int jobGroupId, int triggerStatus) {
+    public int count(String app, int status) {
         return jobInfoMapper.selectCount(Wrappers.<JobsInfo>lambdaQuery()
-                .eq(JobsInfo::getJobGroup, jobGroupId)
-                .eq(JobsInfo::getTriggerStatus, triggerStatus));
+                .eq(JobsInfo::getApp, app)
+                .eq(JobsInfo::getStatus, status));
     }
 
     @Override
     public List<JobsInfo> scheduleJobQuery(long maxNextTime) {
         return jobInfoMapper.selectList(Wrappers.<JobsInfo>lambdaQuery()
-                .le(JobsInfo::getTriggerNextTime, maxNextTime));
+                .le(JobsInfo::getNextTime, maxNextTime));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
 
     @Override
     public boolean execute(int id, String param) {
-        JobsTrigger.trigger(id, TriggerTypeEnum.MANUAL, -1, null, param);
+        JobsTrigger.trigger(id, TriggerTypeEnum.MANUAL, -1, param);
         return true;
     }
 
@@ -78,33 +78,33 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
         if (null == dbJobInfo) {
             return false;
         }
-        JobsInfo jobInfo = new JobsInfo();
-        jobInfo.setId(dbJobInfo.getId());
+        JobsInfo jobsInfo = new JobsInfo();
+        jobsInfo.setId(dbJobInfo.getId());
 
         // next trigger time (10s后生效，避开预读周期)
         long nextTriggerTime;
         try {
-            nextTriggerTime = new CronExpression(dbJobInfo.getJobCron())
+            nextTriggerTime = new CronExpression(dbJobInfo.getCron())
                     .getNextValidTimeAfter(new Date(System.currentTimeMillis() + 10000)).getTime();
         } catch (ParseException e) {
             log.error(e.getMessage(), e);
             return false;
         }
 
-        jobInfo.setTriggerStatus(1);
-        jobInfo.setTriggerLastTime(0L);
-        jobInfo.setTriggerNextTime(nextTriggerTime);
-        return jobInfoMapper.updateById(jobInfo) > 0;
+        jobsInfo.setStatus(1);
+        jobsInfo.setLastTime(0L);
+        jobsInfo.setNextTime(nextTriggerTime);
+        return jobInfoMapper.updateById(jobsInfo) > 0;
     }
 
     @Override
     public boolean stop(int id) {
-        JobsInfo jobInfo = new JobsInfo();
-        jobInfo.setId(id);
-        jobInfo.setTriggerStatus(0);
-        jobInfo.setTriggerLastTime(0L);
-        jobInfo.setTriggerNextTime(0L);
-        return jobInfoMapper.updateById(jobInfo) > 0;
+        JobsInfo jobsInfo = new JobsInfo();
+        jobsInfo.setId(id);
+        jobsInfo.setStatus(0);
+        jobsInfo.setLastTime(0L);
+        jobsInfo.setNextTime(0L);
+        return jobInfoMapper.updateById(jobsInfo) > 0;
     }
 
     @Override

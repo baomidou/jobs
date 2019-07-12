@@ -14,34 +14,28 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class JobsProperties {
     public static final String PREFIX = "jobs";
     /**
-     * 访问票据
+     * admin 访问票据
      */
-    private String accessToken;
+    private String adminAccessToken;
     /**
      * Jobs admin address, such as "http://address" or "http://address01,http://address02"
      */
     private String adminAddress;
     /**
-     * 客户端相关配置
+     * APP 服务名
      */
-    private App app;
-
+    private String appName;
     /**
-     * 客户端参数
+     * APP IP 地址
      */
-    @Data
-    public static class App {
-        /**
-         * APP 服务名
-         */
-        private String name;
-        /**
-         * IP 地址
-         */
-        private String ip;
-        /**
-         * 端口
-         */
-        private int port;
-    }
+    private String appIp;
+    /**
+     * APP 端口
+     */
+    private int appPort;
+    /**
+     * APP 访问票据
+     */
+    private String appAccessToken;
+
 }

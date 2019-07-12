@@ -5,9 +5,8 @@ server:
 ### jobs
 jobs:
   admin-address: http://127.0.0.1:8088
-  app:
-    name: jobs-executor-sample
-    port: 9999
+  app-name: jobs-executor-sample
+  app-port: 9999
 
 # log config
 logging:

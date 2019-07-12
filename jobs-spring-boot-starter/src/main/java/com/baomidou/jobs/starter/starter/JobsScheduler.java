@@ -91,7 +91,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 Serializer.SerializeEnum.HESSIAN.getSerializer(),
                 null,
                 0,
-                JobsHelper.getJobProperties().getAccessToken(),
+                JobsHelper.getJobProperties().getAdminAccessToken(),
                 null,
                 null);
 
@@ -139,7 +139,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 null,
                 5000,
                 address,
-                JobsHelper.getJobProperties().getAccessToken(),
+                JobsHelper.getJobProperties().getAppAccessToken(),
                 null,
                 null).getObject();
 

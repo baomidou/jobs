@@ -22,9 +22,6 @@ public class TriggerParam implements Serializable{
 
     private String glueType;
     private String glueSource;
-    private long glueUpdatetime;
-
-    private int broadcastIndex;
-    private int broadcastTotal;
+    private long glueTime;
 
 }

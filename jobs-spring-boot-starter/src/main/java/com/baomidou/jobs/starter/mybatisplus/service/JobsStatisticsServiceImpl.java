@@ -1,21 +1,16 @@
 package com.baomidou.jobs.starter.mybatisplus.service;
 
 import com.baomidou.jobs.starter.entity.dto.JobsHandleCodeDto;
+import com.baomidou.jobs.starter.entity.vo.JobsDateDistributionVO;
 import com.baomidou.jobs.starter.entity.vo.JobsImportantNumVO;
 import com.baomidou.jobs.starter.entity.vo.JobsSuccessRatioVO;
-import com.baomidou.jobs.starter.service.IJobsGroupService;
 import com.baomidou.jobs.starter.service.IJobsInfoService;
 import com.baomidou.jobs.starter.service.IJobsLogService;
 import com.baomidou.jobs.starter.service.IJobsStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.baomidou.jobs.starter.entity.JobsGroup;
-import com.baomidou.jobs.starter.entity.vo.JobsDateDistributionVO;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class JobsStatisticsServiceImpl implements IJobsStatisticsService {
@@ -23,8 +18,6 @@ public class JobsStatisticsServiceImpl implements IJobsStatisticsService {
     private IJobsInfoService jobInfoService;
     @Autowired
     private IJobsLogService jobLogService;
-    @Autowired
-    private IJobsGroupService jobGroupService;
 
     @Override
     public JobsImportantNumVO getImportantNum() {
@@ -32,17 +25,18 @@ public class JobsStatisticsServiceImpl implements IJobsStatisticsService {
         vo.setRunTaskNum(jobLogService.countAll());
         vo.setTriggeredNum(jobLogService.countSuccess());
         int onlineExecutorNum = 0;
-        List<JobsGroup> jobGroupList = jobGroupService.listAll();
-        if (jobGroupList != null && !jobGroupList.isEmpty()) {
-            Set<String> addressSet = new HashSet<>();
-            for (JobsGroup jobGroup : jobGroupList) {
-                String addressList = jobGroup.getAddress();
-                if (null != addressList) {
-                    addressSet.addAll(Arrays.asList(addressList.split(",")));
-                }
-            }
-            onlineExecutorNum = addressSet.size();
-        }
+//        List<JobsGroup> jobGroupList = jobGroupService.listAll();
+//        if (jobGroupList != null && !jobGroupList.isEmpty()) {
+//            Set<String> addressSet = new HashSet<>();
+//            for (JobsGroup jobGroup : jobGroupList) {
+//                String addressList = jobGroup.getAddress();
+//                if (null != addressList) {
+//                    addressSet.addAll(Arrays.asList(addressList.split(",")));
+//                }
+//            }
+//            onlineExecutorNum = addressSet.size();
+//        }
+        // TODO 待处理统计
         vo.setOnlineExecutorNum(onlineExecutorNum);
         return vo;
     }

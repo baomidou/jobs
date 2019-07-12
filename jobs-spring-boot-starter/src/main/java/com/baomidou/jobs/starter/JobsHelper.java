@@ -28,8 +28,6 @@ public class JobsHelper implements InitializingBean {
     }
 
     @Resource
-    private IJobsGroupService _jobGroupService;
-    @Resource
     private IJobsInfoService _jobInfoService;
     @Resource
     private IJobsLogService _jobLogService;
@@ -50,10 +48,6 @@ public class JobsHelper implements InitializingBean {
 
     public static JobsProperties getJobProperties() {
         return JOB_HELPER._jobProperties;
-    }
-
-    public static IJobsGroupService getJobGroupService() {
-        return JOB_HELPER._jobGroupService;
     }
 
     public static IJobsInfoService getJobInfoService() {

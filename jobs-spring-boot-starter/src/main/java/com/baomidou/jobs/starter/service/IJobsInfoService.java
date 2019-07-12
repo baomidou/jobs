@@ -17,7 +17,7 @@ public interface IJobsInfoService<P> {
      */
     P page(HttpServletRequest request, JobsInfo jobInfo);
 
-    List<JobsInfo> getJobsByGroup(int jobGroup);
+    List<JobsInfo> getJobsByApp(String app);
 
     /**
      * 执行任务总数
@@ -29,9 +29,11 @@ public interface IJobsInfoService<P> {
     /**
      * 任务数
      *
+     * @param app    服务 APP 名称
+     * @param status 状态
      * @return
      */
-    int count(int jobGroupId, int triggerStatus);
+    int count(String app, int status);
 
     List<JobsInfo> scheduleJobQuery(long maxNextTime);
 

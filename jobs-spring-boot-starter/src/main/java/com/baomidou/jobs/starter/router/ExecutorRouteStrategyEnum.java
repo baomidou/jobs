@@ -17,8 +17,7 @@ public enum ExecutorRouteStrategyEnum {
     LEAST_FREQUENTLY_USED("最不经常使用", new ExecutorRouteLFU()),
     LEAST_RECENTLY_USED("最近最久未使用", new ExecutorRouteLRU()),
     FAILOVER("故障转移", new ExecutorRouteFailover()),
-    BUSYOVER("忙碌转移", new ExecutorRouteBusyover()),
-    SHARDING_BROADCAST("分片广播", null);
+    BUSYOVER("忙碌转移", new ExecutorRouteBusyover());
 
     ExecutorRouteStrategyEnum(String title, IExecutorRouter router) {
         this.title = title;

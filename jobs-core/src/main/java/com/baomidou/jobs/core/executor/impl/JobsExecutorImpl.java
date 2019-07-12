@@ -90,7 +90,7 @@ public class JobsExecutorImpl implements IJobsExecutor {
             // valid old jobThread
             if (jobThread != null &&
                     !(jobThread.getHandler() instanceof GlueJobsHandler
-                            && ((GlueJobsHandler) jobThread.getHandler()).getGlueUpdatetime() == triggerParam.getGlueUpdatetime())) {
+                            && ((GlueJobsHandler) jobThread.getHandler()).getGlueUpdatetime() == triggerParam.getGlueTime())) {
                 // change handler or gluesource updated, need kill old thread
                 removeOldReason = "change job source or glue type, and terminate the old job thread.";
 
@@ -102,7 +102,7 @@ public class JobsExecutorImpl implements IJobsExecutor {
             if (jobHandler == null) {
                 try {
                     IJobsHandler originJobHandler = IGlueFactory.getInstance().loadNewInstance(triggerParam.getGlueSource());
-                    jobHandler = new GlueJobsHandler(originJobHandler, triggerParam.getGlueUpdatetime());
+                    jobHandler = new GlueJobsHandler(originJobHandler, triggerParam.getGlueTime());
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                     return JobsResponse.failed(e.getMessage());

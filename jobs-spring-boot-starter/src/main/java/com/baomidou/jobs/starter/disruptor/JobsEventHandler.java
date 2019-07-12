@@ -31,7 +31,7 @@ public class JobsEventHandler implements EventHandler<JobsInfoEvent> {
             if (log.isDebugEnabled()) {
                 log.debug("Jobs Event Handler: {}", jobsInfo.toString());
             }
-            JobsTrigger.trigger(jobsInfo.getId(), TriggerTypeEnum.CRON, -1, null, null);
+            JobsTrigger.trigger(jobsInfo.getId(), TriggerTypeEnum.CRON, -1,  null);
         }
     }
 }

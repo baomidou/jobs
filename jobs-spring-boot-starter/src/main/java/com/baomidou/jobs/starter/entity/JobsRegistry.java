@@ -17,10 +17,25 @@ import java.util.Date;
 @ToString
 @Accessors(chain = true)
 public class JobsRegistry implements Serializable {
+    /**
+     * 主键 ID
+     */
     private Integer id;
-    private String registryGroup;
-    private String registryKey;
-    private String registryValue;
+    /**
+     * 服务名
+     */
+    private String app;
+    /**
+     * IP 地址
+     */
+    private String ip;
+    /**
+     * 端口
+     */
+    private String port;
+    /**
+     * 更新时间
+     */
     private Date updateTime;
 
 }

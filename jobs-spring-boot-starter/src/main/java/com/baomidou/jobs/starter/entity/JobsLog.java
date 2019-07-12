@@ -31,7 +31,7 @@ public class JobsLog implements Serializable {
 	private String executorAddress;
 	private String executorHandler;
 	private String executorParam;
-	private String executorShardingParam;
+//	private String executorShardingParam;
 	private Integer executorFailRetryCount;
 
 	/**

@@ -4,7 +4,6 @@ import com.baomidou.jobs.core.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.core.handler.IJobsHandler;
 import com.baomidou.jobs.core.model.HandleCallbackParam;
 import com.baomidou.jobs.core.model.TriggerParam;
-import com.baomidou.jobs.core.util.ShardingUtil;
 import com.baomidou.jobs.core.web.JobsResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -113,8 +112,6 @@ public class JobsThread extends Thread {
                     running = true;
                     idleTimes = 0;
                     triggerLogIdSet.remove(triggerParam.getLogId());
-
-                    ShardingUtil.setShardingVo(new ShardingUtil.ShardingVO(triggerParam.getBroadcastIndex(), triggerParam.getBroadcastTotal()));
 
                     // execute
                     log.debug("Jobs job execute param:" + triggerParam.getExecutorParams());

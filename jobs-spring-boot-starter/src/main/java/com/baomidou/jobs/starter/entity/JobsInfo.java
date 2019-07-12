@@ -10,8 +10,8 @@ import java.util.Date;
 /**
  * 管理任务信息表
  *
- * @author xxl jobob
- * @since 2019-05-30
+ * @author jobob
+ * @since 2019-07-12
  */
 @Data
 @ToString
@@ -22,17 +22,61 @@ public class JobsInfo implements Serializable {
 	 */
 	private Integer id;
 	/**
-	 * 执行器主键ID
+	 * 对应 JobsRegistry app 属性
 	 */
-	private Integer jobGroup;
+	private String app;
 	/**
 	 * 任务执行CRON表达式
 	 */
-	private String jobCron;
-	private String jobDesc;
-	
-	private Date addTime;
-	private Date updateTime;
+	private String cron;
+	/**
+	 * 执行器，任务 Handler 名称
+	 */
+	private String handler;
+	/**
+	 * 执行器，任务参数
+	 */
+	private String param;
+	/**
+	 * 执行器路由策略
+	 */
+	private String routeStrategy;
+	/**
+	 * 阻塞处理策略
+	 */
+	private String blockStrategy;
+	/**
+	 * 任务执行超时时间，单位秒
+	 */
+	private Integer timeout;
+	/**
+	 * 失败重试次数
+	 */
+	private Integer failRetryCount;
+	/**
+	 * GLUE 类型	#GlueTypeEnum
+	 */
+	private String glueType;
+	/**
+	 * GLUE 源代码
+	 */
+	private String glueSource;
+	/**
+	 * GLUE 备注
+	 */
+	private String glueRemark;
+	/**
+	 * GLUE 更新时间
+	 */
+	private Date glueTime;
+	/**
+	 * 上次调度时间
+	 */
+	private Long lastTime;
+	/**
+	 * 下次调度时间
+	 */
+	private Long nextTime;
 	/**
 	 * 负责人
 	 */
@@ -42,60 +86,19 @@ public class JobsInfo implements Serializable {
 	 */
 	private String alarmEmail;
 	/**
-	 * 执行器路由策略
+	 * 备注
 	 */
-	private String executorRouteStrategy;
+	private String remark;
 	/**
-	 * 执行器，任务Handler名称
+	 * 状态：0、运行 1、停止
 	 */
-	private String executorHandler;
+	private Integer status;
 	/**
-	 * 执行器，任务参数
+	 * 更新时间
 	 */
-	private String executorParam;
+	private Date updateTime;
 	/**
-	 * 阻塞处理策略
+	 * 创建时间
 	 */
-	private String executorBlockStrategy;
-	/**
-	 * 任务执行超时时间，单位秒
-	 */
-	private Integer executorTimeout;
-	/**
-	 * 失败重试次数
-	 */
-	private Integer executorFailRetryCount;
-	/**
-	 * GLUE类型	#GlueTypeEnum
-	 */
-	private String glueType;
-	/**
-	 * GLUE源代码
-	 */
-	private String glueSource;
-	/**
-	 * GLUE备注
-	 */
-	private String glueRemark;
-	/**
-	 * GLUE更新时间
-	 */
-	private Date glueUpdatetime;
-	/**
-	 * 子任务ID，多个逗号分隔
-	 */
-	private String childJobid;
-	/**
-	 * 调度状态：0-停止，1-运行
-	 */
-	private Integer triggerStatus;
-	/**
-	 * 上次调度时间
-	 */
-	private Long triggerLastTime;
-	/**
-	 * 下次调度时间
-	 */
-	private Long triggerNextTime;
-
+	private Date createTime;
 }
