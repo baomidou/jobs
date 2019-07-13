@@ -15,8 +15,8 @@ import com.baomidou.jobs.starter.entity.JobsLog;
  * @since 2019-05-31
  */
 @RestController
-@RequestMapping("/v1/job-log")
-public class JobLogController extends BaseController {
+@RequestMapping("/v1/jobs-log")
+public class JobsLogController extends BaseController {
     @Autowired
     private IJobsLogService jobLogService;
 

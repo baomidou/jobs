@@ -32,8 +32,6 @@ public class JobsHelper implements InitializingBean {
     @Resource
     private IJobsLogService _jobLogService;
     @Resource
-    private IJobsLogGlueService _jobLogGlueService;
-    @Resource
     private IJobsRegistryService _jobRegistryService;
     @Resource
     private IJobsAlarmHandler _jobAlarmHandler;
@@ -52,10 +50,6 @@ public class JobsHelper implements InitializingBean {
 
     public static IJobsInfoService getJobInfoService() {
         return JOB_HELPER._jobInfoService;
-    }
-
-    public static IJobsLogGlueService getJobLogGlueService() {
-        return JOB_HELPER._jobLogGlueService;
     }
 
     public static IJobsLogService getJobLogService() {

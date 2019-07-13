@@ -16,8 +16,8 @@ import com.baomidou.jobs.core.web.JobsResponse;
  * @since 2019-06-15
  */
 @RestController
-@RequestMapping("/v1/statistics")
-public class JobStatisticsController extends BaseController {
+@RequestMapping("/v1/jobs-statistics")
+public class JobsStatisticsController extends BaseController {
     @Autowired
     private IJobsStatisticsService statisticsService;
 

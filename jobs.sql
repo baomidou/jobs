@@ -115,21 +115,6 @@ INSERT INTO `jobs_log` VALUES (20, 1, 3, '192.168.0.2:9999', 'demoJobHandler', N
 COMMIT;
 
 -- ----------------------------
--- Table structure for jobs_logglue
--- ----------------------------
-DROP TABLE IF EXISTS `jobs_logglue`;
-CREATE TABLE `jobs_logglue` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `job_id` int(11) NOT NULL COMMENT '任务，主键ID',
-  `glue_type` varchar(50) DEFAULT NULL COMMENT 'GLUE类型',
-  `glue_source` mediumtext COMMENT 'GLUE源代码',
-  `glue_remark` varchar(128) NOT NULL COMMENT 'GLUE备注',
-  `add_time` timestamp NULL DEFAULT NULL,
-  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
 -- Table structure for jobs_registry
 -- ----------------------------
 DROP TABLE IF EXISTS `jobs_registry`;

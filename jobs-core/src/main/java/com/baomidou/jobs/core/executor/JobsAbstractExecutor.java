@@ -104,7 +104,7 @@ public abstract class JobsAbstractExecutor {
             String[] addressArr = adminAddress.trim().split(JobsConstant.COMMA);
             for (String address : addressArr) {
                 if (address != null && address.trim().length() > 0) {
-                    String addressUrl = address.concat(IJobsAdmin.MAPPING);
+                    String addressUrl = address.concat(JobsConstant.JOBS_API);
                     IJobsAdmin jobsAdmin = (IJobsAdmin) new XxlRpcReferenceBean(
                             NetEnum.NETTY_HTTP,
                             serializer,

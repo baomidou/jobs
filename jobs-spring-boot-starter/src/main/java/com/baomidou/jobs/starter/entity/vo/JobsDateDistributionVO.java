@@ -1,6 +1,7 @@
 package com.baomidou.jobs.starter.entity.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
@@ -10,6 +11,7 @@ import lombok.experimental.Accessors;
  * @since 2019-06-15
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Accessors(chain = true)
 public class JobsDateDistributionVO extends JobsSuccessRatioVO {
     /**

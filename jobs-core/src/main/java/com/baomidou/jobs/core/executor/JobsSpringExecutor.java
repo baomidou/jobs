@@ -1,6 +1,5 @@
 package com.baomidou.jobs.core.executor;
 
-import com.baomidou.jobs.core.glue.IGlueFactory;
 import com.baomidou.jobs.core.handler.IJobsHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -20,9 +19,6 @@ public class JobsSpringExecutor extends JobsAbstractExecutor implements Applicat
 
         // init JobsHandler Repository
         initJobHandlerRepository(applicationContext);
-
-        // refresh IGlueFactory
-        IGlueFactory.refreshInstance(1);
 
         // super start
         super.start();

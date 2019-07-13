@@ -5,7 +5,6 @@ import com.baomidou.jobs.starter.entity.JobsInfo;
 import com.baomidou.jobs.starter.entity.dto.JobsHandleCodeDto;
 import com.baomidou.jobs.starter.mybatisplus.mapper.JobsInfoMapper;
 import com.baomidou.jobs.starter.service.IJobsInfoService;
-import com.baomidou.jobs.starter.service.IJobsLogGlueService;
 import com.baomidou.jobs.starter.service.IJobsLogService;
 import com.baomidou.jobs.starter.trigger.JobsTrigger;
 import com.baomidou.jobs.starter.trigger.TriggerTypeEnum;
@@ -28,8 +27,6 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
     private JobsInfoMapper jobInfoMapper;
     @Autowired
     private IJobsLogService jobLogService;
-    @Autowired
-    private IJobsLogGlueService jobLogGlueService;
 
     @Override
     public IPage page(HttpServletRequest request, JobsInfo jobInfo) {
@@ -110,7 +107,6 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
     @Override
     public boolean remove(int id) {
         jobLogService.removeById(id);
-        jobLogGlueService.removeById(id);
         return jobInfoMapper.deleteById(id) > 0;
     }
 

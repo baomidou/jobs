@@ -13,8 +13,6 @@ import java.util.List;
  */
 public interface IJobsAdmin {
 
-    String MAPPING = "/job-api";
-
     /**
      * 数据库行锁 SQL
      *

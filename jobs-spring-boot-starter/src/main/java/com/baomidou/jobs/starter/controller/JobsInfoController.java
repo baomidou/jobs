@@ -14,8 +14,8 @@ import javax.annotation.Resource;
  * @since 2019-05-31
  */
 @RestController
-@RequestMapping("/v1/job-info")
-public class JobInfoController extends BaseController {
+@RequestMapping("/v1/jobs-info")
+public class JobsInfoController extends BaseController {
     @Resource
     private IJobsInfoService jobInfoService;
 

@@ -14,5 +14,9 @@ public interface JobsConstant {
      */
     int BEAT_TIMEOUT = 30;
     String COMMA = ",";
+    /**
+     * API URI
+     */
+    String JOBS_API = "/jobs-api";
 
 }

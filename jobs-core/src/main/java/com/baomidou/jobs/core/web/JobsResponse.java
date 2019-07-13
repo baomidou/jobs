@@ -41,7 +41,7 @@ public class JobsResponse<T> implements Serializable {
     }
 
     public static JobsResponse ok() {
-        return ok(null);
+        return ok("ok");
     }
 
     public static <T> JobsResponse<T> ok(T data) {

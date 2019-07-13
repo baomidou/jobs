@@ -15,8 +15,8 @@ import com.baomidou.jobs.starter.entity.JobsRegistry;
  * @since 2019-05-31
  */
 @RestController
-@RequestMapping("/v1/job-registry")
-public class JobRegistryController extends BaseController {
+@RequestMapping("/v1/jobs-registry")
+public class JobsRegistryController extends BaseController {
     @Autowired
     private IJobsRegistryService jobRegistryService;
 
