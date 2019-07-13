@@ -5,7 +5,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * 管理任务信息表
@@ -68,7 +68,7 @@ public class JobsInfo implements Serializable {
 	/**
 	 * GLUE 更新时间
 	 */
-	private Date glueTime;
+	private Timestamp glueTime;
 	/**
 	 * 上次调度时间
 	 */
@@ -96,9 +96,9 @@ public class JobsInfo implements Serializable {
 	/**
 	 * 更新时间
 	 */
-	private Date updateTime;
+	private Timestamp updateTime;
 	/**
 	 * 创建时间
 	 */
-	private Date createTime;
+	private Timestamp createTime;
 }

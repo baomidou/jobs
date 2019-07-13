@@ -1,5 +1,6 @@
 package com.baomidou.jobs.starter.mybatisplus.service;
 
+import com.baomidou.jobs.core.JobsClock;
 import com.baomidou.jobs.starter.entity.JobsRegistry;
 import com.baomidou.jobs.starter.mybatisplus.mapper.JobsRegistryMapper;
 import com.baomidou.jobs.starter.service.IJobsRegistryService;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +40,7 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService<IPage> {
 
     @Override
     public int update(String app, String address) {
-        return jobRegistryMapper.update(new JobsRegistry().setUpdateTime(new Date()),
+        return jobRegistryMapper.update(new JobsRegistry().setUpdateTime(JobsClock.now()),
                 Wrappers.<JobsRegistry>lambdaQuery().eq(JobsRegistry::getApp, app)
                         .eq(JobsRegistry::getAddress, address));
     }
@@ -48,7 +48,7 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService<IPage> {
     @Override
     public int save(String app, String address) {
         return jobRegistryMapper.insert(new JobsRegistry().setApp(app)
-                .setAddress(address).setUpdateTime(new Date()));
+                .setAddress(address).setUpdateTime(JobsClock.now()));
     }
 
     @Override
