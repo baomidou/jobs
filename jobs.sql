@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 14/07/2019 22:56:39
+ Date: 14/07/2019 23:12:05
 */
 
 SET NAMES utf8mb4;
@@ -31,10 +31,6 @@ CREATE TABLE `jobs_info` (
   `block_strategy` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '阻塞处理策略',
   `timeout` int(11) NOT NULL DEFAULT '0' COMMENT '任务执行超时时间，单位秒',
   `fail_retry_count` int(11) NOT NULL DEFAULT '0' COMMENT '失败重试次数',
-  `glue_type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'GLUE类型',
-  `glue_source` mediumtext COMMENT 'GLUE源代码',
-  `glue_remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'GLUE备注',
-  `glue_time` datetime DEFAULT NULL COMMENT 'GLUE更新时间',
   `last_time` bigint(13) NOT NULL DEFAULT '0' COMMENT '上次调度时间',
   `next_time` bigint(13) NOT NULL DEFAULT '0' COMMENT '下次调度时间',
   `author` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '作者',
@@ -44,13 +40,13 @@ CREATE TABLE `jobs_info` (
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='任务信息';
 
 -- ----------------------------
 -- Records of jobs_info
 -- ----------------------------
 BEGIN;
-INSERT INTO `jobs_info` VALUES (3, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 'FIRST', 'SERIAL_EXECUTION', 30, 3, 'BEAN', 'GLUE代码初始化', NULL, NULL, 1563116100000, 1563116110000, 'jobs', 'FIRST', '测试', 0, '2019-07-12 18:12:23', '2019-07-12 18:12:25');
+INSERT INTO `jobs_info` VALUES (3, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 'FIRST', 'SERIAL_EXECUTION', 30, 3, 1563116580000, 1563116590000, 'jobs', 'FIRST', '测试', 0, '2019-07-12 18:12:23', '2019-07-12 18:12:25');
 COMMIT;
 
 -- ----------------------------
@@ -64,7 +60,7 @@ CREATE TABLE `jobs_lock` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='分布式锁';
+) ENGINE=InnoDB AUTO_INCREMENT=367 DEFAULT CHARSET=utf8 COMMENT='任务锁';
 
 -- ----------------------------
 -- Table structure for jobs_log
@@ -89,7 +85,7 @@ CREATE TABLE `jobs_log` (
   PRIMARY KEY (`id`),
   KEY `I_trigger_time` (`trigger_time`),
   KEY `I_handle_code` (`handle_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务调度日志';
 
 -- ----------------------------
 -- Table structure for jobs_registry
@@ -101,13 +97,6 @@ CREATE TABLE `jobs_registry` (
   `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'IP 地址',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=902 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of jobs_registry
--- ----------------------------
-BEGIN;
-INSERT INTO `jobs_registry` VALUES (901, 'jobs-executor-sample', '192.168.0.2:9999', '2019-07-13 09:46:04');
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=902 DEFAULT CHARSET=utf8 COMMENT='任务注册信息';
 
 SET FOREIGN_KEY_CHECKS = 1;

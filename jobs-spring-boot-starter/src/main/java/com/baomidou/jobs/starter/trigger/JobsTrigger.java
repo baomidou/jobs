@@ -85,13 +85,6 @@ public class JobsTrigger {
         triggerParam.setExecutorTimeout(jobsInfo.getTimeout());
         triggerParam.setLogId(jobLog.getId());
         triggerParam.setLogDateTim(jobLog.getTriggerTime().getTime());
-        triggerParam.setGlueType(jobsInfo.getGlueType());
-        triggerParam.setGlueSource(jobsInfo.getGlueSource());
-        Date glueTime = jobsInfo.getGlueTime();
-        if (null != glueTime) {
-            triggerParam.setGlueTime(glueTime.getTime());
-        }
-
 
         // 3、init address
         String routeAddressResultMsg = "";

@@ -54,22 +54,6 @@ public class JobsInfo implements Serializable {
 	 */
 	private Integer failRetryCount;
 	/**
-	 * GLUE 类型	#GlueTypeEnum
-	 */
-	private String glueType;
-	/**
-	 * GLUE 源代码
-	 */
-	private String glueSource;
-	/**
-	 * GLUE 备注
-	 */
-	private String glueRemark;
-	/**
-	 * GLUE 更新时间
-	 */
-	private Timestamp glueTime;
-	/**
 	 * 上次调度时间
 	 */
 	private Long lastTime;
