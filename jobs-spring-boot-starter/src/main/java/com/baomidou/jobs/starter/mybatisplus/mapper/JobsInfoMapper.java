@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 任务信息 Mapper
  *
- * @author xxl jobob
+ * @author jobob
  * @since 2019-05-31
  */
 @Mapper

@@ -18,5 +18,13 @@ public interface JobsConstant {
      * API URI
      */
     String JOBS_API = "/jobs-api";
+    /**
+     * owner标志常量，用于标志是否做过tryLock()操作
+     */
+    String OPERATION_TRY_LOCK = "OPERATION_TRY_LOCK";
+    /**
+     * 锁唯一标示
+     */
+    String DEFAULT_LOCK_KEY = "JOBS_LOCK";
 
 }

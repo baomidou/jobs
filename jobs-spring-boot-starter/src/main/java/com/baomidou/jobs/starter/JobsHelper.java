@@ -1,15 +1,17 @@
 package com.baomidou.jobs.starter;
 
+import com.baomidou.jobs.core.lock.IJobsLock;
 import com.baomidou.jobs.core.web.IJobsAdmin;
 import com.baomidou.jobs.starter.disruptor.JobsDisruptorTemplate;
 import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
-import com.baomidou.jobs.starter.service.*;
+import com.baomidou.jobs.starter.service.IJobsInfoService;
+import com.baomidou.jobs.starter.service.IJobsLogService;
+import com.baomidou.jobs.starter.service.IJobsRegistryService;
 import com.baomidou.jobs.starter.starter.JobsProperties;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
 
 /**
  * Spring Boot 相关辅助类
@@ -40,7 +42,7 @@ public class JobsHelper implements InitializingBean {
     @Resource
     private IJobsAdmin _jobsAdmin;
     @Resource
-    private DataSource _dataSource;
+    private IJobsLock _jobsLock;
     @Resource
     private JobsDisruptorTemplate _jobsDisruptorTemplate;
 
@@ -68,8 +70,8 @@ public class JobsHelper implements InitializingBean {
         return JOB_HELPER._jobsAdmin;
     }
 
-    public static DataSource getDataSource() {
-        return JOB_HELPER._dataSource;
+    public static IJobsLock getJobsLock() {
+        return JOB_HELPER._jobsLock;
     }
 
     public static JobsDisruptorTemplate getJobsDisruptorTemplate() {
