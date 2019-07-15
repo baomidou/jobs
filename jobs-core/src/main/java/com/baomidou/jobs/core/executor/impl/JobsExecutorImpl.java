@@ -24,7 +24,7 @@ public class JobsExecutorImpl implements IJobsExecutor {
     }
 
     @Override
-    public JobsResponse<String> idleBeat(int jobId) {
+    public JobsResponse<String> idleBeat(Long jobId) {
         boolean isRunningOrHasQueue = false;
         JobsThread jobThread = JobsAbstractExecutor.getJobsThread(jobId);
         if (jobThread != null && jobThread.isRunningOrHasQueue()) {
@@ -38,7 +38,7 @@ public class JobsExecutorImpl implements IJobsExecutor {
     }
 
     @Override
-    public JobsResponse<String> kill(int jobId) {
+    public JobsResponse<String> kill(Long jobId) {
         // kill handlerThread, and create new one
         JobsThread jobThread = JobsAbstractExecutor.getJobsThread(jobId);
         if (jobThread != null) {

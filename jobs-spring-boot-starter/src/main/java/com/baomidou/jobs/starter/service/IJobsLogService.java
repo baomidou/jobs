@@ -28,15 +28,11 @@ public interface IJobsLogService<P> {
      */
     int countSuccess();
 
-    int updateAlarmStatus(int logId, int oldAlarmStatus, int newAlarmStatus);
-
-    List<Object> listFailIds(int size);
-
-    JobsLog getById(int id);
+    JobsLog getById(Long id);
 
     boolean updateById(JobsLog jobLog);
 
     boolean save(JobsLog jobLog);
 
-    boolean removeById(int id);
+    boolean removeById(Long id);
 }

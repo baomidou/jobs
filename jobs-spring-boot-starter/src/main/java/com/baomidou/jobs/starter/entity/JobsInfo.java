@@ -5,7 +5,6 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * 管理任务信息表
@@ -20,7 +19,7 @@ public class JobsInfo implements Serializable {
 	/**
 	 * 主键ID
 	 */
-	private Integer id;
+	private Long id;
 	/**
 	 * 对应 JobsRegistry app 属性
 	 */
@@ -80,9 +79,9 @@ public class JobsInfo implements Serializable {
 	/**
 	 * 更新时间
 	 */
-	private Timestamp updateTime;
+	private Long updateTime;
 	/**
 	 * 创建时间
 	 */
-	private Timestamp createTime;
+	private Long createTime;
 }

@@ -74,7 +74,7 @@ public abstract class JobsAbstractExecutor {
      */
     public void destroy() {
         if (JOBS_THREAD.size() > 0) {
-            for (Map.Entry<Integer, JobsThread> item : JOBS_THREAD.entrySet()) {
+            for (Map.Entry<Long, JobsThread> item : JOBS_THREAD.entrySet()) {
                 removeJobsThread(item.getKey(), "web container destroy and kill the job.");
             }
             JOBS_THREAD.clear();
@@ -233,9 +233,9 @@ public abstract class JobsAbstractExecutor {
     /**
      * jobsThread cache
      */
-    private static Map<Integer, JobsThread> JOBS_THREAD = new ConcurrentHashMap<>();
+    private static Map<Long, JobsThread> JOBS_THREAD = new ConcurrentHashMap<>();
 
-    public static JobsThread putJobsThread(int jobId, IJobsHandler handler, String removeOldReason) {
+    public static JobsThread putJobsThread(Long jobId, IJobsHandler handler, String removeOldReason) {
         JobsThread newJobThread = new JobsThread(jobId, handler);
         newJobThread.start();
         log.debug("Jobs register JobsThread success, jobId:{}, handler:{}", new Object[]{jobId, handler});
@@ -248,7 +248,7 @@ public abstract class JobsAbstractExecutor {
         return newJobThread;
     }
 
-    public static void removeJobsThread(int jobId, String removeOldReason) {
+    public static void removeJobsThread(Long jobId, String removeOldReason) {
         JobsThread oldJobThread = JOBS_THREAD.remove(jobId);
         if (oldJobThread != null) {
             oldJobThread.toStop(removeOldReason);
@@ -256,7 +256,7 @@ public abstract class JobsAbstractExecutor {
         }
     }
 
-    public static JobsThread getJobsThread(int jobId) {
+    public static JobsThread getJobsThread(Long jobId) {
         return JOBS_THREAD.get(jobId);
     }
 }

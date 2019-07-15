@@ -46,7 +46,7 @@ public interface IJobsInfoService<P> {
      * @param param 执行参数
      * @return
      */
-    boolean execute(int id, String param);
+    boolean execute(Long id, String param);
 
     /**
      * 启动、指定 ID 任务
@@ -54,7 +54,7 @@ public interface IJobsInfoService<P> {
      * @param id 主键 ID
      * @return
      */
-    boolean start(int id);
+    boolean start(Long id);
 
     /**
      * 停止、指定 ID 任务
@@ -62,7 +62,7 @@ public interface IJobsInfoService<P> {
      * @param id 主键 ID
      * @return
      */
-    boolean stop(int id);
+    boolean stop(Long id);
 
     /**
      * 删除、指定 ID 任务
@@ -70,7 +70,7 @@ public interface IJobsInfoService<P> {
      * @param id 主键 ID
      * @return
      */
-    boolean remove(int id);
+    boolean remove(Long id);
 
     /**
      * HandleCode GroupBy Dto
@@ -79,5 +79,5 @@ public interface IJobsInfoService<P> {
      */
     List<JobsHandleCodeDto> getHandleCodeDto();
 
-    JobsInfo getById(int id);
+    JobsInfo getById(Long id);
 }

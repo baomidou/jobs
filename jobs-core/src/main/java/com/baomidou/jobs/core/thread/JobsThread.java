@@ -22,24 +22,24 @@ import java.util.concurrent.*;
  */
 @Slf4j
 public class JobsThread extends Thread {
-    private int jobId;
+    private Long jobId;
     private IJobsHandler handler;
     private LinkedBlockingQueue<TriggerParam> triggerQueue;
     /**
      * avoid repeat trigger for the same TRIGGER_LOG_ID
      */
-    private Set<Integer> triggerLogIdSet;
+    private Set<Long> triggerLogIdSet;
     private volatile boolean toStop = false;
     private String stopReason;
     private boolean running = false;
     private int idleTimes = 0;
 
 
-    public JobsThread(int jobId, IJobsHandler handler) {
+    public JobsThread(Long jobId, IJobsHandler handler) {
         this.jobId = jobId;
         this.handler = handler;
         this.triggerQueue = new LinkedBlockingQueue<>();
-        this.triggerLogIdSet = Collections.synchronizedSet(new HashSet<Integer>());
+        this.triggerLogIdSet = Collections.synchronizedSet(new HashSet<>());
     }
 
     public IJobsHandler getHandler() {
@@ -171,11 +171,11 @@ public class JobsThread extends Thread {
                     // callback handler info
                     if (!toStop) {
                         // commonm
-                        TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.getLogId(), triggerParam.getLogDateTim(), executeResult));
+                        TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.getLogId(), triggerParam.getLogDateTime(), executeResult));
                     } else {
                         // is killed
                         JobsResponse<String> stopResult = JobsResponse.failed(stopReason + " [job running，killed]");
-                        TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.getLogId(), triggerParam.getLogDateTim(), stopResult));
+                        TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.getLogId(), triggerParam.getLogDateTime(), stopResult));
                     }
                 }
             }
@@ -187,7 +187,7 @@ public class JobsThread extends Thread {
             if (triggerParam != null) {
                 // is killed
                 JobsResponse<String> stopResult = JobsResponse.failed(stopReason + " [job not executed, in the job queue, killed.]");
-                TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.getLogId(), triggerParam.getLogDateTim(), stopResult));
+                TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.getLogId(), triggerParam.getLogDateTime(), stopResult));
             }
         }
 

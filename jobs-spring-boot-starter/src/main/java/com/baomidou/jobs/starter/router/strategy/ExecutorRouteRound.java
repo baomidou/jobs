@@ -13,10 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ExecutorRouteRound implements IExecutorRouter {
 
-    private static ConcurrentHashMap<Integer, Integer> routeCountEachJob = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<Long, Integer> routeCountEachJob = new ConcurrentHashMap<>();
     private static long CACHE_VALID_TIME = 0;
 
-    private static int count(int jobId) {
+    private static int count(Long jobId) {
         // cache clear
         if (System.currentTimeMillis() > CACHE_VALID_TIME) {
             routeCountEachJob.clear();

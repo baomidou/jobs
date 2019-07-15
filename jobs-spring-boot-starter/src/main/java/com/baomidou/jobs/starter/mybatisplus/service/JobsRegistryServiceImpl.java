@@ -40,7 +40,7 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService<IPage> {
 
     @Override
     public int update(String app, String address) {
-        return jobRegistryMapper.update(new JobsRegistry().setUpdateTime(JobsClock.now()),
+        return jobRegistryMapper.update(new JobsRegistry().setUpdateTime(JobsClock.currentTimeMillis()),
                 Wrappers.<JobsRegistry>lambdaQuery().eq(JobsRegistry::getApp, app)
                         .eq(JobsRegistry::getAddress, address));
     }
@@ -48,7 +48,7 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService<IPage> {
     @Override
     public int save(String app, String address) {
         return jobRegistryMapper.insert(new JobsRegistry().setApp(app)
-                .setAddress(address).setUpdateTime(JobsClock.now()));
+                .setAddress(address).setUpdateTime(JobsClock.currentTimeMillis()));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.baomidou.jobs.starter.trigger;
 
+import com.baomidou.jobs.core.JobsClock;
 import com.baomidou.jobs.core.JobsConstant;
 import com.baomidou.jobs.core.enums.ExecutorBlockStrategyEnum;
 import com.baomidou.jobs.core.executor.IJobsExecutor;
@@ -14,14 +15,13 @@ import com.xxl.rpc.util.IpUtil;
 import com.xxl.rpc.util.ThrowableUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * jobs trigger
  *
- * @author xxl jobob
- * @since 2019-06-22
+ * @author jobob
+ * @since 2019-07-15
  */
 @Slf4j
 public class JobsTrigger {
@@ -36,7 +36,7 @@ public class JobsTrigger {
      * @param executorParam  null: use job param
      *                       not null: cover job param
      */
-    public static boolean trigger(int jobId, TriggerTypeEnum triggerType, int failRetryCount, String executorParam) {
+    public static boolean trigger(Long jobId, TriggerTypeEnum triggerType, int failRetryCount, String executorParam) {
         // load data
         JobsInfo jobsInfo = JobsHelper.getJobInfoService().getById(jobId);
         if (jobsInfo == null) {
@@ -67,12 +67,8 @@ public class JobsTrigger {
 
         // 1、save log-id
         JobsLog jobLog = new JobsLog();
-        // TODO 任务组待移除
-        jobLog.setJobGroup(1);
         jobLog.setJobId(jobsInfo.getId());
-        jobLog.setTriggerTime(new Date());
-        jobLog.setHandleCode(0);
-        jobLog.setTriggerCode(0);
+        jobLog.setCreateTime(JobsClock.currentTimeMillis());
         JobsHelper.getJobLogService().save(jobLog);
         log.debug("Jobs trigger start, jobId:{}", jobLog.getId());
 
@@ -84,7 +80,7 @@ public class JobsTrigger {
         triggerParam.setExecutorBlockStrategy(jobsInfo.getBlockStrategy());
         triggerParam.setExecutorTimeout(jobsInfo.getTimeout());
         triggerParam.setLogId(jobLog.getId());
-        triggerParam.setLogDateTim(jobLog.getTriggerTime().getTime());
+        triggerParam.setLogDateTime(JobsClock.currentTimeMillis());
 
         // 3、init address
         String routeAddressResultMsg = "";

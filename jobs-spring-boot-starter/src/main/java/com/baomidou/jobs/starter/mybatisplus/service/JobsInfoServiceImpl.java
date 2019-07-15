@@ -64,13 +64,13 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
     }
 
     @Override
-    public boolean execute(int id, String param) {
+    public boolean execute(Long id, String param) {
         JobsTrigger.trigger(id, TriggerTypeEnum.MANUAL, -1, param);
         return true;
     }
 
     @Override
-    public boolean start(int id) {
+    public boolean start(Long id) {
         JobsInfo dbJobInfo = getById(id);
         if (null == dbJobInfo) {
             return false;
@@ -95,7 +95,7 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
     }
 
     @Override
-    public boolean stop(int id) {
+    public boolean stop(Long id) {
         JobsInfo jobsInfo = new JobsInfo();
         jobsInfo.setId(id);
         jobsInfo.setStatus(0);
@@ -105,7 +105,7 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
     }
 
     @Override
-    public boolean remove(int id) {
+    public boolean remove(Long id) {
         jobLogService.removeById(id);
         return jobInfoMapper.deleteById(id) > 0;
     }
@@ -116,7 +116,7 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
     }
 
     @Override
-    public JobsInfo getById(int id) {
+    public JobsInfo getById(Long id) {
         return jobInfoMapper.selectById(id);
     }
 }

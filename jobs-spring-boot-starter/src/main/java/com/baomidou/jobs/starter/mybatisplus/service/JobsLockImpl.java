@@ -19,7 +19,7 @@ public class JobsLockImpl implements IJobsLock {
         JobsLock jobsLock = new JobsLock();
         jobsLock.setName(name);
         jobsLock.setOwner(owner);
-        jobsLock.setCreateTime(JobsClock.now());
+        jobsLock.setCreateTime(JobsClock.currentTimeMillis());
         return jobsLockMapper.insert(jobsLock);
     }
 

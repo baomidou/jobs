@@ -21,7 +21,7 @@ public class JobsRegistry implements Serializable {
     /**
      * 主键 ID
      */
-    private Integer id;
+    private Long id;
     /**
      * 服务名
      */
@@ -33,6 +33,6 @@ public class JobsRegistry implements Serializable {
     /**
      * 更新时间
      */
-    private Timestamp updateTime;
+    private Long updateTime;
 
 }

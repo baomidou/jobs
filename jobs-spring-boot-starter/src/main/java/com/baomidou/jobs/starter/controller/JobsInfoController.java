@@ -39,7 +39,7 @@ public class JobsInfoController extends BaseController {
      * 执行
      */
     @PostMapping("/execute-{id}")
-    public JobsResponse<Boolean> execute(@PathVariable("id") int id, String param) {
+    public JobsResponse<Boolean> execute(@PathVariable("id") Long id, String param) {
         return success(jobInfoService.execute(id, param));
     }
 
@@ -47,7 +47,7 @@ public class JobsInfoController extends BaseController {
      * 启动
      */
     @PostMapping("/start-{id}")
-    public JobsResponse<Boolean> start(@PathVariable("id") int id) {
+    public JobsResponse<Boolean> start(@PathVariable("id") Long id) {
         return success(jobInfoService.start(id));
     }
 
@@ -55,7 +55,7 @@ public class JobsInfoController extends BaseController {
      * 停止
      */
     @PostMapping("/stop-{id}")
-    public JobsResponse<Boolean> stop(@PathVariable("id") int id) {
+    public JobsResponse<Boolean> stop(@PathVariable("id") Long id) {
         return success(jobInfoService.stop(id));
     }
 
@@ -63,7 +63,7 @@ public class JobsInfoController extends BaseController {
      * 删除
      */
     @PostMapping("/remove-{id}")
-    public JobsResponse<Boolean> remove(@PathVariable("id") int id) {
+    public JobsResponse<Boolean> remove(@PathVariable("id") Long id) {
         return success(jobInfoService.remove(id));
     }
 }

@@ -17,40 +17,40 @@ import java.util.Date;
 @ToString
 @Accessors(chain = true)
 public class JobsLog implements Serializable {
-	private Integer id;
-
 	/**
-	 * job info
+	 * 主键ID
 	 */
-	private Integer jobGroup;
-	private Integer jobId;
-
+	private Long id;
 	/**
-	 * execute info
+	 * 任务ID
+	 */
+	private Long jobId;
+	/**
+	 * 执行器
 	 */
 	private String executorAddress;
 	private String executorHandler;
 	private String executorParam;
-//	private String executorShardingParam;
 	private Integer executorFailRetryCount;
 
 	/**
-	 * trigger info
+	 * 触发器
 	 */
-	private Date triggerTime;
 	private Integer triggerCode;
 	private String triggerMsg;
+	private Long triggerTime;
 
 	/**
-	 * handle info
+	 * 处理器
 	 */
 	private Date handleTime;
 	private Integer handleCode;
 	private String handleMsg;
 
 	/**
-	 * alarm info
+	 * 报警 0、成功 1、失败
 	 */
 	private Integer alarmStatus;
+	private Long createTime;
 
 }

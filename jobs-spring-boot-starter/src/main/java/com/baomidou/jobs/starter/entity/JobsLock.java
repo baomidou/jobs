@@ -5,7 +5,6 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * 管理任务日志表
@@ -17,21 +16,21 @@ import java.sql.Timestamp;
 @ToString
 @Accessors(chain = true)
 public class JobsLock implements Serializable {
-	/**
-	 * 主键 ID
-	 */
-	private Integer id;
-	/**
-	 * 名称
-	 */
-	private String name;
-	/**
-	 * 持有者
-	 */
-	private String owner;
-	/**
-	 * 创建时间
-	 */
-	private Timestamp createTime;
+    /**
+     * 主键 ID
+     */
+    private Long id;
+    /**
+     * 名称
+     */
+    private String name;
+    /**
+     * 持有者
+     */
+    private String owner;
+    /**
+     * 创建时间
+     */
+    private Long createTime;
 
 }

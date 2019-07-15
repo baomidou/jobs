@@ -14,13 +14,6 @@ import java.util.List;
 public interface IJobsAdmin {
 
     /**
-     * 数据库行锁 SQL
-     *
-     * @return
-     */
-    String lockSql();
-
-    /**
      * callback
      *
      * @param callbackParamList

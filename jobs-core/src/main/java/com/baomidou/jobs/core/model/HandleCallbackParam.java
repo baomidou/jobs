@@ -7,13 +7,16 @@ import lombok.ToString;
 import java.io.Serializable;
 
 /**
- * Created by xuxueli on 17/3/2.
+ * 处理器回调参数
+ *
+ * @author jobob
+ * @since 2019-07-15
  */
 @Data
 @ToString
 public class HandleCallbackParam implements Serializable {
-    private int logId;
-    private long logDateTim;
+    private Long logId;
+    private Long logDateTime;
 
     private JobsResponse<String> executeResult;
 
@@ -21,9 +24,9 @@ public class HandleCallbackParam implements Serializable {
         // to do nothing
     }
 
-    public HandleCallbackParam(int logId, long logDateTim, JobsResponse<String> executeResult) {
+    public HandleCallbackParam(Long logId, Long logDateTime, JobsResponse<String> executeResult) {
         this.logId = logId;
-        this.logDateTim = logDateTim;
+        this.logDateTime = logDateTime;
         this.executeResult = executeResult;
     }
 }

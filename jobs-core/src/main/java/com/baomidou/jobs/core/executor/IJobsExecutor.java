@@ -24,7 +24,7 @@ public interface IJobsExecutor {
      * @param jobId
      * @return
      */
-    JobsResponse<String> idleBeat(int jobId);
+    JobsResponse<String> idleBeat(Long jobId);
 
     /**
      * kill
@@ -32,7 +32,7 @@ public interface IJobsExecutor {
      * @param jobId
      * @return
      */
-    JobsResponse<String> kill(int jobId);
+    JobsResponse<String> kill(Long jobId);
 
     /**
      * run

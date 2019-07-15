@@ -6,18 +6,21 @@ import lombok.ToString;
 import java.io.Serializable;
 
 /**
- * Created by xuxueli on 16/7/22.
+ * 触发器参数
+ *
+ * @author jobob
+ * @since 2019-07-15
  */
 @Data
 @ToString
 public class TriggerParam implements Serializable{
-    private int jobId;
+    private Long jobId;
     private String executorHandler;
     private String executorParams;
     private String executorBlockStrategy;
     private int executorTimeout;
 
-    private int logId;
-    private long logDateTim;
+    private Long logId;
+    private Long logDateTime;
 
 }

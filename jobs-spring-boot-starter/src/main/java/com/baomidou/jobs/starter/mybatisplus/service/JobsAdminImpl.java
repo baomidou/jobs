@@ -29,11 +29,6 @@ public class JobsAdminImpl implements IJobsAdmin {
     private IJobsRegistryService jobRegistryService;
 
     @Override
-    public String lockSql() {
-        return "SELECT * FROM jobs_lock WHERE lock_name = 'schedule_lock' FOR UPDATE";
-    }
-
-    @Override
     public JobsResponse<Boolean> callback(List<HandleCallbackParam> callbackParamList) {
         for (HandleCallbackParam handleCallbackParam : callbackParamList) {
             JobsResponse<Boolean> callbackResult = callback(handleCallbackParam);
@@ -50,9 +45,9 @@ public class JobsAdminImpl implements IJobsAdmin {
         if (log == null) {
             return JobsResponse.failed("log item not found.");
         }
-        if (log.getHandleCode() > 0) {
+        if (log.getTriggerCode() > 0) {
             // avoid repeat callback, trigger child job etc
-            return JobsResponse.failed("log repeate callback.");
+            return JobsResponse.failed("log repeat callback.");
         }
 
         // handle msg
