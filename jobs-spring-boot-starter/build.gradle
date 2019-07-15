@@ -1,8 +1,10 @@
 dependencies {
-    api project(":jobs-core")
     api "${lib.'disruptor'}"
-    compileOnly "${lib.'mybatis-plus-boot-starter'}"
-    compileOnly "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"
+    api "${lib.'xxl-rpc-core'}"
+    api "${lib.'commons-exec'}"
+    api "${lib.'groovy'}"
+    implementation "${lib.'slf4j-api'}"
+    implementation "org.springframework:spring-context:${springVersion}"
     implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}" as String))
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:${springBootVersion}"
@@ -10,6 +12,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-autoconfigure-processor'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompile "${lib.'javax.servlet-api'}"
 }

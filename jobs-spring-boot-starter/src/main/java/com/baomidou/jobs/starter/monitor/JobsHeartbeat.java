@@ -1,17 +1,15 @@
 package com.baomidou.jobs.starter.monitor;
 
-import com.baomidou.jobs.core.JobsConstant;
-import com.baomidou.jobs.core.lock.IJobsLock;
+import com.baomidou.jobs.starter.JobsConstant;
+import com.baomidou.jobs.starter.lock.IJobsLock;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.cron.CronExpression;
 import com.baomidou.jobs.starter.entity.JobsInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
 
 /**
  * jobs 心跳

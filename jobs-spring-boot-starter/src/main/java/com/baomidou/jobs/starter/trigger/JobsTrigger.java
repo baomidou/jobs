@@ -1,11 +1,11 @@
 package com.baomidou.jobs.starter.trigger;
 
-import com.baomidou.jobs.core.JobsClock;
-import com.baomidou.jobs.core.JobsConstant;
-import com.baomidou.jobs.core.enums.ExecutorBlockStrategyEnum;
-import com.baomidou.jobs.core.executor.IJobsExecutor;
-import com.baomidou.jobs.core.model.TriggerParam;
-import com.baomidou.jobs.core.web.JobsResponse;
+import com.baomidou.jobs.starter.JobsClock;
+import com.baomidou.jobs.starter.JobsConstant;
+import com.baomidou.jobs.starter.enums.ExecutorBlockStrategyEnum;
+import com.baomidou.jobs.starter.executor.IJobsExecutor;
+import com.baomidou.jobs.starter.model.TriggerParam;
+import com.baomidou.jobs.starter.web.JobsResponse;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.entity.JobsInfo;
 import com.baomidou.jobs.starter.entity.JobsLog;

@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter;
 
-import com.baomidou.jobs.core.lock.IJobsLock;
-import com.baomidou.jobs.core.web.IJobsAdmin;
+import com.baomidou.jobs.starter.lock.IJobsLock;
+import com.baomidou.jobs.starter.web.IJobsAdmin;
 import com.baomidou.jobs.starter.disruptor.JobsDisruptorTemplate;
 import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
 import com.baomidou.jobs.starter.service.IJobsInfoService;

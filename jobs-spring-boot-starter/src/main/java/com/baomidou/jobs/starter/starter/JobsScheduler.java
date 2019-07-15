@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.starter;
 
-import com.baomidou.jobs.core.executor.IJobsExecutor;
-import com.baomidou.jobs.core.web.IJobsAdmin;
+import com.baomidou.jobs.starter.executor.IJobsExecutor;
+import com.baomidou.jobs.starter.web.IJobsAdmin;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.monitor.JobsHeartbeat;
 import com.baomidou.jobs.starter.monitor.JobsRegistryMonitor;

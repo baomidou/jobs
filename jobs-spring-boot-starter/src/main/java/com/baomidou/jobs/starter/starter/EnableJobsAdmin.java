@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 @Configuration
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({JobsDisruptorAutoConfiguration.class, JobsHelper.class, JobsScheduler.class, JobsAdminAutoConfiguration.class})
+@Import({JobsDisruptorAutoConfiguration.class, JobsHelper.class, JobsScheduler.class})
 public @interface EnableJobsAdmin {
 
 }

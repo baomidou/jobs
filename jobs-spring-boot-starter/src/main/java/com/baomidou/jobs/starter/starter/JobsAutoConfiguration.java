@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter.starter;
 
-import com.baomidou.jobs.core.executor.JobsSpringExecutor;
+import com.baomidou.jobs.starter.executor.JobsSpringExecutor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

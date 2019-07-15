@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.router.strategy;
 
-import com.baomidou.jobs.core.model.TriggerParam;
-import com.baomidou.jobs.core.web.JobsResponse;
+import com.baomidou.jobs.starter.model.TriggerParam;
+import com.baomidou.jobs.starter.web.JobsResponse;
 import com.baomidou.jobs.starter.router.IExecutorRouter;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter.monitor;
 
-import com.baomidou.jobs.core.JobsConstant;
+import com.baomidou.jobs.starter.JobsConstant;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
