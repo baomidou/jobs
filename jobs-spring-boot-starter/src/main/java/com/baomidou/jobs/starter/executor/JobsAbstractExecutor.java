@@ -3,9 +3,8 @@ package com.baomidou.jobs.starter.executor;
 import com.baomidou.jobs.starter.JobsConstant;
 import com.baomidou.jobs.starter.executor.impl.JobsExecutorImpl;
 import com.baomidou.jobs.starter.handler.IJobsHandler;
-import com.baomidou.jobs.starter.thread.ExecutorRegistryThread;
-import com.baomidou.jobs.starter.thread.JobsThread;
 import com.baomidou.jobs.starter.service.IJobsAdminService;
+import com.baomidou.jobs.starter.thread.ExecutorRegistryThread;
 import com.xxl.rpc.registry.ServiceRegistry;
 import com.xxl.rpc.remoting.invoker.XxlRpcInvokerFactory;
 import com.xxl.rpc.remoting.invoker.call.CallType;
@@ -26,8 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Jobs Executor
  *
- * @author xxl jobob
- * @since 2019-06-22
+ * @author jobob
+ * @since 2019-07-16
  */
 @Slf4j
 @Data
@@ -73,12 +72,6 @@ public abstract class JobsAbstractExecutor {
      * 销毁
      */
     public void destroy() {
-        if (JOBS_THREAD.size() > 0) {
-            for (Map.Entry<Long, JobsThread> item : JOBS_THREAD.entrySet()) {
-                removeJobsThread(item.getKey(), "web container destroy and kill the job.");
-            }
-            JOBS_THREAD.clear();
-        }
         JOBS_HANDLER.clear();
 
         // destory executor-server
@@ -227,36 +220,5 @@ public abstract class JobsAbstractExecutor {
 
     public static IJobsHandler getJobsHandler(String name) {
         return JOBS_HANDLER.get(name);
-    }
-
-
-    /**
-     * jobsThread cache
-     */
-    private static Map<Long, JobsThread> JOBS_THREAD = new ConcurrentHashMap<>();
-
-    public static JobsThread putJobsThread(Long jobId, IJobsHandler handler, String removeOldReason) {
-        JobsThread newJobThread = new JobsThread(jobId, handler);
-        newJobThread.start();
-        log.debug("Jobs register JobsThread success, jobId:{}, handler:{}", new Object[]{jobId, handler});
-
-        JobsThread oldJobThread = JOBS_THREAD.put(jobId, newJobThread);
-        if (oldJobThread != null) {
-            oldJobThread.toStop(removeOldReason);
-            oldJobThread.interrupt();
-        }
-        return newJobThread;
-    }
-
-    public static void removeJobsThread(Long jobId, String removeOldReason) {
-        JobsThread oldJobThread = JOBS_THREAD.remove(jobId);
-        if (oldJobThread != null) {
-            oldJobThread.toStop(removeOldReason);
-            oldJobThread.interrupt();
-        }
-    }
-
-    public static JobsThread getJobsThread(Long jobId) {
-        return JOBS_THREAD.get(jobId);
     }
 }

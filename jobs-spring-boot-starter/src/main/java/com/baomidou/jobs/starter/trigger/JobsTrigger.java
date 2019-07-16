@@ -2,13 +2,13 @@ package com.baomidou.jobs.starter.trigger;
 
 import com.baomidou.jobs.starter.JobsClock;
 import com.baomidou.jobs.starter.JobsConstant;
-import com.baomidou.jobs.starter.enums.ExecutorBlockStrategyEnum;
-import com.baomidou.jobs.starter.executor.IJobsExecutor;
-import com.baomidou.jobs.starter.model.param.TriggerParam;
-import com.baomidou.jobs.starter.api.JobsResponse;
 import com.baomidou.jobs.starter.JobsHelper;
+import com.baomidou.jobs.starter.api.JobsResponse;
+import com.baomidou.jobs.starter.executor.IJobsExecutor;
+import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
 import com.baomidou.jobs.starter.model.JobsInfo;
 import com.baomidou.jobs.starter.model.JobsLog;
+import com.baomidou.jobs.starter.model.param.TriggerParam;
 import com.baomidou.jobs.starter.router.ExecutorRouteStrategyEnum;
 import com.baomidou.jobs.starter.starter.JobsScheduler;
 import com.xxl.rpc.util.IpUtil;
@@ -58,10 +58,6 @@ public class JobsTrigger {
      * @param triggerType
      */
     private static boolean processTrigger(JobsInfo jobsInfo, int finalFailRetryCount, TriggerTypeEnum triggerType) {
-
-        // param
-        // block strategy
-        ExecutorBlockStrategyEnum blockStrategy = ExecutorBlockStrategyEnum.match(jobsInfo.getBlockStrategy(), ExecutorBlockStrategyEnum.SERIAL_EXECUTION);
         // route strategy
         ExecutorRouteStrategyEnum executorRouteStrategyEnum = ExecutorRouteStrategyEnum.match(jobsInfo.getRouteStrategy(), null);
 
@@ -77,7 +73,6 @@ public class JobsTrigger {
         triggerParam.setJobId(jobsInfo.getId());
         triggerParam.setExecutorHandler(jobsInfo.getHandler());
         triggerParam.setExecutorParams(jobsInfo.getParam());
-        triggerParam.setExecutorBlockStrategy(jobsInfo.getBlockStrategy());
         triggerParam.setExecutorTimeout(jobsInfo.getTimeout());
         triggerParam.setLogId(jobLog.getId());
         triggerParam.setLogDateTime(JobsClock.currentTimeMillis());
@@ -99,6 +94,15 @@ public class JobsTrigger {
         JobsResponse<String> triggerResult;
         if (address != null) {
             triggerResult = runExecutor(triggerParam, address);
+            /**
+             * 调度失败、触发报警处理器
+             */
+            if (triggerResult.getCode() == JobsConstant.CODE_FAILED) {
+                IJobsAlarmHandler jobsAlarmHandler = JobsHelper.getJobsAlarmHandler();
+                if (null != jobsAlarmHandler) {
+                    jobsAlarmHandler.failed(jobsInfo, address, triggerResult);
+                }
+            }
         } else {
             triggerResult = JobsResponse.failed("Trigger address is null");
         }
@@ -109,7 +113,6 @@ public class JobsTrigger {
         triggerMsgSb.append(",调度机器：").append(IpUtil.getIp());
         triggerMsgSb.append(",执行器-地址列表：").append(registryList);
         triggerMsgSb.append(",路由策略：").append(executorRouteStrategyEnum.getTitle());
-        triggerMsgSb.append(",阻塞处理策略：").append(blockStrategy.getTitle());
         triggerMsgSb.append(",任务超时时间：").append(jobsInfo.getTimeout());
         triggerMsgSb.append(",失败重试次数：").append(finalFailRetryCount);
         triggerMsgSb.append(",触发调度：").append(routeAddressResultMsg);
@@ -136,21 +139,14 @@ public class JobsTrigger {
      * @return
      */
     public static JobsResponse<String> runExecutor(TriggerParam triggerParam, String address) {
-        JobsResponse<String> runResult;
+        JobsResponse<String> jobsResponse;
         try {
             IJobsExecutor jobsExecutor = JobsScheduler.getJobsExecutor(address);
-            runResult = jobsExecutor.run(triggerParam);
+            jobsResponse = jobsExecutor.run(triggerParam);
         } catch (Exception e) {
             log.error("Trigger error, please check if the executor[{}] is running.", address, e);
-            runResult = JobsResponse.failed(ThrowableUtil.toString(e));
+            jobsResponse = JobsResponse.failed(ThrowableUtil.toString(e));
         }
-
-        StringBuffer runResultSB = new StringBuffer("触发调度：");
-        runResultSB.append(",address：").append(address);
-        runResultSB.append(",code：").append(runResult.getCode());
-        runResultSB.append(",msg：").append(runResult.getMsg());
-
-        runResult.setMsg(runResultSB.toString());
-        return runResult;
+        return jobsResponse;
     }
 }

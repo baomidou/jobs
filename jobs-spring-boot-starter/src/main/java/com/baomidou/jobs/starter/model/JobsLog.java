@@ -48,9 +48,8 @@ public class JobsLog implements Serializable {
 	private String handleMsg;
 
 	/**
-	 * 报警 0、成功 1、失败
+	 * 创建时间
 	 */
-	private Integer alarmStatus;
 	private Long createTime;
 
 }

@@ -41,10 +41,6 @@ public class JobsInfo implements Serializable {
 	 */
 	private String routeStrategy;
 	/**
-	 * 阻塞处理策略
-	 */
-	private String blockStrategy;
-	/**
 	 * 任务执行超时时间，单位秒
 	 */
 	private Integer timeout;
@@ -64,10 +60,6 @@ public class JobsInfo implements Serializable {
 	 * 负责人
 	 */
 	private String author;
-	/**
-	 * 报警邮件
-	 */
-	private String alarmEmail;
 	/**
 	 * 备注
 	 */

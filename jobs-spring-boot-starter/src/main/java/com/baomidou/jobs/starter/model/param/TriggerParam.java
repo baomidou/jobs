@@ -17,7 +17,6 @@ public class TriggerParam implements Serializable{
     private Long jobId;
     private String executorHandler;
     private String executorParams;
-    private String executorBlockStrategy;
     private int executorTimeout;
 
     private Long logId;

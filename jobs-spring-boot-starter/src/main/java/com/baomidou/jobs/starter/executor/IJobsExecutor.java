@@ -6,38 +6,15 @@ import com.baomidou.jobs.starter.api.JobsResponse;
 /**
  * Jobs executor interface
  * 
- * @author xxl jobob
- * @since 2019-06-22
+ * @author jobob
+ * @since 2019-07-22
  */
 public interface IJobsExecutor {
 
     /**
-     * beat
+     * 调度运行
      *
-     * @return
-     */
-    JobsResponse<String> beat();
-
-    /**
-     * idle beat
-     *
-     * @param jobId
-     * @return
-     */
-    JobsResponse<String> idleBeat(Long jobId);
-
-    /**
-     * kill
-     *
-     * @param jobId
-     * @return
-     */
-    JobsResponse<String> kill(Long jobId);
-
-    /**
-     * run
-     *
-     * @param triggerParam
+     * @param triggerParam 触发参数
      * @return
      */
     JobsResponse<String> run(TriggerParam triggerParam);

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * Spring Boot 相关辅助类
@@ -32,7 +34,7 @@ public class JobsHelper implements InitializingBean {
     @Resource
     private IJobsRegistryService _jobRegistryService;
     @Resource
-    private IJobsAlarmHandler _jobAlarmHandler;
+    private IJobsAlarmHandler _jobsAlarmHandler;
     @Resource
     private JobsProperties _jobProperties;
     @Resource
@@ -58,8 +60,8 @@ public class JobsHelper implements InitializingBean {
         return JOB_HELPER._jobRegistryService;
     }
 
-    public static IJobsAlarmHandler getJobAlarmHandler() {
-        return JOB_HELPER._jobAlarmHandler;
+    public static IJobsAlarmHandler getJobsAlarmHandler() {
+        return JOB_HELPER._jobsAlarmHandler;
     }
 
     public static IJobsAdminService getJobsAdminService() {
@@ -72,5 +74,19 @@ public class JobsHelper implements InitializingBean {
 
     public static JobsDisruptorTemplate getJobsDisruptorTemplate() {
         return JOB_HELPER._jobsDisruptorTemplate;
+    }
+
+    public static String getErrorInfo(Exception e) {
+        try {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            String str = sw.toString();
+            sw.close();
+            pw.close();
+            return str;
+        } catch (Exception ex) {
+            return "获得Exception信息的工具类异常";
+        }
     }
 }

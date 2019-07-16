@@ -1,7 +1,6 @@
 package com.baomidou.jobs.admin;
 
 import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
-import com.baomidou.jobs.starter.handler.JobsAlarmSimpleHandler;
 import com.baomidou.jobs.starter.starter.EnableJobsAdmin;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +26,10 @@ public class JobsAdminConfig {
     }
 
     @Bean
-    public IJobsAlarmHandler xxlJobAlarmHandler() {
-        return new JobsAlarmSimpleHandler();
+    public IJobsAlarmHandler jobsAlarmHandler() {
+        return (jobInfo, address, jobsResponse) -> {
+            System.out.println("Jobs 报警处理器，调度地址：" + address);
+            return false;
+        };
     }
-
 }
