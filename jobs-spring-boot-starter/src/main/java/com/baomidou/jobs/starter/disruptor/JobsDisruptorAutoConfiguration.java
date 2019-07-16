@@ -1,5 +1,6 @@
 package com.baomidou.jobs.starter.disruptor;
 
+import com.baomidou.jobs.starter.starter.JobsProperties;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
@@ -8,6 +9,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +22,7 @@ import java.util.concurrent.ThreadFactory;
  * @since 2019-06-27
  */
 @Configuration
+@EnableConfigurationProperties(JobsProperties.class)
 public class JobsDisruptorAutoConfiguration {
 
     @Bean

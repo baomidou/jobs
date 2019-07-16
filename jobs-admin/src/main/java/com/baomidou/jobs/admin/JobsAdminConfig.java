@@ -3,12 +3,8 @@ package com.baomidou.jobs.admin;
 import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
 import com.baomidou.jobs.starter.handler.JobsAlarmSimpleHandler;
 import com.baomidou.jobs.starter.starter.EnableJobsAdmin;
-import com.baomidou.jobs.starter.starter.JobsProperties;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -19,13 +15,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @EnableJobsAdmin
 @Configuration
-@EnableConfigurationProperties(JobsProperties.class)
-@MapperScan("com.baomidou.jobs.admin.mapper*")
-@ComponentScan(basePackages = {
-        "com.baomidou.jobs.admin.mapper",
-        "com.baomidou.jobs.admin.service",
-        "com.baomidou.jobs.admin.controller"
-})
 public class JobsAdminConfig {
 
     /**
