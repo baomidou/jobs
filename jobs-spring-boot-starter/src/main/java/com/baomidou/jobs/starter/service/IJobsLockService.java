@@ -1,4 +1,4 @@
-package com.baomidou.jobs.starter.lock;
+package com.baomidou.jobs.starter.service;
 
 import com.baomidou.jobs.starter.JobsConstant;
 
@@ -10,7 +10,7 @@ import java.util.UUID;
  * @author jobob
  * @since 2019-07-13
  */
-public interface IJobsLock {
+public interface IJobsLockService {
     /**
      * 使用线程本地变量记录锁的持有者
      */

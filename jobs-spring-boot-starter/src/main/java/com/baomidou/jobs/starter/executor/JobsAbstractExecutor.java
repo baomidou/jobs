@@ -5,7 +5,7 @@ import com.baomidou.jobs.starter.executor.impl.JobsExecutorImpl;
 import com.baomidou.jobs.starter.handler.IJobsHandler;
 import com.baomidou.jobs.starter.thread.ExecutorRegistryThread;
 import com.baomidou.jobs.starter.thread.JobsThread;
-import com.baomidou.jobs.starter.web.IJobsAdmin;
+import com.baomidou.jobs.starter.service.IJobsAdminService;
 import com.xxl.rpc.registry.ServiceRegistry;
 import com.xxl.rpc.remoting.invoker.XxlRpcInvokerFactory;
 import com.xxl.rpc.remoting.invoker.call.CallType;
@@ -92,7 +92,7 @@ public abstract class JobsAbstractExecutor {
     /**
      * Jobs Admin
      */
-    private static List<IJobsAdmin> JOBS_ADMIN;
+    private static List<IJobsAdminService> JOBS_ADMIN;
     private static Serializer serializer;
 
     private void initJobsAdminList(String adminAddress, String accessToken) throws Exception {
@@ -105,12 +105,12 @@ public abstract class JobsAbstractExecutor {
             for (String address : addressArr) {
                 if (address != null && address.trim().length() > 0) {
                     String addressUrl = address.concat(JobsConstant.JOBS_API);
-                    IJobsAdmin jobsAdmin = (IJobsAdmin) new XxlRpcReferenceBean(
+                    IJobsAdminService jobsAdmin = (IJobsAdminService) new XxlRpcReferenceBean(
                             NetEnum.NETTY_HTTP,
                             serializer,
                             CallType.SYNC,
                             LoadBalance.ROUND,
-                            IJobsAdmin.class,
+                            IJobsAdminService.class,
                             null,
                             10000,
                             addressUrl,
@@ -133,7 +133,7 @@ public abstract class JobsAbstractExecutor {
         }
     }
 
-    public static List<IJobsAdmin> getJobsAdminList() {
+    public static List<IJobsAdminService> getJobsAdminList() {
         return JOBS_ADMIN;
     }
 

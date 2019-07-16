@@ -1,9 +1,9 @@
 package com.baomidou.jobs.starter.router.strategy;
 
 import com.baomidou.jobs.starter.JobsConstant;
-import com.baomidou.jobs.starter.model.TriggerParam;
+import com.baomidou.jobs.starter.model.param.TriggerParam;
 import com.baomidou.jobs.starter.executor.IJobsExecutor;
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.api.JobsResponse;
 import com.baomidou.jobs.starter.router.IExecutorRouter;
 import com.baomidou.jobs.starter.starter.JobsScheduler;
 import lombok.extern.slf4j.Slf4j;

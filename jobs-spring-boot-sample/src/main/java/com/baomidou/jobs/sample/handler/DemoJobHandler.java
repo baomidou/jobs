@@ -1,7 +1,7 @@
 package com.baomidou.jobs.sample.handler;
 
 import com.baomidou.jobs.starter.handler.IJobsHandler;
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.api.JobsResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

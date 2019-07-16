@@ -1,12 +1,10 @@
-package com.baomidou.jobs.starter.entity;
+package com.baomidou.jobs.starter.model;
 
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * 任务注册表

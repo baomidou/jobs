@@ -1,20 +1,8 @@
 package com.baomidou.jobs.starter.service;
 
-import com.baomidou.jobs.starter.entity.JobsLog;
+import com.baomidou.jobs.starter.model.JobsLog;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-
-public interface IJobsLogService<P> {
-
-    /**
-     * 分页
-     *
-     * @param request 当前请求
-     * @param jobLog  实体对象
-     * @return
-     */
-    P page(HttpServletRequest request, JobsLog jobLog);
+public interface IJobsLogService {
 
     /**
      * 任务执行总数

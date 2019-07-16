@@ -2,9 +2,9 @@ package com.baomidou.jobs.starter.thread;
 
 import com.baomidou.jobs.starter.JobsConstant;
 import com.baomidou.jobs.starter.executor.JobsAbstractExecutor;
-import com.baomidou.jobs.starter.model.HandleCallbackParam;
-import com.baomidou.jobs.starter.web.IJobsAdmin;
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.model.param.HandleCallbackParam;
+import com.baomidou.jobs.starter.service.IJobsAdminService;
+import com.baomidou.jobs.starter.api.JobsResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -141,7 +141,7 @@ public class TriggerCallbackThread {
      */
     private void doCallback(List<HandleCallbackParam> callbackParamList) {
         // callback, will retry if error
-        for (IJobsAdmin jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
+        for (IJobsAdminService jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
             try {
                 JobsResponse<Boolean> callbackResult = jobsAdmin.callback(callbackParamList);
                 log.debug("doCallback:{}", callbackResult.toString());

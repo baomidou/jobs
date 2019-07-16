@@ -1,29 +1,21 @@
-package com.baomidou.jobs.admin.service;
+package com.baomidou.jobs.admin.service.impl;
 
-import com.baomidou.jobs.starter.JobsClock;
-import com.baomidou.jobs.starter.entity.JobsRegistry;
 import com.baomidou.jobs.admin.mapper.JobsRegistryMapper;
+import com.baomidou.jobs.starter.JobsClock;
+import com.baomidou.jobs.starter.model.JobsRegistry;
 import com.baomidou.jobs.starter.service.IJobsRegistryService;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class JobsRegistryServiceImpl implements IJobsRegistryService<IPage> {
+public class JobsRegistryServiceImpl implements IJobsRegistryService {
     @Resource
     private JobsRegistryMapper jobRegistryMapper;
-
-    @Override
-    public IPage page(HttpServletRequest request, JobsRegistry jobRegistry) {
-        return jobRegistryMapper.selectPage(JobsPageHelper.getPage(request),
-                Wrappers.<JobsRegistry>lambdaQuery().setEntity(jobRegistry));
-    }
 
     @Override
     public int removeTimeOut(int timeout) {
@@ -56,10 +48,5 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService<IPage> {
         return jobRegistryMapper.delete(Wrappers.<JobsRegistry>lambdaQuery()
                 .eq(JobsRegistry::getApp, app)
                 .eq(JobsRegistry::getAddress, address));
-    }
-
-    @Override
-    public List<JobsRegistry> listTimeout(int timeout) {
-        return jobRegistryMapper.selectTimeout(timeout);
     }
 }

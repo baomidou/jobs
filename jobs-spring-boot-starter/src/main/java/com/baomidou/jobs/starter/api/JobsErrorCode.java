@@ -1,11 +1,11 @@
-package com.baomidou.jobs.starter.web;
+package com.baomidou.jobs.starter.api;
 
 import com.baomidou.jobs.starter.JobsConstant;
 
 /**
  * REST API 错误码
  *
- * @author xxl jobob
+ * @author jobob
  * @since 2019-06-08
  */
 public enum JobsErrorCode implements IJobsErrorCode {

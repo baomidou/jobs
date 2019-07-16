@@ -1,26 +1,17 @@
-package com.baomidou.jobs.admin.service;
+package com.baomidou.jobs.admin.service.impl;
 
-import com.baomidou.jobs.starter.entity.JobsLog;
 import com.baomidou.jobs.admin.mapper.JobsLogMapper;
+import com.baomidou.jobs.starter.model.JobsLog;
 import com.baomidou.jobs.starter.service.IJobsLogService;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 @Service
-public class JobsLogServiceImpl implements IJobsLogService<IPage> {
+public class JobsLogServiceImpl implements IJobsLogService {
     @Resource
     private JobsLogMapper jobLogMapper;
-
-    @Override
-    public IPage page(HttpServletRequest request, JobsLog jobLog) {
-        return jobLogMapper.selectPage(JobsPageHelper.getPage(request),
-                Wrappers.<JobsLog>lambdaQuery().setEntity(jobLog)
-                        .orderByDesc(JobsLog::getCreateTime));
-    }
 
     @Override
     public int countAll() {

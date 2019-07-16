@@ -2,8 +2,8 @@ package com.baomidou.jobs.admin.controller;
 
 import com.baomidou.jobs.starter.service.IJobsInfoService;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.jobs.starter.web.JobsResponse;
-import com.baomidou.jobs.starter.entity.JobsInfo;
+import com.baomidou.jobs.starter.api.JobsResponse;
+import com.baomidou.jobs.starter.model.JobsInfo;
 
 import javax.annotation.Resource;
 
@@ -24,7 +24,7 @@ public class JobsInfoController extends BaseController {
      */
     @GetMapping("/page")
     public JobsResponse<Object> page(JobsInfo jobInfo) {
-        return success(jobInfoService.page(request, jobInfo));
+        return success(null);//jobInfoService.page(request, jobInfo));
     }
 
     /**

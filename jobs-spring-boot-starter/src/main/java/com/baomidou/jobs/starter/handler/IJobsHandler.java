@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter.handler;
 
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.api.JobsResponse;
 
 /**
  * job handler interface

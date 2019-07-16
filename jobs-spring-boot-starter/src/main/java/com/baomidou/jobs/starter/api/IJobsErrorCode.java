@@ -1,9 +1,9 @@
-package com.baomidou.jobs.starter.web;
+package com.baomidou.jobs.starter.api;
 
 /**
  * REST API 错误码接口
  *
- * @author xxl jobob
+ * @author jobob
  * @since 2019-06-08
  */
 public interface IJobsErrorCode {

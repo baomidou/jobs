@@ -1,12 +1,8 @@
 package com.baomidou.jobs.starter;
 
-import com.baomidou.jobs.starter.lock.IJobsLock;
-import com.baomidou.jobs.starter.web.IJobsAdmin;
 import com.baomidou.jobs.starter.disruptor.JobsDisruptorTemplate;
 import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
-import com.baomidou.jobs.starter.service.IJobsInfoService;
-import com.baomidou.jobs.starter.service.IJobsLogService;
-import com.baomidou.jobs.starter.service.IJobsRegistryService;
+import com.baomidou.jobs.starter.service.*;
 import com.baomidou.jobs.starter.starter.JobsProperties;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
@@ -40,9 +36,9 @@ public class JobsHelper implements InitializingBean {
     @Resource
     private JobsProperties _jobProperties;
     @Resource
-    private IJobsAdmin _jobsAdmin;
+    private IJobsAdminService _jobsAdminService;
     @Resource
-    private IJobsLock _jobsLock;
+    private IJobsLockService _jobsLockService;
     @Resource
     private JobsDisruptorTemplate _jobsDisruptorTemplate;
 
@@ -66,12 +62,12 @@ public class JobsHelper implements InitializingBean {
         return JOB_HELPER._jobAlarmHandler;
     }
 
-    public static IJobsAdmin getJobsAdmin() {
-        return JOB_HELPER._jobsAdmin;
+    public static IJobsAdminService getJobsAdminService() {
+        return JOB_HELPER._jobsAdminService;
     }
 
-    public static IJobsLock getJobsLock() {
-        return JOB_HELPER._jobsLock;
+    public static IJobsLockService getJobsLockService() {
+        return JOB_HELPER._jobsLockService;
     }
 
     public static JobsDisruptorTemplate getJobsDisruptorTemplate() {

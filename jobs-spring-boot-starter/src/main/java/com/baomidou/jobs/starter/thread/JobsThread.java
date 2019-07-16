@@ -2,9 +2,9 @@ package com.baomidou.jobs.starter.thread;
 
 import com.baomidou.jobs.starter.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.starter.handler.IJobsHandler;
-import com.baomidou.jobs.starter.model.HandleCallbackParam;
-import com.baomidou.jobs.starter.model.TriggerParam;
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.model.param.HandleCallbackParam;
+import com.baomidou.jobs.starter.model.param.TriggerParam;
+import com.baomidou.jobs.starter.api.JobsResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.PrintWriter;

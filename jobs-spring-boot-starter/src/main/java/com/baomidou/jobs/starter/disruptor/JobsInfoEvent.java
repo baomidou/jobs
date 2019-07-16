@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter.disruptor;
 
-import com.baomidou.jobs.starter.entity.JobsInfo;
+import com.baomidou.jobs.starter.model.JobsInfo;
 import lombok.Data;
 
 import java.io.Serializable;

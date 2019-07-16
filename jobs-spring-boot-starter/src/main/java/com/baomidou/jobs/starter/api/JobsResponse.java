@@ -1,4 +1,4 @@
-package com.baomidou.jobs.starter.web;
+package com.baomidou.jobs.starter.api;
 
 import lombok.Data;
 import lombok.ToString;
@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * REST API 返回结果
  *
- * @author xxl jobob
+ * @author jobob
  * @since 2019-06-08
  */
 @Data

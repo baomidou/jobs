@@ -1,23 +1,10 @@
 package com.baomidou.jobs.starter.service;
 
-import com.baomidou.jobs.starter.entity.JobsInfo;
-import com.baomidou.jobs.starter.entity.dto.JobsHandleCodeDto;
+import com.baomidou.jobs.starter.model.JobsInfo;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public interface IJobsInfoService<P> {
-
-    /**
-     * 分页
-     *
-     * @param request 当前请求
-     * @param jobInfo 实体对象
-     * @return
-     */
-    P page(HttpServletRequest request, JobsInfo jobInfo);
-
-    List<JobsInfo> getJobsByApp(String app);
+public interface IJobsInfoService {
 
     /**
      * 执行任务总数
@@ -25,15 +12,6 @@ public interface IJobsInfoService<P> {
      * @return
      */
     int count();
-
-    /**
-     * 任务数
-     *
-     * @param app    服务 APP 名称
-     * @param status 状态
-     * @return
-     */
-    int count(String app, int status);
 
     List<JobsInfo> scheduleJobQuery(long maxNextTime);
 
@@ -71,13 +49,6 @@ public interface IJobsInfoService<P> {
      * @return
      */
     boolean remove(Long id);
-
-    /**
-     * HandleCode GroupBy Dto
-     *
-     * @return
-     */
-    List<JobsHandleCodeDto> getHandleCodeDto();
 
     JobsInfo getById(Long id);
 }

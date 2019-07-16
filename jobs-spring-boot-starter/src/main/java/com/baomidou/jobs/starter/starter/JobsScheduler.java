@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.starter;
 
 import com.baomidou.jobs.starter.executor.IJobsExecutor;
-import com.baomidou.jobs.starter.web.IJobsAdmin;
+import com.baomidou.jobs.starter.service.IJobsAdminService;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.monitor.JobsHeartbeat;
 import com.baomidou.jobs.starter.monitor.JobsRegistryMonitor;
@@ -96,7 +96,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 null);
 
         // add services
-        xxlRpcProviderFactory.addService(IJobsAdmin.class.getName(), null, JobsHelper.getJobsAdmin());
+        xxlRpcProviderFactory.addService(IJobsAdminService.class.getName(), null, JobsHelper.getJobsAdminService());
 
         // servlet handler
         servletServerHandler = new ServletServerHandler(xxlRpcProviderFactory);

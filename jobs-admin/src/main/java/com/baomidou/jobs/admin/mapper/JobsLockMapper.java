@@ -1,6 +1,6 @@
 package com.baomidou.jobs.admin.mapper;
 
-import com.baomidou.jobs.starter.entity.JobsLock;
+import com.baomidou.jobs.starter.model.JobsLock;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

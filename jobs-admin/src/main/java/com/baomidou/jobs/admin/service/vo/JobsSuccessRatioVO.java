@@ -1,4 +1,4 @@
-package com.baomidou.jobs.starter.entity.vo;
+package com.baomidou.jobs.admin.service.vo;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

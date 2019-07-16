@@ -2,9 +2,9 @@ package com.baomidou.jobs.starter.thread;
 
 import com.baomidou.jobs.starter.JobsConstant;
 import com.baomidou.jobs.starter.executor.JobsAbstractExecutor;
-import com.baomidou.jobs.starter.model.RegistryParam;
-import com.baomidou.jobs.starter.web.IJobsAdmin;
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.model.param.RegistryParam;
+import com.baomidou.jobs.starter.service.IJobsAdminService;
+import com.baomidou.jobs.starter.api.JobsResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
@@ -44,7 +44,7 @@ public class ExecutorRegistryThread {
             while (!toStop) {
                 try {
                     RegistryParam registryParam = new RegistryParam(appName, address);
-                    for (IJobsAdmin jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
+                    for (IJobsAdminService jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
                         try {
                             JobsResponse<Boolean> registryResult = jobsAdmin.registry(registryParam);
                             if (registryResult != null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {
@@ -80,7 +80,7 @@ public class ExecutorRegistryThread {
             // registry remove
             try {
                 RegistryParam registryParam = new RegistryParam(appName, address);
-                for (IJobsAdmin jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
+                for (IJobsAdminService jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
                     try {
                         JobsResponse<Boolean> registryResult = jobsAdmin.registryRemove(registryParam);
                         if (registryResult != null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {

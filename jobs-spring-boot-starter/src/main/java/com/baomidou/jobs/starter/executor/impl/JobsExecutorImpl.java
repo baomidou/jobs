@@ -4,9 +4,9 @@ import com.baomidou.jobs.starter.enums.ExecutorBlockStrategyEnum;
 import com.baomidou.jobs.starter.executor.IJobsExecutor;
 import com.baomidou.jobs.starter.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.starter.handler.IJobsHandler;
-import com.baomidou.jobs.starter.model.TriggerParam;
+import com.baomidou.jobs.starter.model.param.TriggerParam;
 import com.baomidou.jobs.starter.thread.JobsThread;
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.api.JobsResponse;
 import lombok.extern.slf4j.Slf4j;
 
 /**

@@ -1,10 +1,10 @@
-package com.baomidou.jobs.admin.service;
+package com.baomidou.jobs.admin.service.impl;
 
-import com.baomidou.jobs.starter.model.HandleCallbackParam;
-import com.baomidou.jobs.starter.model.RegistryParam;
-import com.baomidou.jobs.starter.web.IJobsAdmin;
-import com.baomidou.jobs.starter.web.JobsResponse;
-import com.baomidou.jobs.starter.entity.JobsLog;
+import com.baomidou.jobs.starter.model.param.HandleCallbackParam;
+import com.baomidou.jobs.starter.model.param.RegistryParam;
+import com.baomidou.jobs.starter.service.IJobsAdminService;
+import com.baomidou.jobs.starter.api.JobsResponse;
+import com.baomidou.jobs.starter.model.JobsLog;
 import com.baomidou.jobs.starter.service.IJobsLogService;
 import com.baomidou.jobs.starter.service.IJobsRegistryService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class JobsAdminImpl implements IJobsAdmin {
+public class JobsAdminServiceImpl implements IJobsAdminService {
     @Autowired
     public IJobsLogService jobLogService;
     @Autowired

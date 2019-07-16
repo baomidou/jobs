@@ -1,55 +1,33 @@
-package com.baomidou.jobs.admin.service;
+package com.baomidou.jobs.admin.service.impl;
 
-import com.baomidou.jobs.starter.cron.CronExpression;
-import com.baomidou.jobs.starter.entity.JobsInfo;
-import com.baomidou.jobs.starter.entity.dto.JobsHandleCodeDto;
 import com.baomidou.jobs.admin.mapper.JobsInfoMapper;
+import com.baomidou.jobs.starter.cron.CronExpression;
+import com.baomidou.jobs.starter.model.JobsInfo;
 import com.baomidou.jobs.starter.service.IJobsInfoService;
 import com.baomidou.jobs.starter.service.IJobsLogService;
 import com.baomidou.jobs.starter.trigger.JobsTrigger;
 import com.baomidou.jobs.starter.trigger.TriggerTypeEnum;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 @Slf4j
 @Service
-public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
+public class JobsInfoServiceImpl implements IJobsInfoService {
     @Resource
     private JobsInfoMapper jobInfoMapper;
     @Autowired
     private IJobsLogService jobLogService;
 
     @Override
-    public IPage page(HttpServletRequest request, JobsInfo jobInfo) {
-        return jobInfoMapper.selectPage(JobsPageHelper.getPage(request),
-                Wrappers.<JobsInfo>lambdaQuery().setEntity(jobInfo));
-    }
-
-    @Override
-    public List<JobsInfo> getJobsByApp(String app) {
-        return jobInfoMapper.selectList(Wrappers.<JobsInfo>lambdaQuery()
-                .eq(JobsInfo::getApp, app));
-    }
-
-    @Override
     public int count() {
         return jobInfoMapper.selectCount(null);
-    }
-
-    @Override
-    public int count(String app, int status) {
-        return jobInfoMapper.selectCount(Wrappers.<JobsInfo>lambdaQuery()
-                .eq(JobsInfo::getApp, app)
-                .eq(JobsInfo::getStatus, status));
     }
 
     @Override
@@ -108,11 +86,6 @@ public class JobsInfoServiceImpl implements IJobsInfoService<IPage> {
     public boolean remove(Long id) {
         jobLogService.removeById(id);
         return jobInfoMapper.deleteById(id) > 0;
-    }
-
-    @Override
-    public List<JobsHandleCodeDto> getHandleCodeDto() {
-        return jobInfoMapper.selectHandleCodeDto();
     }
 
     @Override

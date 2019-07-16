@@ -1,10 +1,10 @@
 package com.baomidou.jobs.starter.monitor;
 
 import com.baomidou.jobs.starter.JobsConstant;
-import com.baomidou.jobs.starter.lock.IJobsLock;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.cron.CronExpression;
-import com.baomidou.jobs.starter.entity.JobsInfo;
+import com.baomidou.jobs.starter.model.JobsInfo;
+import com.baomidou.jobs.starter.service.IJobsLockService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 
@@ -23,10 +23,10 @@ public class JobsHeartbeat implements Runnable {
     @Override
     public void run() {
         log.debug("Jobs, JobsHeartbeat begin");
-        IJobsLock jobsLock = JobsHelper.getJobsLock();
+        IJobsLockService jobsLockService = JobsHelper.getJobsLockService();
         try {
             // 尝试获取锁
-            if (jobsLock.tryLock(JobsConstant.DEFAULT_LOCK_KEY)) {
+            if (jobsLockService.tryLock(JobsConstant.DEFAULT_LOCK_KEY)) {
                 long nowTime = System.currentTimeMillis();
                 // 1、预读10s内调度任务
                 List<JobsInfo> scheduleList = JobsHelper.getJobInfoService().scheduleJobQuery(nowTime + 10000);
@@ -69,7 +69,7 @@ public class JobsHeartbeat implements Runnable {
             }
         } finally {
             // 释放锁
-            jobsLock.unlock(JobsConstant.DEFAULT_LOCK_KEY);
+            jobsLockService.unlock(JobsConstant.DEFAULT_LOCK_KEY);
         }
         log.debug("Jobs, JobsHeartbeat end");
     }

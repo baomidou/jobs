@@ -1,4 +1,4 @@
-package com.baomidou.jobs.admin.service;
+package com.baomidou.jobs.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

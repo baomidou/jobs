@@ -1,6 +1,6 @@
-package com.baomidou.jobs.starter.model;
+package com.baomidou.jobs.starter.model.param;
 
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.api.JobsResponse;
 import lombok.Data;
 import lombok.ToString;
 

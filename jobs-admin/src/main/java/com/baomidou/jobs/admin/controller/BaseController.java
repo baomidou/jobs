@@ -1,7 +1,7 @@
 package com.baomidou.jobs.admin.controller;
 
-import com.baomidou.jobs.starter.web.IJobsErrorCode;
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.api.IJobsErrorCode;
+import com.baomidou.jobs.starter.api.JobsResponse;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

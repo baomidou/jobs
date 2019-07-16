@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter.handler;
 
-import com.baomidou.jobs.starter.entity.JobsInfo;
+import com.baomidou.jobs.starter.model.JobsInfo;
 
 
 /**

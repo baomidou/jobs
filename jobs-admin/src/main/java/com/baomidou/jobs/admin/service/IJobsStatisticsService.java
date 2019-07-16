@@ -1,8 +1,8 @@
-package com.baomidou.jobs.starter.service;
+package com.baomidou.jobs.admin.service;
 
-import com.baomidou.jobs.starter.entity.vo.JobsDateDistributionVO;
-import com.baomidou.jobs.starter.entity.vo.JobsImportantNumVO;
-import com.baomidou.jobs.starter.entity.vo.JobsSuccessRatioVO;
+import com.baomidou.jobs.admin.service.vo.JobsDateDistributionVO;
+import com.baomidou.jobs.admin.service.vo.JobsImportantNumVO;
+import com.baomidou.jobs.admin.service.vo.JobsSuccessRatioVO;
 
 import java.util.List;
 

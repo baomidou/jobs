@@ -1,7 +1,8 @@
-package com.baomidou.jobs.starter.web;
+package com.baomidou.jobs.starter.service;
 
-import com.baomidou.jobs.starter.model.HandleCallbackParam;
-import com.baomidou.jobs.starter.model.RegistryParam;
+import com.baomidou.jobs.starter.model.param.HandleCallbackParam;
+import com.baomidou.jobs.starter.model.param.RegistryParam;
+import com.baomidou.jobs.starter.api.JobsResponse;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author xxl jobob
  * @since 2019-06-22
  */
-public interface IJobsAdmin {
+public interface IJobsAdminService {
 
     /**
      * callback

@@ -1,21 +1,8 @@
 package com.baomidou.jobs.starter.service;
 
-import com.baomidou.jobs.starter.entity.JobsRegistry;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
 import java.util.List;
 
-public interface IJobsRegistryService<P extends Serializable> {
-
-    /**
-     * 分页
-     *
-     * @param request     当前请求
-     * @param jobRegistry 实体对象
-     * @return
-     */
-    P page(HttpServletRequest request, JobsRegistry jobRegistry);
+public interface IJobsRegistryService {
 
     /**
      * 删除超时数据
@@ -38,12 +25,4 @@ public interface IJobsRegistryService<P extends Serializable> {
     int save(String app, String address);
 
     int remove(String app, String address);
-
-    /**
-     * 超时数据列表
-     *
-     * @param timeout 超时时长
-     * @return
-     */
-    List<JobsRegistry> listTimeout(int timeout);
 }

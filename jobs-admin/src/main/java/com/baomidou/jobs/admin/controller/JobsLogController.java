@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.jobs.starter.web.JobsResponse;
-import com.baomidou.jobs.starter.entity.JobsLog;
+import com.baomidou.jobs.starter.api.JobsResponse;
+import com.baomidou.jobs.starter.model.JobsLog;
 
 /**
  * 日志信息
@@ -25,7 +25,7 @@ public class JobsLogController extends BaseController {
      */
     @GetMapping("/page")
     public JobsResponse<Object> page(JobsLog jobLog) {
-        return success(jobLogService.page(request, jobLog));
+        return success(null);//jobLogService.page(request, jobLog));
     }
 
     /**

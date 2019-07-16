@@ -1,4 +1,4 @@
-package com.baomidou.jobs.starter.model;
+package com.baomidou.jobs.starter.model.param;
 
 import lombok.Data;
 import lombok.ToString;

@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter.executor;
 
-import com.baomidou.jobs.starter.model.TriggerParam;
-import com.baomidou.jobs.starter.web.JobsResponse;
+import com.baomidou.jobs.starter.model.param.TriggerParam;
+import com.baomidou.jobs.starter.api.JobsResponse;
 
 /**
  * Jobs executor interface
