@@ -13,6 +13,10 @@ public interface JobsConstant {
      * 心跳时长
      */
     int BEAT_TIMEOUT = 30;
+    /**
+     * 清理时长，需比心跳稍大
+     */
+    int CLEAN_TIMEOUT = 50;
     String COMMA = ",";
     /**
      * API URI

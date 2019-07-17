@@ -28,15 +28,15 @@ public class JobsHelper implements InitializingBean {
     }
 
     @Resource
-    private IJobsInfoService _jobInfoService;
+    private IJobsInfoService _jobsInfoService;
     @Resource
-    private IJobsLogService _jobLogService;
+    private IJobsLogService _jobsLogService;
     @Resource
-    private IJobsRegistryService _jobRegistryService;
+    private IJobsRegistryService _jobsRegistryService;
     @Resource
     private IJobsAlarmHandler _jobsAlarmHandler;
     @Resource
-    private JobsProperties _jobProperties;
+    private JobsProperties _jobsProperties;
     @Resource
     private IJobsAdminService _jobsAdminService;
     @Resource
@@ -44,20 +44,20 @@ public class JobsHelper implements InitializingBean {
     @Resource
     private JobsDisruptorTemplate _jobsDisruptorTemplate;
 
-    public static JobsProperties getJobProperties() {
-        return JOB_HELPER._jobProperties;
+    public static JobsProperties getJobsProperties() {
+        return JOB_HELPER._jobsProperties;
     }
 
-    public static IJobsInfoService getJobInfoService() {
-        return JOB_HELPER._jobInfoService;
+    public static IJobsInfoService getJobsInfoService() {
+        return JOB_HELPER._jobsInfoService;
     }
 
-    public static IJobsLogService getJobLogService() {
-        return JOB_HELPER._jobLogService;
+    public static IJobsLogService getJobsLogService() {
+        return JOB_HELPER._jobsLogService;
     }
 
-    public static IJobsRegistryService getJobRegistryService() {
-        return JOB_HELPER._jobRegistryService;
+    public static IJobsRegistryService getJobsRegistryService() {
+        return JOB_HELPER._jobsRegistryService;
     }
 
     public static IJobsAlarmHandler getJobsAlarmHandler() {

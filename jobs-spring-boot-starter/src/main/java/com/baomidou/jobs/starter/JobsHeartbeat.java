@@ -21,6 +21,10 @@ public class JobsHeartbeat implements Runnable {
      * 上锁时长
      */
     private long wait = 0;
+    /**
+     * 心跳时长
+     */
+    private long beat = 0;
 
     @Override
     public void run() {
@@ -32,7 +36,7 @@ public class JobsHeartbeat implements Runnable {
                 wait = 0;
                 long nowTime = System.currentTimeMillis();
                 // 1、预读10s内调度任务
-                List<JobsInfo> scheduleList = JobsHelper.getJobInfoService().scheduleJobQuery(nowTime + 10000);
+                List<JobsInfo> scheduleList = JobsHelper.getJobsInfoService().scheduleJobQuery(nowTime + 10000);
                 if (scheduleList != null && scheduleList.size() > 0) {
                     // 2、推送时间轮
                     for (JobsInfo jobsInfo : scheduleList) {
@@ -57,7 +61,7 @@ public class JobsHeartbeat implements Runnable {
                             JobsHelper.getJobsDisruptorTemplate().publish(jobsInfo, waitSecond);
                         }
                         // 更新任务状态
-                        JobsHelper.getJobInfoService().updateById(tempJobsInfo);
+                        JobsHelper.getJobsInfoService().updateById(tempJobsInfo);
                     }
 
                 }
@@ -75,6 +79,12 @@ public class JobsHeartbeat implements Runnable {
         } finally {
             // 释放锁，上锁时长超过 90 秒强制解锁
             jobsLockService.unlock(JobsConstant.DEFAULT_LOCK_KEY, wait > 90);
+            // 清理异常注册节点
+            ++beat;
+            if (beat > JobsConstant.BEAT_TIMEOUT) {
+                JobsHelper.getJobsRegistryService().cleanTimeout();
+                beat = 0;
+            }
         }
         log.debug("Jobs, JobsHeartbeat end");
     }

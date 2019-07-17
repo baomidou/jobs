@@ -1,5 +1,6 @@
 package com.baomidou.jobs.starter.starter;
 
+import com.baomidou.jobs.starter.JobsConstant;
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.executor.IJobsExecutor;
 import com.baomidou.jobs.starter.JobsHeartbeat;
@@ -51,6 +52,8 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
         executor = new ScheduledThreadPoolExecutor(5);
         executor.scheduleAtFixedRate(new JobsHeartbeat(), 1, 1, TimeUnit.SECONDS);
 
+        // 启动清理异常注册
+        JobsHelper.getJobsRegistryService().cleanTimeout();
         log.debug("init jobs admin success.");
     }
 
@@ -78,7 +81,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 Serializer.SerializeEnum.HESSIAN.getSerializer(),
                 null,
                 0,
-                JobsHelper.getJobProperties().getAdminAccessToken(),
+                JobsHelper.getJobsProperties().getAdminAccessToken(),
                 null,
                 null);
 
@@ -126,7 +129,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 null,
                 5000,
                 address,
-                JobsHelper.getJobProperties().getAppAccessToken(),
+                JobsHelper.getJobsProperties().getAppAccessToken(),
                 null,
                 null).getObject();
 

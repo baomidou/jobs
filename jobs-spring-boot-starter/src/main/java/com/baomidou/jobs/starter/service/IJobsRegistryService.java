@@ -1,8 +1,17 @@
 package com.baomidou.jobs.starter.service;
 
+import com.baomidou.jobs.starter.JobsConstant;
+
 import java.util.List;
 
 public interface IJobsRegistryService {
+
+    /**
+     * 清理超时节点
+     */
+    default int cleanTimeout() {
+        return removeTimeOut(JobsConstant.CLEAN_TIMEOUT);
+    }
 
     /**
      * 删除超时数据

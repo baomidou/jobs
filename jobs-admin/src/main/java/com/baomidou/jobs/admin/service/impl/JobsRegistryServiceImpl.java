@@ -19,7 +19,9 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService {
 
     @Override
     public int removeTimeOut(int timeout) {
-        return jobRegistryMapper.deleteTimeOut(timeout);
+        return jobRegistryMapper.delete(Wrappers.<JobsRegistry>lambdaQuery().le(
+                JobsRegistry::getUpdateTime, JobsClock.currentTimeMillis() - timeout
+        ));
     }
 
     @Override

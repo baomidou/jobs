@@ -38,7 +38,7 @@ public class JobsTrigger {
      */
     public static boolean trigger(Long jobId, TriggerTypeEnum triggerType, int failRetryCount, String executorParam) {
         // load data
-        JobsInfo jobsInfo = JobsHelper.getJobInfoService().getById(jobId);
+        JobsInfo jobsInfo = JobsHelper.getJobsInfoService().getById(jobId);
         if (jobsInfo == null) {
             log.warn("Trigger fail, jobId invalid，jobId={}", jobId);
             return false;
@@ -65,7 +65,7 @@ public class JobsTrigger {
         JobsLog jobLog = new JobsLog();
         jobLog.setJobId(jobsInfo.getId());
         jobLog.setCreateTime(JobsClock.currentTimeMillis());
-        JobsHelper.getJobLogService().save(jobLog);
+        JobsHelper.getJobsLogService().save(jobLog);
         log.debug("Jobs trigger start, jobId:{}", jobLog.getId());
 
         // 2、init trigger-param
@@ -80,7 +80,7 @@ public class JobsTrigger {
         // 3、init address
         String routeAddressResultMsg = "";
         String address = null;
-        List<String> registryList = JobsHelper.getJobRegistryService().listAddress(jobsInfo.getApp());
+        List<String> registryList = JobsHelper.getJobsRegistryService().listAddress(jobsInfo.getApp());
         if (null != registryList) {
             JobsResponse<String> routeAddressResult = executorRouteStrategyEnum.getRouter()
                     .route(triggerParam, registryList);
@@ -125,7 +125,7 @@ public class JobsTrigger {
         jobLog.setExecutorFailRetryCount(finalFailRetryCount);
         jobLog.setTriggerCode(triggerResult.getCode());
         jobLog.setTriggerMsg(triggerMsgSb.toString());
-        JobsHelper.getJobLogService().updateById(jobLog);
+        JobsHelper.getJobsLogService().updateById(jobLog);
 
         log.debug("Jobs trigger end, jobId:{}", jobLog.getId());
         return true;
