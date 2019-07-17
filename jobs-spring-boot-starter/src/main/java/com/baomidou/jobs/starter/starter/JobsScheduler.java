@@ -2,8 +2,7 @@ package com.baomidou.jobs.starter.starter;
 
 import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.executor.IJobsExecutor;
-import com.baomidou.jobs.starter.monitor.JobsHeartbeat;
-import com.baomidou.jobs.starter.monitor.JobsRegistryMonitor;
+import com.baomidou.jobs.starter.JobsHeartbeat;
 import com.baomidou.jobs.starter.service.IJobsAdminService;
 import com.xxl.rpc.remoting.invoker.XxlRpcInvokerFactory;
 import com.xxl.rpc.remoting.invoker.call.CallType;
@@ -42,9 +41,6 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        // admin registry monitor run
-        JobsRegistryMonitor.getInstance().start();
-
         // init rpc
         initRpcProvider();
 
@@ -64,9 +60,6 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
         if (null != executor) {
             executor.shutdown();
         }
-
-        // admin registry stop
-        JobsRegistryMonitor.getInstance().toStop();
 
         // stop rpc
         stopRpcProvider();

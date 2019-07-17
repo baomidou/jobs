@@ -40,17 +40,22 @@ public interface IJobsLockService {
 
     /**
      * 释放锁
-     * 如果之前从未调用过任何尝试获取锁的方法，那么抛出异常 IllegalMonitorStateException
-     * 如果之前尝试获取锁，但是没有成功，调用unlock()不会产生任何副作用
+     *
+     * @param lockKey 锁 KEY
+     * @param force   强制解锁
      */
-    default void unlock(String lockKey) {
-        String owner = ownerThreadLocal.get();
-        if (owner == null) {
-            throw new IllegalMonitorStateException("should not call unlock() without tryLock()/lock()/lockInterruptibly()");
-        }
-        ownerThreadLocal.remove();
-        if (!JobsConstant.OPERATION_TRY_LOCK.equals(owner)) {
-            delete(lockKey, owner);
+    default void unlock(String lockKey, boolean force) {
+        if (force) {
+            delete(lockKey, null);
+        } else {
+            String owner = ownerThreadLocal.get();
+            if (null == owner) {
+                throw new IllegalMonitorStateException("should not call unlock() without tryLock(()");
+            }
+            ownerThreadLocal.remove();
+            if (!JobsConstant.OPERATION_TRY_LOCK.equals(owner)) {
+                delete(lockKey, owner);
+            }
         }
     }
 
@@ -67,7 +72,7 @@ public interface IJobsLockService {
      * 释放锁
      *
      * @param name  锁的名称
-     * @param owner 锁的持有者
+     * @param owner 锁的持有者，不存在则根据 name 删除
      * @return 返回影响的记录行数
      */
     int delete(String name, String owner);

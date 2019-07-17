@@ -25,7 +25,7 @@ public class JobsLockServiceImpl implements IJobsLockService {
 
     @Override
     public int delete(String name, String owner) {
-        return jobsLockMapper.delete(Wrappers.<JobsLock>lambdaQuery()
-                .eq(JobsLock::getName, name).eq(JobsLock::getOwner, owner));
+        return jobsLockMapper.delete(Wrappers.<JobsLock>lambdaQuery().eq(JobsLock::getName, name)
+                .eq(null != owner, JobsLock::getOwner, owner));
     }
 }

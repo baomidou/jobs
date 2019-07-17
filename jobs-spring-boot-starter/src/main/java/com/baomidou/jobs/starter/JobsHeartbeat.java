@@ -1,7 +1,5 @@
-package com.baomidou.jobs.starter.monitor;
+package com.baomidou.jobs.starter;
 
-import com.baomidou.jobs.starter.JobsConstant;
-import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.cron.CronExpression;
 import com.baomidou.jobs.starter.model.JobsInfo;
 import com.baomidou.jobs.starter.service.IJobsLockService;
@@ -19,6 +17,10 @@ import java.util.List;
  */
 @Slf4j
 public class JobsHeartbeat implements Runnable {
+    /**
+     * 上锁时长
+     */
+    private long wait = 0;
 
     @Override
     public void run() {
@@ -27,6 +29,7 @@ public class JobsHeartbeat implements Runnable {
         try {
             // 尝试获取锁
             if (jobsLockService.tryLock(JobsConstant.DEFAULT_LOCK_KEY)) {
+                wait = 0;
                 long nowTime = System.currentTimeMillis();
                 // 1、预读10s内调度任务
                 List<JobsInfo> scheduleList = JobsHelper.getJobInfoService().scheduleJobQuery(nowTime + 10000);
@@ -61,6 +64,8 @@ public class JobsHeartbeat implements Runnable {
             }
         } catch (Exception e) {
             if (e instanceof DuplicateKeyException) {
+                // 上锁时长累计
+                ++wait;
                 if (log.isDebugEnabled()) {
                     log.debug("Jobs, JobsHeartbeat locking");
                 }
@@ -68,8 +73,8 @@ public class JobsHeartbeat implements Runnable {
                 log.error("Jobs, JobsHeartbeat error:{}", e);
             }
         } finally {
-            // 释放锁
-            jobsLockService.unlock(JobsConstant.DEFAULT_LOCK_KEY);
+            // 释放锁，上锁时长超过 90 秒强制解锁
+            jobsLockService.unlock(JobsConstant.DEFAULT_LOCK_KEY, wait > 90);
         }
         log.debug("Jobs, JobsHeartbeat end");
     }
