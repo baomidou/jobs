@@ -1,7 +1,7 @@
 package com.baomidou.jobs.sample.handler;
 
-import com.baomidou.jobs.starter.api.JobsResponse;
-import com.baomidou.jobs.starter.handler.IJobsHandler;
+import com.baomidou.jobs.api.JobsResponse;
+import com.baomidou.jobs.handler.IJobsHandler;
 import org.springframework.stereotype.Component;
 
 

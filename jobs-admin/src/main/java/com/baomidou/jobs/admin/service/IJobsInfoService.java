@@ -1,6 +1,6 @@
 package com.baomidou.jobs.admin.service;
 
-import com.baomidou.jobs.starter.model.JobsInfo;
+import com.baomidou.jobs.model.JobsInfo;
 
 import java.util.List;
 

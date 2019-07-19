@@ -1,6 +1,6 @@
 package com.baomidou.jobs.admin.mapper;
 
-import com.baomidou.jobs.starter.model.JobsRegistry;
+import com.baomidou.jobs.model.JobsRegistry;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

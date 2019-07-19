@@ -1,12 +1,12 @@
 package com.baomidou.jobs.admin.service.impl;
 
 import com.baomidou.jobs.admin.mapper.JobsInfoMapper;
-import com.baomidou.jobs.starter.cron.CronExpression;
-import com.baomidou.jobs.starter.model.JobsInfo;
+import com.baomidou.jobs.cron.CronExpression;
+import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.jobs.admin.service.IJobsInfoService;
 import com.baomidou.jobs.admin.service.IJobsLogService;
-import com.baomidou.jobs.starter.trigger.JobsTrigger;
-import com.baomidou.jobs.starter.trigger.TriggerTypeEnum;
+import com.baomidou.jobs.trigger.JobsTrigger;
+import com.baomidou.jobs.trigger.TriggerTypeEnum;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

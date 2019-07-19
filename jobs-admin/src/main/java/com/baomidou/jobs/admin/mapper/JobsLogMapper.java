@@ -2,7 +2,7 @@ package com.baomidou.jobs.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import com.baomidou.jobs.starter.model.JobsLog;
+import com.baomidou.jobs.model.JobsLog;
 
 /**
  * 日志信息 Mapper

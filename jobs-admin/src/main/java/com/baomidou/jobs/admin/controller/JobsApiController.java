@@ -1,7 +1,7 @@
 package com.baomidou.jobs.admin.controller;
 
-import com.baomidou.jobs.starter.JobsConstant;
-import com.baomidou.jobs.starter.starter.JobsScheduler;
+import com.baomidou.jobs.JobsConstant;
+import com.baomidou.jobs.starter.JobsScheduler;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

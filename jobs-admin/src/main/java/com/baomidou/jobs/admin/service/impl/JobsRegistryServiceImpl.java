@@ -1,8 +1,8 @@
 package com.baomidou.jobs.admin.service.impl;
 
 import com.baomidou.jobs.admin.mapper.JobsRegistryMapper;
-import com.baomidou.jobs.starter.JobsClock;
-import com.baomidou.jobs.starter.model.JobsRegistry;
+import com.baomidou.jobs.JobsClock;
+import com.baomidou.jobs.model.JobsRegistry;
 import com.baomidou.jobs.admin.service.IJobsRegistryService;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

@@ -1,9 +1,5 @@
 package com.baomidou.jobs.admin.service;
 
-import com.baomidou.jobs.starter.JobsConstant;
-
-import java.util.UUID;
-
 /**
  * Jobs 锁接口 , 实现该接口可以是数据库锁也可以是 redis 等
  *

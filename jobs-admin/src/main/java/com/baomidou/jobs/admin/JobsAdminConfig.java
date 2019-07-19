@@ -1,7 +1,7 @@
 package com.baomidou.jobs.admin;
 
-import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
-import com.baomidou.jobs.starter.starter.EnableJobsAdmin;
+import com.baomidou.jobs.handler.IJobsAlarmHandler;
+import com.baomidou.jobs.starter.EnableJobsAdmin;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
 package com.baomidou.jobs.admin.service;
 
-import com.baomidou.jobs.starter.model.JobsLog;
+import com.baomidou.jobs.model.JobsLog;
 
 /**
  * 任务日志接口

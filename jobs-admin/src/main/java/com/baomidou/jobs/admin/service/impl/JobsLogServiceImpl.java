@@ -1,7 +1,7 @@
 package com.baomidou.jobs.admin.service.impl;
 
 import com.baomidou.jobs.admin.mapper.JobsLogMapper;
-import com.baomidou.jobs.starter.model.JobsLog;
+import com.baomidou.jobs.model.JobsLog;
 import com.baomidou.jobs.admin.service.IJobsLogService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.stereotype.Service;
