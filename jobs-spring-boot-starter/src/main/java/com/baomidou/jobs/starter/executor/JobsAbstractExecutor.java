@@ -3,7 +3,7 @@ package com.baomidou.jobs.starter.executor;
 import com.baomidou.jobs.starter.JobsConstant;
 import com.baomidou.jobs.starter.executor.impl.JobsExecutorImpl;
 import com.baomidou.jobs.starter.handler.IJobsHandler;
-import com.baomidou.jobs.starter.service.IJobsAdminService;
+import com.baomidou.jobs.starter.service.IJobsService;
 import com.baomidou.jobs.starter.thread.ExecutorRegistryThread;
 import com.xxl.rpc.registry.ServiceRegistry;
 import com.xxl.rpc.remoting.invoker.XxlRpcInvokerFactory;
@@ -85,25 +85,25 @@ public abstract class JobsAbstractExecutor {
     /**
      * Jobs Admin
      */
-    private static List<IJobsAdminService> JOBS_ADMIN;
+    private static List<IJobsService> JOBS_SERVICE;
     private static Serializer serializer;
 
     private void initJobsAdminList(String adminAddress, String accessToken) throws Exception {
         serializer = Serializer.SerializeEnum.HESSIAN.getSerializer();
         if (!StringUtils.isEmpty(adminAddress)) {
-            if (JOBS_ADMIN == null) {
-                JOBS_ADMIN = new ArrayList<>();
+            if (JOBS_SERVICE == null) {
+                JOBS_SERVICE = new ArrayList<>();
             }
             String[] addressArr = adminAddress.trim().split(JobsConstant.COMMA);
             for (String address : addressArr) {
                 if (address != null && address.trim().length() > 0) {
                     String addressUrl = address.concat(JobsConstant.JOBS_API);
-                    IJobsAdminService jobsAdmin = (IJobsAdminService) new XxlRpcReferenceBean(
+                    IJobsService jobsAdmin = (IJobsService) new XxlRpcReferenceBean(
                             NetEnum.NETTY_HTTP,
                             serializer,
                             CallType.SYNC,
                             LoadBalance.ROUND,
-                            IJobsAdminService.class,
+                            IJobsService.class,
                             null,
                             10000,
                             addressUrl,
@@ -111,7 +111,7 @@ public abstract class JobsAbstractExecutor {
                             null,
                             null
                     ).getObject();
-                    JOBS_ADMIN.add(jobsAdmin);
+                    JOBS_SERVICE.add(jobsAdmin);
                 }
             }
         }
@@ -126,8 +126,8 @@ public abstract class JobsAbstractExecutor {
         }
     }
 
-    public static List<IJobsAdminService> getJobsAdminList() {
-        return JOBS_ADMIN;
+    public static List<IJobsService> getJobsServiceList() {
+        return JOBS_SERVICE;
     }
 
     public static Serializer getSerializer() {

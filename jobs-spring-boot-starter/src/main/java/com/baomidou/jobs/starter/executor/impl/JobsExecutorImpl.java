@@ -1,6 +1,6 @@
 package com.baomidou.jobs.starter.executor.impl;
 
-import com.baomidou.jobs.starter.JobsHelper;
+import com.baomidou.jobs.starter.service.JobsHelper;
 import com.baomidou.jobs.starter.api.JobsResponse;
 import com.baomidou.jobs.starter.executor.IJobsExecutor;
 import com.baomidou.jobs.starter.executor.JobsAbstractExecutor;

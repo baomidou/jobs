@@ -1,9 +1,15 @@
-package com.baomidou.jobs.starter.service;
+package com.baomidou.jobs.admin.service;
 
 import com.baomidou.jobs.starter.model.JobsInfo;
 
 import java.util.List;
 
+/**
+ * 任务信息接口
+ *
+ * @author jobob
+ * @since 2019-07-18
+ */
 public interface IJobsInfoService {
 
     /**
@@ -13,8 +19,14 @@ public interface IJobsInfoService {
      */
     int count();
 
-    List<JobsInfo> scheduleJobQuery(long maxNextTime);
+    List<JobsInfo> listNextTime(long nextTime);
 
+    /**
+     * 根据 ID 更新任务信息
+     *
+     * @param jobInfo 任务信息对象
+     * @return
+     */
     boolean updateById(JobsInfo jobInfo);
 
     /**
@@ -50,5 +62,11 @@ public interface IJobsInfoService {
      */
     boolean remove(Long id);
 
+    /**
+     * 根据 ID 获取任务信息对象
+     *
+     * @param id 任务 ID
+     * @return
+     */
     JobsInfo getById(Long id);
 }

@@ -1,7 +1,13 @@
-package com.baomidou.jobs.starter.service;
+package com.baomidou.jobs.admin.service;
 
 import com.baomidou.jobs.starter.model.JobsLog;
 
+/**
+ * 任务日志接口
+ *
+ * @author jobob
+ * @since 2019-07-18
+ */
 public interface IJobsLogService {
 
     /**
@@ -22,5 +28,10 @@ public interface IJobsLogService {
 
     boolean save(JobsLog jobLog);
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     boolean removeById(Long id);
 }

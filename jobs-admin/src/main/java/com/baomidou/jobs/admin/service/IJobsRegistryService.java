@@ -1,17 +1,14 @@
-package com.baomidou.jobs.starter.service;
-
-import com.baomidou.jobs.starter.JobsConstant;
+package com.baomidou.jobs.admin.service;
 
 import java.util.List;
 
+/**
+ * 任务启动节点注册接口
+ *
+ * @author jobob
+ * @since 2019-07-18
+ */
 public interface IJobsRegistryService {
-
-    /**
-     * 清理超时节点
-     */
-    default int cleanTimeout() {
-        return removeTimeOut(JobsConstant.CLEAN_TIMEOUT);
-    }
 
     /**
      * 删除超时数据

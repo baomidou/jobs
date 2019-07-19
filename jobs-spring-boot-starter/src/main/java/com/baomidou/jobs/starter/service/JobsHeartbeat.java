@@ -1,8 +1,8 @@
-package com.baomidou.jobs.starter;
+package com.baomidou.jobs.starter.service;
 
+import com.baomidou.jobs.starter.JobsConstant;
 import com.baomidou.jobs.starter.cron.CronExpression;
 import com.baomidou.jobs.starter.model.JobsInfo;
-import com.baomidou.jobs.starter.service.IJobsLockService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 
@@ -29,14 +29,14 @@ public class JobsHeartbeat implements Runnable {
     @Override
     public void run() {
         log.debug("Jobs, JobsHeartbeat begin");
-        IJobsLockService jobsLockService = JobsHelper.getJobsLockService();
+        IJobsService jobsService = JobsHelper.getJobsService();
         try {
             // 尝试获取锁
-            if (jobsLockService.tryLock(JobsConstant.DEFAULT_LOCK_KEY)) {
+            if (jobsService.tryLock(JobsConstant.DEFAULT_LOCK_KEY)) {
                 wait = 0;
                 long nowTime = System.currentTimeMillis();
                 // 1、预读10s内调度任务
-                List<JobsInfo> scheduleList = JobsHelper.getJobsInfoService().scheduleJobQuery(nowTime + 10000);
+                List<JobsInfo> scheduleList = jobsService.getJobsInfoList(nowTime + 10000);
                 if (scheduleList != null && scheduleList.size() > 0) {
                     // 2、推送时间轮
                     for (JobsInfo jobsInfo : scheduleList) {
@@ -61,7 +61,7 @@ public class JobsHeartbeat implements Runnable {
                             JobsHelper.getJobsDisruptorTemplate().publish(jobsInfo, waitSecond);
                         }
                         // 更新任务状态
-                        JobsHelper.getJobsInfoService().updateById(tempJobsInfo);
+                        jobsService.updateJobsInfoById(tempJobsInfo);
                     }
 
                 }
@@ -78,11 +78,11 @@ public class JobsHeartbeat implements Runnable {
             }
         } finally {
             // 释放锁，上锁时长超过 90 秒强制解锁
-            jobsLockService.unlock(JobsConstant.DEFAULT_LOCK_KEY, wait > 90);
+            jobsService.unlock(JobsConstant.DEFAULT_LOCK_KEY, wait > 90);
             // 清理异常注册节点
             ++beat;
             if (beat > JobsConstant.BEAT_TIMEOUT) {
-                JobsHelper.getJobsRegistryService().cleanTimeout();
+                jobsService.cleanTimeoutApp();
                 beat = 0;
             }
         }

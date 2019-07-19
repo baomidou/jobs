@@ -4,8 +4,8 @@ import com.baomidou.jobs.admin.service.IJobsStatisticsService;
 import com.baomidou.jobs.admin.service.vo.JobsDateDistributionVO;
 import com.baomidou.jobs.admin.service.vo.JobsImportantNumVO;
 import com.baomidou.jobs.admin.service.vo.JobsSuccessRatioVO;
-import com.baomidou.jobs.starter.service.IJobsInfoService;
-import com.baomidou.jobs.starter.service.IJobsLogService;
+import com.baomidou.jobs.admin.service.IJobsInfoService;
+import com.baomidou.jobs.admin.service.IJobsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

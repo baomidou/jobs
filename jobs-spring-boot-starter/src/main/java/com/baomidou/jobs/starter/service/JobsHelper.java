@@ -1,8 +1,7 @@
-package com.baomidou.jobs.starter;
+package com.baomidou.jobs.starter.service;
 
 import com.baomidou.jobs.starter.disruptor.JobsDisruptorTemplate;
 import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
-import com.baomidou.jobs.starter.service.*;
 import com.baomidou.jobs.starter.starter.JobsProperties;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +13,8 @@ import java.io.StringWriter;
 /**
  * Spring Boot 相关辅助类
  *
- * @author xxl jobob
- * @since 2019-06-08
+ * @author jobob
+ * @since 2019-07-18
  */
 @Configuration
 public class JobsHelper implements InitializingBean {
@@ -28,48 +27,24 @@ public class JobsHelper implements InitializingBean {
     }
 
     @Resource
-    private IJobsInfoService _jobsInfoService;
-    @Resource
-    private IJobsLogService _jobsLogService;
-    @Resource
-    private IJobsRegistryService _jobsRegistryService;
+    private IJobsService _jobsService;
     @Resource
     private IJobsAlarmHandler _jobsAlarmHandler;
     @Resource
     private JobsProperties _jobsProperties;
     @Resource
-    private IJobsAdminService _jobsAdminService;
-    @Resource
-    private IJobsLockService _jobsLockService;
-    @Resource
     private JobsDisruptorTemplate _jobsDisruptorTemplate;
+
+    public static IJobsService getJobsService() {
+        return JOB_HELPER._jobsService;
+    }
 
     public static JobsProperties getJobsProperties() {
         return JOB_HELPER._jobsProperties;
     }
 
-    public static IJobsInfoService getJobsInfoService() {
-        return JOB_HELPER._jobsInfoService;
-    }
-
-    public static IJobsLogService getJobsLogService() {
-        return JOB_HELPER._jobsLogService;
-    }
-
-    public static IJobsRegistryService getJobsRegistryService() {
-        return JOB_HELPER._jobsRegistryService;
-    }
-
     public static IJobsAlarmHandler getJobsAlarmHandler() {
         return JOB_HELPER._jobsAlarmHandler;
-    }
-
-    public static IJobsAdminService getJobsAdminService() {
-        return JOB_HELPER._jobsAdminService;
-    }
-
-    public static IJobsLockService getJobsLockService() {
-        return JOB_HELPER._jobsLockService;
     }
 
     public static JobsDisruptorTemplate getJobsDisruptorTemplate() {
@@ -86,7 +61,7 @@ public class JobsHelper implements InitializingBean {
             pw.close();
             return str;
         } catch (Exception ex) {
-            return "获得Exception信息的工具类异常";
+            return "获得Exception信息的异常";
         }
     }
 }

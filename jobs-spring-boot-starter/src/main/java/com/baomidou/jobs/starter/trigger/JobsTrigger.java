@@ -2,7 +2,6 @@ package com.baomidou.jobs.starter.trigger;
 
 import com.baomidou.jobs.starter.JobsClock;
 import com.baomidou.jobs.starter.JobsConstant;
-import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.api.JobsResponse;
 import com.baomidou.jobs.starter.executor.IJobsExecutor;
 import com.baomidou.jobs.starter.handler.IJobsAlarmHandler;
@@ -10,6 +9,8 @@ import com.baomidou.jobs.starter.model.JobsInfo;
 import com.baomidou.jobs.starter.model.JobsLog;
 import com.baomidou.jobs.starter.model.param.TriggerParam;
 import com.baomidou.jobs.starter.router.ExecutorRouteStrategyEnum;
+import com.baomidou.jobs.starter.service.IJobsService;
+import com.baomidou.jobs.starter.service.JobsHelper;
 import com.baomidou.jobs.starter.starter.JobsScheduler;
 import com.xxl.rpc.util.IpUtil;
 import com.xxl.rpc.util.ThrowableUtil;
@@ -38,7 +39,7 @@ public class JobsTrigger {
      */
     public static boolean trigger(Long jobId, TriggerTypeEnum triggerType, int failRetryCount, String executorParam) {
         // load data
-        JobsInfo jobsInfo = JobsHelper.getJobsInfoService().getById(jobId);
+        JobsInfo jobsInfo = JobsHelper.getJobsService().getJobsInfoById(jobId);
         if (jobsInfo == null) {
             log.warn("Trigger fail, jobId invalid，jobId={}", jobId);
             return false;
@@ -60,12 +61,13 @@ public class JobsTrigger {
     private static boolean processTrigger(JobsInfo jobsInfo, int finalFailRetryCount, TriggerTypeEnum triggerType) {
         // route strategy
         ExecutorRouteStrategyEnum executorRouteStrategyEnum = ExecutorRouteStrategyEnum.match(jobsInfo.getRouteStrategy(), null);
+        IJobsService jobsService = JobsHelper.getJobsService();
 
         // 1、save log-id
         JobsLog jobLog = new JobsLog();
         jobLog.setJobId(jobsInfo.getId());
         jobLog.setCreateTime(JobsClock.currentTimeMillis());
-        JobsHelper.getJobsLogService().save(jobLog);
+        jobsService.saveOrUpdateLogById(jobLog);
         log.debug("Jobs trigger start, jobId:{}", jobLog.getId());
 
         // 2、init trigger-param
@@ -80,7 +82,7 @@ public class JobsTrigger {
         // 3、init address
         String routeAddressResultMsg = "";
         String address = null;
-        List<String> registryList = JobsHelper.getJobsRegistryService().listAddress(jobsInfo.getApp());
+        List<String> registryList = jobsService.getAppAddressList(jobsInfo.getApp());
         if (null != registryList) {
             JobsResponse<String> routeAddressResult = executorRouteStrategyEnum.getRouter()
                     .route(triggerParam, registryList);
@@ -125,7 +127,7 @@ public class JobsTrigger {
         jobLog.setExecutorFailRetryCount(finalFailRetryCount);
         jobLog.setTriggerCode(triggerResult.getCode());
         jobLog.setTriggerMsg(triggerMsgSb.toString());
-        JobsHelper.getJobsLogService().updateById(jobLog);
+        jobsService.saveOrUpdateLogById(jobLog);
 
         log.debug("Jobs trigger end, jobId:{}", jobLog.getId());
         return true;

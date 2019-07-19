@@ -3,8 +3,7 @@ package com.baomidou.jobs.starter.thread;
 import com.baomidou.jobs.starter.JobsConstant;
 import com.baomidou.jobs.starter.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.starter.model.param.HandleCallbackParam;
-import com.baomidou.jobs.starter.service.IJobsAdminService;
-import com.baomidou.jobs.starter.api.JobsResponse;
+import com.baomidou.jobs.starter.service.IJobsService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class TriggerCallbackThread {
     public void start() {
 
         // valid
-        if (JobsAbstractExecutor.getJobsAdminList() == null) {
+        if (null == JobsAbstractExecutor.getJobsServiceList()) {
             log.warn("Jobs executor callback config fail, adminAddresses is null.");
             return;
         }
@@ -141,10 +140,10 @@ public class TriggerCallbackThread {
      */
     private void doCallback(List<HandleCallbackParam> callbackParamList) {
         // callback, will retry if error
-        for (IJobsAdminService jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
+        for (IJobsService jobsService : JobsAbstractExecutor.getJobsServiceList()) {
             try {
-                JobsResponse<Boolean> callbackResult = jobsAdmin.callback(callbackParamList);
-                log.debug("doCallback:{}", callbackResult.toString());
+                boolean callbackResult = jobsService.callback(callbackParamList);
+                log.debug("doCallback:{}", callbackResult);
             } catch (Exception e) {
                 log.error("doCallback error", e);
             }

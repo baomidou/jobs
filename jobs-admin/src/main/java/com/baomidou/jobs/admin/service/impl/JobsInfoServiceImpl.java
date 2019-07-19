@@ -3,8 +3,8 @@ package com.baomidou.jobs.admin.service.impl;
 import com.baomidou.jobs.admin.mapper.JobsInfoMapper;
 import com.baomidou.jobs.starter.cron.CronExpression;
 import com.baomidou.jobs.starter.model.JobsInfo;
-import com.baomidou.jobs.starter.service.IJobsInfoService;
-import com.baomidou.jobs.starter.service.IJobsLogService;
+import com.baomidou.jobs.admin.service.IJobsInfoService;
+import com.baomidou.jobs.admin.service.IJobsLogService;
 import com.baomidou.jobs.starter.trigger.JobsTrigger;
 import com.baomidou.jobs.starter.trigger.TriggerTypeEnum;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -31,9 +31,9 @@ public class JobsInfoServiceImpl implements IJobsInfoService {
     }
 
     @Override
-    public List<JobsInfo> scheduleJobQuery(long maxNextTime) {
+    public List<JobsInfo> listNextTime(long nextTime) {
         return jobInfoMapper.selectList(Wrappers.<JobsInfo>lambdaQuery()
-                .le(JobsInfo::getNextTime, maxNextTime));
+                .le(JobsInfo::getNextTime, nextTime));
     }
 
     @Override

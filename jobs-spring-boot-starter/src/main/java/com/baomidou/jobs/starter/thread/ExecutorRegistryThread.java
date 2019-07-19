@@ -3,8 +3,7 @@ package com.baomidou.jobs.starter.thread;
 import com.baomidou.jobs.starter.JobsConstant;
 import com.baomidou.jobs.starter.executor.JobsAbstractExecutor;
 import com.baomidou.jobs.starter.model.param.RegistryParam;
-import com.baomidou.jobs.starter.service.IJobsAdminService;
-import com.baomidou.jobs.starter.api.JobsResponse;
+import com.baomidou.jobs.starter.service.IJobsService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
@@ -12,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * 执行器注册线程
  *
- * @author xxl jobob
- * @since 2019-06-23
+ * @author jobob
+ * @since 2019-07-18
  */
 @Slf4j
 public class ExecutorRegistryThread {
@@ -33,7 +32,7 @@ public class ExecutorRegistryThread {
             log.warn("Jobs executor registry config fail, appName is null.");
             return;
         }
-        if (JobsAbstractExecutor.getJobsAdminList() == null) {
+        if (null == JobsAbstractExecutor.getJobsServiceList()) {
             log.warn("Jobs executor registry config fail, adminAddresses is null.");
             return;
         }
@@ -44,15 +43,13 @@ public class ExecutorRegistryThread {
             while (!toStop) {
                 try {
                     RegistryParam registryParam = new RegistryParam(appName, address);
-                    for (IJobsAdminService jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
+                    for (IJobsService jobsService : JobsAbstractExecutor.getJobsServiceList()) {
                         try {
-                            JobsResponse<Boolean> registryResult = jobsAdmin.registry(registryParam);
-                            if (registryResult != null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {
-                                registryResult = JobsResponse.ok();
-                                log.debug("Jobs registry success, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
+                            if (jobsService.registry(registryParam)) {
+                                log.debug("Jobs registry success, registryParam:{}", registryParam);
                                 break;
                             } else {
-                                log.info("Jobs registry fail, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
+                                log.info("Jobs registry fail, registryParam:{}", registryParam);
                             }
                         } catch (Exception e) {
                             log.info("Jobs registry error, registryParam:{}", registryParam, e);
@@ -80,15 +77,13 @@ public class ExecutorRegistryThread {
             // registry remove
             try {
                 RegistryParam registryParam = new RegistryParam(appName, address);
-                for (IJobsAdminService jobsAdmin : JobsAbstractExecutor.getJobsAdminList()) {
+                for (IJobsService jobsService : JobsAbstractExecutor.getJobsServiceList()) {
                     try {
-                        JobsResponse<Boolean> registryResult = jobsAdmin.registryRemove(registryParam);
-                        if (registryResult != null && JobsConstant.CODE_SUCCESS == registryResult.getCode()) {
-                            registryResult = JobsResponse.ok();
-                            log.info("Jobs registry-remove success, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
+                        if (jobsService.removeApp(registryParam)) {
+                            log.info("Jobs registry-remove success, registryParam:{}", registryParam);
                             break;
                         } else {
-                            log.info("Jobs registry-remove fail, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
+                            log.info("Jobs registry-remove fail, registryParam:{}", registryParam);
                         }
                     } catch (Exception e) {
                         if (!toStop) {

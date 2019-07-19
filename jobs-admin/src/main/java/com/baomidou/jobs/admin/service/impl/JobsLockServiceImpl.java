@@ -3,7 +3,7 @@ package com.baomidou.jobs.admin.service.impl;
 import com.baomidou.jobs.admin.mapper.JobsLockMapper;
 import com.baomidou.jobs.starter.JobsClock;
 import com.baomidou.jobs.starter.model.JobsLock;
-import com.baomidou.jobs.starter.service.IJobsLockService;
+import com.baomidou.jobs.admin.service.IJobsLockService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.stereotype.Service;
 

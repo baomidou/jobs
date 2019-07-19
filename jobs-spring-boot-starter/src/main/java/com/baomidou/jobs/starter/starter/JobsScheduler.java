@@ -1,10 +1,9 @@
 package com.baomidou.jobs.starter.starter;
 
-import com.baomidou.jobs.starter.JobsConstant;
-import com.baomidou.jobs.starter.JobsHelper;
 import com.baomidou.jobs.starter.executor.IJobsExecutor;
-import com.baomidou.jobs.starter.JobsHeartbeat;
-import com.baomidou.jobs.starter.service.IJobsAdminService;
+import com.baomidou.jobs.starter.service.IJobsService;
+import com.baomidou.jobs.starter.service.JobsHeartbeat;
+import com.baomidou.jobs.starter.service.JobsHelper;
 import com.xxl.rpc.remoting.invoker.XxlRpcInvokerFactory;
 import com.xxl.rpc.remoting.invoker.call.CallType;
 import com.xxl.rpc.remoting.invoker.reference.XxlRpcReferenceBean;
@@ -53,7 +52,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
         executor.scheduleAtFixedRate(new JobsHeartbeat(), 1, 1, TimeUnit.SECONDS);
 
         // 启动清理异常注册
-        JobsHelper.getJobsRegistryService().cleanTimeout();
+        JobsHelper.getJobsService().cleanTimeoutApp();
         log.debug("init jobs admin success.");
     }
 
@@ -86,7 +85,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 null);
 
         // add services
-        xxlRpcProviderFactory.addService(IJobsAdminService.class.getName(), null, JobsHelper.getJobsAdminService());
+        xxlRpcProviderFactory.addService(IJobsService.class.getName(), null, JobsHelper.getJobsService());
 
         // servlet handler
         servletServerHandler = new ServletServerHandler(xxlRpcProviderFactory);

@@ -1,6 +1,6 @@
 package com.baomidou.jobs.admin.controller;
 
-import com.baomidou.jobs.starter.service.IJobsLogService;
+import com.baomidou.jobs.admin.service.IJobsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,6 +1,6 @@
 package com.baomidou.jobs.admin.controller;
 
-import com.baomidou.jobs.starter.service.IJobsInfoService;
+import com.baomidou.jobs.admin.service.IJobsInfoService;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.jobs.starter.api.JobsResponse;
 import com.baomidou.jobs.starter.model.JobsInfo;
