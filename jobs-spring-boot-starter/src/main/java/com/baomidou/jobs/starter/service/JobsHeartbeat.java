@@ -82,7 +82,10 @@ public class JobsHeartbeat implements Runnable {
             // 清理异常注册节点
             ++beat;
             if (beat > JobsConstant.BEAT_TIMEOUT) {
-                jobsService.cleanTimeoutApp();
+                int result = jobsService.cleanTimeoutApp();
+                if (result > 0) {
+                    System.out.println("成功清理注册：" + result);
+                }
                 beat = 0;
             }
         }

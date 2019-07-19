@@ -37,7 +37,7 @@ public class JobsServiceImpl implements IJobsService {
     @Override
     public boolean callback(List<HandleCallbackParam> handleCallbackParamList) {
         for (HandleCallbackParam handleCallbackParam : handleCallbackParamList) {
-            boolean callbackResult = callback(handleCallbackParamList);
+            boolean callbackResult = callback(handleCallbackParam);
             log.debug("callback {}, handleCallbackParam={}, callbackResult={}",
                     callbackResult, handleCallbackParam, callbackResult);
         }

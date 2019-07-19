@@ -16,7 +16,7 @@ public interface JobsConstant {
     /**
      * 清理时长，需比心跳稍大
      */
-    int CLEAN_TIMEOUT = 50;
+    int CLEAN_TIMEOUT = 50000;
     String COMMA = ",";
     /**
      * API URI
