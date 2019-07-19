@@ -4,7 +4,7 @@
 //import com.esotericsoftware.kryo.io.Input;
 //import com.esotericsoftware.kryo.io.Output;
 //import com.xxl.rpc.serialize.Serializer;
-//import com.xxl.rpc.util.XxlRpcException;
+//import com.xxl.rpc.util.JobsRpcException;
 //
 //import java.io.ByteArrayInputStream;
 //import java.io.ByteArrayOutputStream;
@@ -41,17 +41,17 @@
 //            byte[] result = os.toByteArray();
 //            return result;
 //        } catch (Exception e) {
-//            throw new XxlRpcException(e);
+//            throw new JobsRpcException(e);
 //        } finally {
 //            try {
 //                output.close();
 //            } catch (Exception e) {
-//                throw new XxlRpcException(e);
+//                throw new JobsRpcException(e);
 //            }
 //            try {
 //                os.close();
 //            } catch (IOException e) {
-//                throw new XxlRpcException(e);
+//                throw new JobsRpcException(e);
 //            }
 //        }
 //    }
@@ -64,17 +64,17 @@
 //            Object result = kryoLocal.get().readObject(input, clazz);
 //            return result;
 //        } catch (Exception e) {
-//            throw new XxlRpcException(e);
+//            throw new JobsRpcException(e);
 //        } finally {
 //            try {
 //                input.close();
 //            } catch (Exception e) {
-//                throw new XxlRpcException(e);
+//                throw new JobsRpcException(e);
 //            }
 //            try {
 //                is.close();
 //            } catch (IOException e) {
-//                throw new XxlRpcException(e);
+//                throw new JobsRpcException(e);
 //            }
 //        }
 //    }

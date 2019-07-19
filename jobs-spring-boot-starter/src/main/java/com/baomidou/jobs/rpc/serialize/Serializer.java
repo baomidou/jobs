@@ -2,7 +2,7 @@ package com.baomidou.jobs.rpc.serialize;
 
 import com.baomidou.jobs.rpc.serialize.impl.HessianSerializer;
 import com.baomidou.jobs.rpc.serialize.impl.JacksonSerializer;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
+import com.baomidou.jobs.exception.JobsRpcException;
 
 /**
  * serializer
@@ -33,7 +33,7 @@ public abstract class Serializer {
 			try {
 				return serializerClass.newInstance();
 			} catch (Exception e) {
-				throw new XxlRpcException(e);
+				throw new JobsRpcException(e);
 			}
 		}
 

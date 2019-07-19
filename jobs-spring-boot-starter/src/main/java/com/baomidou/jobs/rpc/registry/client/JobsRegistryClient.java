@@ -1,6 +1,6 @@
 package com.baomidou.jobs.rpc.registry.client;
 
-import com.baomidou.jobs.rpc.registry.client.model.XxlRegistryDataParamVO;
+import com.baomidou.jobs.rpc.registry.client.model.JobsRegistryDataParamVO;
 import com.baomidou.jobs.rpc.registry.client.util.json.BasicJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +15,11 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuxueli 2018-12-01 21:48:05
  */
-public class XxlRegistryClient {
-    private static Logger logger = LoggerFactory.getLogger(XxlRegistryClient.class);
+public class JobsRegistryClient {
+    private static Logger logger = LoggerFactory.getLogger(JobsRegistryClient.class);
 
 
-    private volatile Set<XxlRegistryDataParamVO> registryData = new HashSet<>();
+    private volatile Set<JobsRegistryDataParamVO> registryData = new HashSet<>();
     private volatile ConcurrentMap<String, TreeSet<String>> discoveryData = new ConcurrentHashMap<>();
 
     private Thread registryThread;
@@ -27,11 +27,11 @@ public class XxlRegistryClient {
     private volatile boolean registryThreadStop = false;
 
 
-    private XxlRegistryBaseClient registryBaseClient;
+    private JobsRegistryBaseClient registryBaseClient;
 
-    public XxlRegistryClient(String adminAddress, String accessToken, String biz, String env) {
-        registryBaseClient = new XxlRegistryBaseClient(adminAddress, accessToken, biz, env);
-        logger.info(">>>>>>>>>>> xxl-registry, XxlRegistryClient init .... [adminAddress={}, accessToken={}, biz={}, env={}]", adminAddress, accessToken, biz, env);
+    public JobsRegistryClient(String adminAddress, String accessToken, String biz, String env) {
+        registryBaseClient = new JobsRegistryBaseClient(adminAddress, accessToken, biz, env);
+        logger.info(">>>>>>>>>>> xxl-registry, JobsRegistryClient init .... [adminAddress={}, accessToken={}, biz={}, env={}]", adminAddress, accessToken, biz, env);
 
         // registry thread
         registryThread = new Thread(new Runnable() {
@@ -41,7 +41,7 @@ public class XxlRegistryClient {
                     try {
                         if (registryData.size() > 0) {
 
-                            boolean ret = registryBaseClient.registry(new ArrayList<XxlRegistryDataParamVO>(registryData));
+                            boolean ret = registryBaseClient.registry(new ArrayList<JobsRegistryDataParamVO>(registryData));
                             logger.debug(">>>>>>>>>>> xxl-registry, refresh registry data {}, registryData = {}", ret?"success":"fail",registryData);
                         }
                     } catch (Exception e) {
@@ -60,7 +60,7 @@ public class XxlRegistryClient {
                 logger.info(">>>>>>>>>>> xxl-registry, registryThread stoped.");
             }
         });
-        registryThread.setName("xxl-registry, XxlRegistryClient registryThread.");
+        registryThread.setName("xxl-registry, JobsRegistryClient registryThread.");
         registryThread.setDaemon(true);
         registryThread.start();
 
@@ -101,11 +101,11 @@ public class XxlRegistryClient {
                 logger.info(">>>>>>>>>>> xxl-registry, discoveryThread stoped.");
             }
         });
-        discoveryThread.setName("xxl-registry, XxlRegistryClient discoveryThread.");
+        discoveryThread.setName("xxl-registry, JobsRegistryClient discoveryThread.");
         discoveryThread.setDaemon(true);
         discoveryThread.start();
 
-        logger.info(">>>>>>>>>>> xxl-registry, XxlRegistryClient init success.");
+        logger.info(">>>>>>>>>>> xxl-registry, JobsRegistryClient init success.");
     }
 
 
@@ -126,13 +126,13 @@ public class XxlRegistryClient {
      * @param registryDataList
      * @return
      */
-    public boolean registry(List<XxlRegistryDataParamVO> registryDataList){
+    public boolean registry(List<JobsRegistryDataParamVO> registryDataList){
 
         // valid
         if (registryDataList==null || registryDataList.size()==0) {
             throw new RuntimeException("xxl-registry registryDataList empty");
         }
-        for (XxlRegistryDataParamVO registryParam: registryDataList) {
+        for (JobsRegistryDataParamVO registryParam: registryDataList) {
             if (registryParam.getKey()==null || registryParam.getKey().trim().length()<4 || registryParam.getKey().trim().length()>255) {
                 throw new RuntimeException("xxl-registry registryDataList#key Invalid[4~255]");
             }
@@ -158,12 +158,12 @@ public class XxlRegistryClient {
      * @param registryDataList
      * @return
      */
-    public boolean remove(List<XxlRegistryDataParamVO> registryDataList) {
+    public boolean remove(List<JobsRegistryDataParamVO> registryDataList) {
         // valid
         if (registryDataList==null || registryDataList.size()==0) {
             throw new RuntimeException("xxl-registry registryDataList empty");
         }
-        for (XxlRegistryDataParamVO registryParam: registryDataList) {
+        for (JobsRegistryDataParamVO registryParam: registryDataList) {
             if (registryParam.getKey()==null || registryParam.getKey().trim().length()<4 || registryParam.getKey().trim().length()>255) {
                 throw new RuntimeException("xxl-registry registryDataList#key Invalid[4~255]");
             }

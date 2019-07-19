@@ -1,10 +1,10 @@
 package com.baomidou.jobs.rpc.remoting.net.impl.servlet.server;
 
-import com.baomidou.jobs.rpc.remoting.provider.XxlRpcProviderFactory;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcRequest;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcResponse;
+import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import com.baomidou.jobs.rpc.util.ThrowableUtil;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
+import com.baomidou.jobs.exception.JobsRpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +23,8 @@ import java.io.OutputStream;
 public class ServletServerHandler {
     private static Logger logger = LoggerFactory.getLogger(ServletServerHandler.class);
 
-    private XxlRpcProviderFactory xxlRpcProviderFactory;
-    public ServletServerHandler(XxlRpcProviderFactory xxlRpcProviderFactory) {
+    private JobsRpcProviderFactory xxlRpcProviderFactory;
+    public ServletServerHandler(JobsRpcProviderFactory xxlRpcProviderFactory) {
         this.xxlRpcProviderFactory = xxlRpcProviderFactory;
     }
 
@@ -46,7 +46,7 @@ public class ServletServerHandler {
         } else {	// default remoting mapping
 
             // request parse
-            XxlRpcRequest xxlRpcRequest = null;
+            JobsRpcRequest xxlRpcRequest = null;
             try {
 
                 xxlRpcRequest = parseRequest(request);
@@ -56,7 +56,7 @@ public class ServletServerHandler {
             }
 
             // invoke
-            XxlRpcResponse xxlRpcResponse = xxlRpcProviderFactory.invokeService(xxlRpcRequest);
+            JobsRpcResponse xxlRpcResponse = xxlRpcProviderFactory.invokeService(xxlRpcRequest);
 
             // response-serialize + response-write
             byte[] responseBytes = xxlRpcProviderFactory.getSerializer().serialize(xxlRpcResponse);
@@ -81,13 +81,13 @@ public class ServletServerHandler {
     /**
      * parse request
      */
-    private XxlRpcRequest parseRequest(HttpServletRequest request) throws Exception {
+    private JobsRpcRequest parseRequest(HttpServletRequest request) throws Exception {
         // deserialize request
         byte[] requestBytes = readBytes(request);
         if (requestBytes == null || requestBytes.length==0) {
-            throw new XxlRpcException("xxl-rpc request data is empty.");
+            throw new JobsRpcException("xxl-rpc request data is empty.");
         }
-        XxlRpcRequest rpcXxlRpcRequest = (XxlRpcRequest) xxlRpcProviderFactory.getSerializer().deserialize(requestBytes, XxlRpcRequest.class);
+        JobsRpcRequest rpcXxlRpcRequest = (JobsRpcRequest) xxlRpcProviderFactory.getSerializer().deserialize(requestBytes, JobsRpcRequest.class);
         return rpcXxlRpcRequest;
     }
 

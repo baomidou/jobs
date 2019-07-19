@@ -1,7 +1,7 @@
 package com.baomidou.jobs.rpc.registry.client;
 
-import com.baomidou.jobs.rpc.registry.client.model.XxlRegistryDataParamVO;
-import com.baomidou.jobs.rpc.registry.client.model.XxlRegistryParamVO;
+import com.baomidou.jobs.rpc.registry.client.model.JobsRegistryDataParamVO;
+import com.baomidou.jobs.rpc.registry.client.model.JobsRegistryParamVO;
 import com.baomidou.jobs.rpc.registry.client.util.BasicHttpUtil;
 import com.baomidou.jobs.rpc.registry.client.util.json.BasicJson;
 import org.slf4j.Logger;
@@ -14,8 +14,8 @@ import java.util.*;
  *
  * @author xuxueli 2018-12-01 21:40:04
  */
-public class XxlRegistryBaseClient {
-    private static Logger logger = LoggerFactory.getLogger(XxlRegistryBaseClient.class);
+public class JobsRegistryBaseClient {
+    private static Logger logger = LoggerFactory.getLogger(JobsRegistryBaseClient.class);
 
 
     private String adminAddress;
@@ -26,7 +26,7 @@ public class XxlRegistryBaseClient {
     private List<String> adminAddressArr;
 
 
-    public XxlRegistryBaseClient(String adminAddress, String accessToken, String biz, String env) {
+    public JobsRegistryBaseClient(String adminAddress, String accessToken, String biz, String env) {
         this.adminAddress = adminAddress;
         this.accessToken = accessToken;
         this.biz = biz;
@@ -59,13 +59,13 @@ public class XxlRegistryBaseClient {
      * @param registryDataList
      * @return
      */
-    public boolean registry(List<XxlRegistryDataParamVO> registryDataList){
+    public boolean registry(List<JobsRegistryDataParamVO> registryDataList){
 
         // valid
         if (registryDataList==null || registryDataList.size()==0) {
             throw new RuntimeException("xxl-registry registryDataList empty");
         }
-        for (XxlRegistryDataParamVO registryParam: registryDataList) {
+        for (JobsRegistryDataParamVO registryParam: registryDataList) {
             if (registryParam.getKey()==null || registryParam.getKey().trim().length()<4 || registryParam.getKey().trim().length()>255) {
                 throw new RuntimeException("xxl-registry registryDataList#key Invalid[4~255]");
             }
@@ -78,7 +78,7 @@ public class XxlRegistryBaseClient {
         String pathUrl = "/api/registry";
 
         // param
-        XxlRegistryParamVO registryParamVO = new XxlRegistryParamVO();
+        JobsRegistryParamVO registryParamVO = new JobsRegistryParamVO();
         registryParamVO.setAccessToken(this.accessToken);
         registryParamVO.setBiz(this.biz);
         registryParamVO.setEnv(this.env);
@@ -114,7 +114,7 @@ public class XxlRegistryBaseClient {
                     || !resopnseMap.containsKey("code")
                     || !"200".equals(String.valueOf(resopnseMap.get("code")))
                     ) {
-                logger.warn("XxlRegistryBaseClient response fail, responseData={}", responseData);
+                logger.warn("JobsRegistryBaseClient response fail, responseData={}", responseData);
                 return null;
             }
 
@@ -131,12 +131,12 @@ public class XxlRegistryBaseClient {
      * @param registryDataList
      * @return
      */
-    public boolean remove(List<XxlRegistryDataParamVO> registryDataList) {
+    public boolean remove(List<JobsRegistryDataParamVO> registryDataList) {
         // valid
         if (registryDataList==null || registryDataList.size()==0) {
             throw new RuntimeException("xxl-registry registryDataList empty");
         }
-        for (XxlRegistryDataParamVO registryParam: registryDataList) {
+        for (JobsRegistryDataParamVO registryParam: registryDataList) {
             if (registryParam.getKey()==null || registryParam.getKey().trim().length()<4 || registryParam.getKey().trim().length()>255) {
                 throw new RuntimeException("xxl-registry registryDataList#key Invalid[4~255]");
             }
@@ -149,7 +149,7 @@ public class XxlRegistryBaseClient {
         String pathUrl = "/api/remove";
 
         // param
-        XxlRegistryParamVO registryParamVO = new XxlRegistryParamVO();
+        JobsRegistryParamVO registryParamVO = new JobsRegistryParamVO();
         registryParamVO.setAccessToken(this.accessToken);
         registryParamVO.setBiz(this.biz);
         registryParamVO.setEnv(this.env);
@@ -178,7 +178,7 @@ public class XxlRegistryBaseClient {
         String pathUrl = "/api/discovery";
 
         // param
-        XxlRegistryParamVO registryParamVO = new XxlRegistryParamVO();
+        JobsRegistryParamVO registryParamVO = new JobsRegistryParamVO();
         registryParamVO.setAccessToken(this.accessToken);
         registryParamVO.setBiz(this.biz);
         registryParamVO.setEnv(this.env);
@@ -214,7 +214,7 @@ public class XxlRegistryBaseClient {
         String pathUrl = "/api/monitor";
 
         // param
-        XxlRegistryParamVO registryParamVO = new XxlRegistryParamVO();
+        JobsRegistryParamVO registryParamVO = new JobsRegistryParamVO();
         registryParamVO.setAccessToken(this.accessToken);
         registryParamVO.setBiz(this.biz);
         registryParamVO.setEnv(this.env);

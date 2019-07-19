@@ -11,34 +11,29 @@ import com.baomidou.jobs.rpc.remoting.net.impl.netty_http.server.NettyHttpServer
  * @author xuxueli 2015-11-24 22:09:57
  */
 public enum NetEnum {
+    /**
+     * netty tcp server
+     */
+    NETTY(NettyServer.class, NettyClient.class),
+    /**
+     * netty http server (servlet no server, ServletServerHandler)
+     */
+    NETTY_HTTP(NettyHttpServer.class, NettyHttpClient.class);
 
+    public final Class<? extends Server> serverClass;
+    public final Class<? extends Client> clientClass;
 
-	/**
-	 * netty tcp server
-	 */
-	NETTY(NettyServer.class, NettyClient.class),
+    NetEnum(Class<? extends Server> serverClass, Class<? extends Client> clientClass) {
+        this.serverClass = serverClass;
+        this.clientClass = clientClass;
+    }
 
-	/**
-	 * netty http server (servlet no server, ServletServerHandler)
-	 */
-	NETTY_HTTP(NettyHttpServer.class, NettyHttpClient.class);
-
-
-	public final Class<? extends Server> serverClass;
-	public final Class<? extends Client> clientClass;
-
-	NetEnum(Class<? extends Server> serverClass, Class<? extends Client> clientClass) {
-		this.serverClass = serverClass;
-		this.clientClass = clientClass;
-	}
-
-	public static NetEnum autoMatch(String name, NetEnum defaultEnum) {
-		for (NetEnum item : NetEnum.values()) {
-			if (item.name().equals(name)) {
-				return item;
-			}
-		}
-		return defaultEnum;
-	}
-
+    public static NetEnum autoMatch(String name, NetEnum defaultEnum) {
+        for (NetEnum item : NetEnum.values()) {
+            if (item.name().equals(name)) {
+                return item;
+            }
+        }
+        return defaultEnum;
+    }
 }

@@ -1,11 +1,11 @@
 package com.baomidou.jobs.rpc.remoting.invoker.impl;
 
-import com.baomidou.jobs.rpc.remoting.provider.XxlRpcProviderFactory;
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
+import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
+import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import com.baomidou.jobs.rpc.registry.ServiceRegistry;
-import com.baomidou.jobs.rpc.remoting.invoker.XxlRpcInvokerFactory;
-import com.baomidou.jobs.rpc.remoting.invoker.annotation.XxlRpcReference;
-import com.baomidou.jobs.rpc.remoting.invoker.reference.XxlRpcReferenceBean;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
+import com.baomidou.jobs.rpc.remoting.invoker.annotation.JobsRpcReference;
+import com.baomidou.jobs.exception.JobsRpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -26,8 +26,8 @@ import java.util.Set;
  *
  * @author xuxueli 2018-10-19
  */
-public class XxlRpcSpringInvokerFactory extends InstantiationAwareBeanPostProcessorAdapter implements InitializingBean,DisposableBean, BeanFactoryAware {
-    private Logger logger = LoggerFactory.getLogger(XxlRpcSpringInvokerFactory.class);
+public class JobsRpcSpringInvokerFactory extends InstantiationAwareBeanPostProcessorAdapter implements InitializingBean,DisposableBean, BeanFactoryAware {
+    private Logger logger = LoggerFactory.getLogger(JobsRpcSpringInvokerFactory.class);
 
     // ---------------------- config ----------------------
 
@@ -46,12 +46,12 @@ public class XxlRpcSpringInvokerFactory extends InstantiationAwareBeanPostProces
 
     // ---------------------- util ----------------------
 
-    private XxlRpcInvokerFactory xxlRpcInvokerFactory;
+    private JobsRpcInvokerFactory xxlRpcInvokerFactory;
 
     @Override
     public void afterPropertiesSet() throws Exception {
         // start invoker factory
-        xxlRpcInvokerFactory = new XxlRpcInvokerFactory(serviceRegistryClass, serviceRegistryParam);
+        xxlRpcInvokerFactory = new JobsRpcInvokerFactory(serviceRegistryClass, serviceRegistryParam);
         xxlRpcInvokerFactory.start();
     }
 
@@ -61,21 +61,21 @@ public class XxlRpcSpringInvokerFactory extends InstantiationAwareBeanPostProces
         // collection
         final Set<String> serviceKeyList = new HashSet<>();
 
-        // parse XxlRpcReferenceBean
+        // parse JobsRpcReferenceBean
         ReflectionUtils.doWithFields(bean.getClass(), new ReflectionUtils.FieldCallback() {
             @Override
             public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-                if (field.isAnnotationPresent(XxlRpcReference.class)) {
+                if (field.isAnnotationPresent(JobsRpcReference.class)) {
                     // valid
                     Class iface = field.getType();
                     if (!iface.isInterface()) {
-                        throw new XxlRpcException("xxl-rpc, reference(XxlRpcReference) must be interface.");
+                        throw new JobsRpcException("xxl-rpc, reference(JobsRpcReference) must be interface.");
                     }
 
-                    XxlRpcReference rpcReference = field.getAnnotation(XxlRpcReference.class);
+                    JobsRpcReference rpcReference = field.getAnnotation(JobsRpcReference.class);
 
                     // init reference bean
-                    XxlRpcReferenceBean referenceBean = new XxlRpcReferenceBean(
+                    JobsRpcReferenceBean referenceBean = new JobsRpcReferenceBean(
                             rpcReference.netType(),
                             rpcReference.serializer().getSerializer(),
                             rpcReference.callType(),
@@ -95,11 +95,11 @@ public class XxlRpcSpringInvokerFactory extends InstantiationAwareBeanPostProces
                     field.setAccessible(true);
                     field.set(bean, serviceProxy);
 
-                    logger.info(">>>>>>>>>>> xxl-rpc, invoker factory init reference bean success. serviceKey = {}, bean.field = {}.{}",
-                            XxlRpcProviderFactory.makeServiceKey(iface.getName(), rpcReference.version()), beanName, field.getName());
+                    logger.info("Jobs rpc, invoker factory init reference bean success. serviceKey = {}, bean.field = {}.{}",
+                            JobsRpcProviderFactory.makeServiceKey(iface.getName(), rpcReference.version()), beanName, field.getName());
 
                     // collection
-                    String serviceKey = XxlRpcProviderFactory.makeServiceKey(iface.getName(), rpcReference.version());
+                    String serviceKey = JobsRpcProviderFactory.makeServiceKey(iface.getName(), rpcReference.version());
                     serviceKeyList.add(serviceKey);
 
                 }

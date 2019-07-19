@@ -1,7 +1,7 @@
 package com.baomidou.jobs.rpc.remoting.net;
 
-import com.baomidou.jobs.rpc.remoting.invoker.reference.XxlRpcReferenceBean;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcRequest;
+import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +15,9 @@ public abstract class Client {
 
 	// ---------------------- init ----------------------
 
-	protected volatile XxlRpcReferenceBean xxlRpcReferenceBean;
+	protected volatile JobsRpcReferenceBean xxlRpcReferenceBean;
 
-	public void init(XxlRpcReferenceBean xxlRpcReferenceBean) {
+	public void init(JobsRpcReferenceBean xxlRpcReferenceBean) {
 		this.xxlRpcReferenceBean = xxlRpcReferenceBean;
 	}
 
@@ -32,6 +32,6 @@ public abstract class Client {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract void asyncSend(String address, XxlRpcRequest xxlRpcRequest) throws Exception;
+	public abstract void asyncSend(String address, JobsRpcRequest xxlRpcRequest) throws Exception;
 
 }

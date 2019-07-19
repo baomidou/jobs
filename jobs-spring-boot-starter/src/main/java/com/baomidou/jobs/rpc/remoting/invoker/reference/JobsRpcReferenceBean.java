@@ -1,20 +1,20 @@
 package com.baomidou.jobs.rpc.remoting.invoker.reference;
 
-import com.baomidou.jobs.rpc.remoting.invoker.XxlRpcInvokerFactory;
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.invoker.call.CallType;
-import com.baomidou.jobs.rpc.remoting.invoker.call.XxlRpcInvokeCallback;
-import com.baomidou.jobs.rpc.remoting.invoker.call.XxlRpcInvokeFuture;
-import com.baomidou.jobs.rpc.remoting.invoker.generic.XxlRpcGenericService;
+import com.baomidou.jobs.rpc.remoting.invoker.call.JobsRpcInvokeCallback;
+import com.baomidou.jobs.rpc.remoting.invoker.call.JobsRpcInvokeFuture;
+import com.baomidou.jobs.rpc.remoting.invoker.generic.JobsRpcGenericService;
 import com.baomidou.jobs.rpc.remoting.invoker.route.LoadBalance;
 import com.baomidou.jobs.rpc.remoting.net.NetEnum;
-import com.baomidou.jobs.rpc.remoting.provider.XxlRpcProviderFactory;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
+import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import com.baomidou.jobs.rpc.serialize.Serializer;
 import com.baomidou.jobs.rpc.util.ClassUtil;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
+import com.baomidou.jobs.exception.JobsRpcException;
 import com.baomidou.jobs.rpc.remoting.net.Client;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcFutureResponse;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcRequest;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcResponse;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcFutureResponse;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +30,8 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuxueli 2015-10-29 20:18:32
  */
-public class XxlRpcReferenceBean {
-	private static final Logger logger = LoggerFactory.getLogger(XxlRpcReferenceBean.class);
+public class JobsRpcReferenceBean {
+	private static final Logger logger = LoggerFactory.getLogger(JobsRpcReferenceBean.class);
 	// [tips01: save 30ms/100invoke. why why why??? with this logger, it can save lots of time.]
 
 
@@ -50,21 +50,21 @@ public class XxlRpcReferenceBean {
 	private String address;
 	private String accessToken;
 
-	private XxlRpcInvokeCallback invokeCallback;
+	private JobsRpcInvokeCallback invokeCallback;
 
-	private XxlRpcInvokerFactory invokerFactory;
+	private JobsRpcInvokerFactory invokerFactory;
 
-	public XxlRpcReferenceBean(NetEnum netType,
-							   Serializer serializer,
-							   CallType callType,
-							   LoadBalance loadBalance,
-							   Class<?> iface,
-							   String version,
-							   long timeout,
-							   String address,
-							   String accessToken,
-							   XxlRpcInvokeCallback invokeCallback,
-							   XxlRpcInvokerFactory invokerFactory
+	public JobsRpcReferenceBean(NetEnum netType,
+								Serializer serializer,
+								CallType callType,
+								LoadBalance loadBalance,
+								Class<?> iface,
+								String version,
+								long timeout,
+								String address,
+								String accessToken,
+								JobsRpcInvokeCallback invokeCallback,
+								JobsRpcInvokerFactory invokerFactory
 	) {
 
 		this.netType = netType;
@@ -81,25 +81,25 @@ public class XxlRpcReferenceBean {
 
 		// valid
 		if (this.netType==null) {
-			throw new XxlRpcException("xxl-rpc reference netType missing.");
+			throw new JobsRpcException("xxl-rpc reference netType missing.");
 		}
 		if (this.serializer==null) {
-			throw new XxlRpcException("xxl-rpc reference serializer missing.");
+			throw new JobsRpcException("xxl-rpc reference serializer missing.");
 		}
 		if (this.callType==null) {
-			throw new XxlRpcException("xxl-rpc reference callType missing.");
+			throw new JobsRpcException("xxl-rpc reference callType missing.");
 		}
 		if (this.loadBalance==null) {
-			throw new XxlRpcException("xxl-rpc reference loadBalance missing.");
+			throw new JobsRpcException("xxl-rpc reference loadBalance missing.");
 		}
 		if (this.iface==null) {
-			throw new XxlRpcException("xxl-rpc reference iface missing.");
+			throw new JobsRpcException("xxl-rpc reference iface missing.");
 		}
 		if (this.timeout < 0) {
 			this.timeout = 0;
 		}
 		if (this.invokerFactory == null) {
-			this.invokerFactory = XxlRpcInvokerFactory.getInstance();
+			this.invokerFactory = JobsRpcInvokerFactory.getInstance();
 		}
 
 		// init Client
@@ -114,7 +114,7 @@ public class XxlRpcReferenceBean {
 		return timeout;
 	}
 
-	public XxlRpcInvokerFactory getInvokerFactory() {
+	public JobsRpcInvokerFactory getInvokerFactory() {
 		return invokerFactory;
 	}
 
@@ -127,7 +127,7 @@ public class XxlRpcReferenceBean {
 			client = netType.clientClass.newInstance();
 			client.init(this);
 		} catch (InstantiationException | IllegalAccessException e) {
-			throw new XxlRpcException(e);
+			throw new JobsRpcException(e);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class XxlRpcReferenceBean {
 						Object[] parameters = args;
 
 						// filter for generic
-						if (className.equals(XxlRpcGenericService.class.getName()) && methodName.equals("invoke")) {
+						if (className.equals(JobsRpcGenericService.class.getName()) && methodName.equals("invoke")) {
 
 							Class<?>[] paramTypes = null;
 							if (args[3]!=null) {
@@ -171,8 +171,8 @@ public class XxlRpcReferenceBean {
 
 						// filter method like "Object.toString()"
 						if (className.equals(Object.class.getName())) {
-							logger.info(">>>>>>>>>>> xxl-rpc proxy class-method not support [{}#{}]", className, methodName);
-							throw new XxlRpcException("xxl-rpc proxy class-method not support");
+							logger.info("Jobs rpc proxy class-method not support [{}#{}]", className, methodName);
+							throw new JobsRpcException("xxl-rpc proxy class-method not support");
 						}
 
 						// address
@@ -180,7 +180,7 @@ public class XxlRpcReferenceBean {
 						if (finalAddress==null || finalAddress.trim().length()==0) {
 							if (invokerFactory!=null && invokerFactory.getServiceRegistry()!=null) {
 								// discovery
-								String serviceKey = XxlRpcProviderFactory.makeServiceKey(className, varsion_);
+								String serviceKey = JobsRpcProviderFactory.makeServiceKey(className, varsion_);
 								TreeSet<String> addressSet = invokerFactory.getServiceRegistry().discovery(serviceKey);
 								// load balance
 								if (addressSet==null || addressSet.size()==0) {
@@ -194,11 +194,11 @@ public class XxlRpcReferenceBean {
 							}
 						}
 						if (finalAddress==null || finalAddress.trim().length()==0) {
-							throw new XxlRpcException("xxl-rpc reference bean["+ className +"] address empty");
+							throw new JobsRpcException("xxl-rpc reference bean["+ className +"] address empty");
 						}
 
 						// request
-						XxlRpcRequest xxlRpcRequest = new XxlRpcRequest();
+						JobsRpcRequest xxlRpcRequest = new JobsRpcRequest();
 	                    xxlRpcRequest.setRequestId(UUID.randomUUID().toString());
 	                    xxlRpcRequest.setCreateMillisTime(System.currentTimeMillis());
 	                    xxlRpcRequest.setAccessToken(accessToken);
@@ -210,69 +210,69 @@ public class XxlRpcReferenceBean {
 	                    // send
 						if (CallType.SYNC == callType) {
 							// future-response set
-							XxlRpcFutureResponse futureResponse = new XxlRpcFutureResponse(invokerFactory, xxlRpcRequest, null);
+							JobsRpcFutureResponse futureResponse = new JobsRpcFutureResponse(invokerFactory, xxlRpcRequest, null);
 							try {
 								// do invoke
 								client.asyncSend(finalAddress, xxlRpcRequest);
 
 								// future get
-								XxlRpcResponse xxlRpcResponse = futureResponse.get(timeout, TimeUnit.MILLISECONDS);
+								JobsRpcResponse xxlRpcResponse = futureResponse.get(timeout, TimeUnit.MILLISECONDS);
 								if (xxlRpcResponse.getErrorMsg() != null) {
-									throw new XxlRpcException(xxlRpcResponse.getErrorMsg());
+									throw new JobsRpcException(xxlRpcResponse.getErrorMsg());
 								}
 								return xxlRpcResponse.getResult();
 							} catch (Exception e) {
-								logger.info(">>>>>>>>>>> xxl-rpc, invoke error, address:{}, XxlRpcRequest{}", finalAddress, xxlRpcRequest);
+								logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, xxlRpcRequest);
 
-								throw (e instanceof XxlRpcException)?e:new XxlRpcException(e);
+								throw (e instanceof JobsRpcException)?e:new JobsRpcException(e);
 							} finally{
 								// future-response remove
 								futureResponse.removeInvokerFuture();
 							}
 						} else if (CallType.FUTURE == callType) {
 							// future-response set
-							XxlRpcFutureResponse futureResponse = new XxlRpcFutureResponse(invokerFactory, xxlRpcRequest, null);
+							JobsRpcFutureResponse futureResponse = new JobsRpcFutureResponse(invokerFactory, xxlRpcRequest, null);
                             try {
 								// invoke future set
-								XxlRpcInvokeFuture invokeFuture = new XxlRpcInvokeFuture(futureResponse);
-								XxlRpcInvokeFuture.setFuture(invokeFuture);
+								JobsRpcInvokeFuture invokeFuture = new JobsRpcInvokeFuture(futureResponse);
+								JobsRpcInvokeFuture.setFuture(invokeFuture);
 
                                 // do invoke
                                 client.asyncSend(finalAddress, xxlRpcRequest);
 
                                 return null;
                             } catch (Exception e) {
-								logger.info(">>>>>>>>>>> xxl-rpc, invoke error, address:{}, XxlRpcRequest{}", finalAddress, xxlRpcRequest);
+								logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, xxlRpcRequest);
 
 								// future-response remove
 								futureResponse.removeInvokerFuture();
 
-								throw (e instanceof XxlRpcException)?e:new XxlRpcException(e);
+								throw (e instanceof JobsRpcException)?e:new JobsRpcException(e);
                             }
 
 						} else if (CallType.CALLBACK == callType) {
 
 							// get callback
-							XxlRpcInvokeCallback finalInvokeCallback = invokeCallback;
-							XxlRpcInvokeCallback threadInvokeCallback = XxlRpcInvokeCallback.getCallback();
+							JobsRpcInvokeCallback finalInvokeCallback = invokeCallback;
+							JobsRpcInvokeCallback threadInvokeCallback = JobsRpcInvokeCallback.getCallback();
 							if (threadInvokeCallback != null) {
 								finalInvokeCallback = threadInvokeCallback;
 							}
 							if (finalInvokeCallback == null) {
-								throw new XxlRpcException("xxl-rpc XxlRpcInvokeCallback（CallType="+ CallType.CALLBACK.name() +"） cannot be null.");
+								throw new JobsRpcException("xxl-rpc JobsRpcInvokeCallback（CallType="+ CallType.CALLBACK.name() +"） cannot be null.");
 							}
 
 							// future-response set
-							XxlRpcFutureResponse futureResponse = new XxlRpcFutureResponse(invokerFactory, xxlRpcRequest, finalInvokeCallback);
+							JobsRpcFutureResponse futureResponse = new JobsRpcFutureResponse(invokerFactory, xxlRpcRequest, finalInvokeCallback);
 							try {
 								client.asyncSend(finalAddress, xxlRpcRequest);
 							} catch (Exception e) {
-								logger.info(">>>>>>>>>>> xxl-rpc, invoke error, address:{}, XxlRpcRequest{}", finalAddress, xxlRpcRequest);
+								logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, xxlRpcRequest);
 
 								// future-response remove
 								futureResponse.removeInvokerFuture();
 
-								throw (e instanceof XxlRpcException)?e:new XxlRpcException(e);
+								throw (e instanceof JobsRpcException)?e:new JobsRpcException(e);
 							}
 
 							return null;
@@ -280,7 +280,7 @@ public class XxlRpcReferenceBean {
                             client.asyncSend(finalAddress, xxlRpcRequest);
                             return null;
                         } else {
-							throw new XxlRpcException("xxl-rpc callType["+ callType +"] invalid");
+							throw new JobsRpcException("xxl-rpc callType["+ callType +"] invalid");
 						}
 
 					}

@@ -1,18 +1,17 @@
 package com.baomidou.jobs.rpc.remoting.provider;
 
-import com.baomidou.jobs.rpc.remoting.net.NetEnum;
 import com.baomidou.jobs.rpc.registry.ServiceRegistry;
+import com.baomidou.jobs.rpc.remoting.net.NetEnum;
 import com.baomidou.jobs.rpc.remoting.net.Server;
 import com.baomidou.jobs.rpc.remoting.net.params.BaseCallback;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcRequest;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcResponse;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import com.baomidou.jobs.rpc.serialize.Serializer;
 import com.baomidou.jobs.rpc.util.IpUtil;
+import com.baomidou.jobs.exception.JobsRpcException;
 import com.baomidou.jobs.rpc.util.NetUtil;
 import com.baomidou.jobs.rpc.util.ThrowableUtil;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -23,23 +22,19 @@ import java.util.Map;
  *
  * @author xuxueli 2015-10-31 22:54:27
  */
-public class XxlRpcProviderFactory {
-	private static final Logger logger = LoggerFactory.getLogger(XxlRpcProviderFactory.class);
-
-	// ---------------------- config ----------------------
-
+@Slf4j
+public class JobsRpcProviderFactory {
 	private NetEnum netType;
 	private Serializer serializer;
-
-	private String ip;					// for registry
-	private int port;					// default port
+	private String ip;
+	private int port;
 	private String accessToken;
 
 	private Class<? extends ServiceRegistry> serviceRegistryClass;
 	private Map<String, String> serviceRegistryParam;
 
 
-	public XxlRpcProviderFactory() {
+	public JobsRpcProviderFactory() {
 	}
 	public void initConfig(NetEnum netType,
 						  Serializer serializer,
@@ -60,10 +55,10 @@ public class XxlRpcProviderFactory {
 
 		// valid
 		if (this.netType==null) {
-			throw new XxlRpcException("xxl-rpc provider netType missing.");
+			throw new JobsRpcException("xxl-rpc provider netType missing.");
 		}
 		if (this.serializer==null) {
-			throw new XxlRpcException("xxl-rpc provider serializer missing.");
+			throw new JobsRpcException("xxl-rpc provider serializer missing.");
 		}
 		if (this.ip == null) {
 			this.ip = IpUtil.getIp();
@@ -72,11 +67,11 @@ public class XxlRpcProviderFactory {
 			this.port = 7080;
 		}
 		if (NetUtil.isPortUsed(this.port)) {
-			throw new XxlRpcException("xxl-rpc provider port["+ this.port +"] is used.");
+			throw new JobsRpcException("xxl-rpc provider port["+ this.port +"] is used.");
 		}
 		if (this.serviceRegistryClass != null) {
 			if (this.serviceRegistryParam == null) {
-				throw new XxlRpcException("xxl-rpc provider serviceRegistryParam is missing.");
+				throw new JobsRpcException("xxl-rpc provider serviceRegistryParam is missing.");
 			}
 		}
 
@@ -102,7 +97,8 @@ public class XxlRpcProviderFactory {
 		// start server
 		serviceAddress = IpUtil.getIpPort(this.ip, port);
 		server = netType.serverClass.newInstance();
-		server.setStartedCallback(new BaseCallback() {		// serviceRegistry started
+		server.setStartedCallback(new BaseCallback() {
+			// serviceRegistry started
 			@Override
 			public void run() throws Exception {
 				// start registry
@@ -172,8 +168,7 @@ public class XxlRpcProviderFactory {
 	public void addService(String iface, String version, Object serviceBean){
 		String serviceKey = makeServiceKey(iface, version);
 		serviceData.put(serviceKey, serviceBean);
-
-		logger.info(">>>>>>>>>>> xxl-rpc, provider factory add service success. serviceKey = {}, serviceBean = {}", serviceKey, serviceBean.getClass());
+		log.info("Jobs rpc, provider factory add service success. serviceKey = {}, serviceBean = {}", serviceKey, serviceBean.getClass());
 	}
 
 	/**
@@ -182,10 +177,10 @@ public class XxlRpcProviderFactory {
 	 * @param xxlRpcRequest
 	 * @return
 	 */
-	public XxlRpcResponse invokeService(XxlRpcRequest xxlRpcRequest) {
+	public JobsRpcResponse invokeService(JobsRpcRequest xxlRpcRequest) {
 
 		//  make response
-		XxlRpcResponse xxlRpcResponse = new XxlRpcResponse();
+		JobsRpcResponse xxlRpcResponse = new JobsRpcResponse();
 		xxlRpcResponse.setRequestId(xxlRpcRequest.getRequestId());
 
 		// match service bean
@@ -224,8 +219,7 @@ public class XxlRpcProviderFactory {
 
 			xxlRpcResponse.setResult(result);
 		} catch (Throwable t) {
-			// catch error
-			logger.error("xxl-rpc provider invokeService error.", t);
+			log.error("xxl-rpc provider invokeService error.", t);
 			xxlRpcResponse.setErrorMsg(ThrowableUtil.toString(t));
 		}
 

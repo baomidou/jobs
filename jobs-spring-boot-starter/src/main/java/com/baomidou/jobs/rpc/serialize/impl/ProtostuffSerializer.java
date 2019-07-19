@@ -1,7 +1,7 @@
 //package com.xxl.rpc.serialize.impl;
 //
 //import com.xxl.rpc.serialize.Serializer;
-//import com.xxl.rpc.util.XxlRpcException;
+//import com.xxl.rpc.util.JobsRpcException;
 //import io.protostuff.LinkedBuffer;
 //import io.protostuff.ProtostuffIOUtil;
 //import io.protostuff.Schema;
@@ -42,7 +42,7 @@
 //            Schema<T> schema = getSchema(cls);
 //            return ProtostuffIOUtil.toByteArray(obj, schema, buffer);
 //        } catch (Exception e) {
-//            throw new XxlRpcException(e);
+//            throw new JobsRpcException(e);
 //        } finally {
 //            buffer.clear();
 //        }
@@ -56,7 +56,7 @@
 //            ProtostuffIOUtil.mergeFrom(bytes, message, schema);
 //            return message;
 //        } catch (Exception e) {
-//            throw new XxlRpcException(e);
+//            throw new JobsRpcException(e);
 //        }
 //	}
 //

@@ -1,11 +1,11 @@
 package com.baomidou.jobs.rpc.serialize.impl;
 
+import com.baomidou.jobs.exception.JobsRpcException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.baomidou.jobs.rpc.serialize.Serializer;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class JacksonSerializer extends Serializer {
 		try {
 			return objectMapper.writeValueAsBytes(obj);
 		} catch (JsonProcessingException e) {
-			throw new XxlRpcException(e);
+			throw new JobsRpcException(e);
 		}
 	}
 
@@ -37,11 +37,11 @@ public class JacksonSerializer extends Serializer {
 		try {
 			return objectMapper.readValue(bytes, clazz);
 		} catch (JsonParseException e) {
-			throw new XxlRpcException(e);
+			throw new JobsRpcException(e);
 		} catch (JsonMappingException e) {
-			throw new XxlRpcException(e);
+			throw new JobsRpcException(e);
 		} catch (IOException e) {
-			throw new XxlRpcException(e);
+			throw new JobsRpcException(e);
 		}
 	}
 

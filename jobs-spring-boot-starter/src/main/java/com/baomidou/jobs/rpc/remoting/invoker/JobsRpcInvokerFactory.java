@@ -2,10 +2,10 @@ package com.baomidou.jobs.rpc.remoting.invoker;
 
 import com.baomidou.jobs.rpc.registry.ServiceRegistry;
 import com.baomidou.jobs.rpc.registry.impl.LocalServiceRegistry;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
+import com.baomidou.jobs.exception.JobsRpcException;
 import com.baomidou.jobs.rpc.remoting.net.params.BaseCallback;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcFutureResponse;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcResponse;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcFutureResponse;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,26 +19,26 @@ import java.util.concurrent.*;
  *
  * @author xuxueli 2018-10-19
  */
-public class XxlRpcInvokerFactory {
-    private static Logger logger = LoggerFactory.getLogger(XxlRpcInvokerFactory.class);
+public class JobsRpcInvokerFactory {
+    private static Logger logger = LoggerFactory.getLogger(JobsRpcInvokerFactory.class);
 
     // ---------------------- default instance ----------------------
 
-    private static volatile XxlRpcInvokerFactory instance = new XxlRpcInvokerFactory(LocalServiceRegistry.class, null);
-    public static XxlRpcInvokerFactory getInstance() {
+    private static volatile JobsRpcInvokerFactory instance = new JobsRpcInvokerFactory(LocalServiceRegistry.class, null);
+    public static JobsRpcInvokerFactory getInstance() {
         return instance;
     }
 
 
     // ---------------------- config ----------------------
 
-    private Class<? extends ServiceRegistry> serviceRegistryClass;          // class.forname
+    private Class<? extends ServiceRegistry> serviceRegistryClass;
     private Map<String, String> serviceRegistryParam;
 
 
-    public XxlRpcInvokerFactory() {
+    public JobsRpcInvokerFactory() {
     }
-    public XxlRpcInvokerFactory(Class<? extends ServiceRegistry> serviceRegistryClass, Map<String, String> serviceRegistryParam) {
+    public JobsRpcInvokerFactory(Class<? extends ServiceRegistry> serviceRegistryClass, Map<String, String> serviceRegistryParam) {
         this.serviceRegistryClass = serviceRegistryClass;
         this.serviceRegistryParam = serviceRegistryParam;
     }
@@ -97,17 +97,17 @@ public class XxlRpcInvokerFactory {
 
     // XxlRpcFutureResponseFactory
 
-    private ConcurrentMap<String, XxlRpcFutureResponse> futureResponsePool = new ConcurrentHashMap<String, XxlRpcFutureResponse>();
-    public void setInvokerFuture(String requestId, XxlRpcFutureResponse futureResponse){
+    private ConcurrentMap<String, JobsRpcFutureResponse> futureResponsePool = new ConcurrentHashMap<String, JobsRpcFutureResponse>();
+    public void setInvokerFuture(String requestId, JobsRpcFutureResponse futureResponse){
         futureResponsePool.put(requestId, futureResponse);
     }
     public void removeInvokerFuture(String requestId){
         futureResponsePool.remove(requestId);
     }
-    public void notifyInvokerFuture(String requestId, final XxlRpcResponse xxlRpcResponse){
+    public void notifyInvokerFuture(String requestId, final JobsRpcResponse xxlRpcResponse){
 
         // get
-        final XxlRpcFutureResponse futureResponse = futureResponsePool.get(requestId);
+        final JobsRpcFutureResponse futureResponse = futureResponsePool.get(requestId);
         if (futureResponse == null) {
             return;
         }
@@ -121,7 +121,7 @@ public class XxlRpcInvokerFactory {
                     @Override
                     public void run() {
                         if (xxlRpcResponse.getErrorMsg() != null) {
-                            futureResponse.getInvokeCallback().onFailure(new XxlRpcException(xxlRpcResponse.getErrorMsg()));
+                            futureResponse.getInvokeCallback().onFailure(new JobsRpcException(xxlRpcResponse.getErrorMsg()));
                         } else {
                             futureResponse.getInvokeCallback().onSuccess(xxlRpcResponse.getResult());
                         }
@@ -156,27 +156,19 @@ public class XxlRpcInvokerFactory {
                             60L,
                             TimeUnit.SECONDS,
                             new LinkedBlockingQueue<Runnable>(1000),
-                            new ThreadFactory() {
-                                @Override
-                                public Thread newThread(Runnable r) {
-                                    return new Thread(r, "xxl-rpc, XxlRpcInvokerFactory-responseCallbackThreadPool-" + r.hashCode());
-                                }
-                            },
-                            new RejectedExecutionHandler() {
-                                @Override
-                                public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                                    throw new XxlRpcException("xxl-rpc Invoke Callback Thread pool is EXHAUSTED!");
-                                }
+                            r -> new Thread(r, "xxl-rpc, JobsRpcInvokerFactory-responseCallbackThreadPool-" + r.hashCode()),
+                            (r, executor) -> {
+                                throw new JobsRpcException("xxl-rpc Invoke Callback Thread pool is EXHAUSTED!");
                             });		// default maxThreads 300, minThreads 60
                 }
             }
         }
         responseCallbackThreadPool.execute(runnable);
     }
+
     public void stopCallbackThreadPool() {
         if (responseCallbackThreadPool != null) {
             responseCallbackThreadPool.shutdown();
         }
     }
-
 }

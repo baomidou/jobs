@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface XxlRpcReference {
+public @interface JobsRpcReference {
 
     NetEnum netType() default NetEnum.NETTY;
 
@@ -34,6 +34,6 @@ public @interface XxlRpcReference {
 
     String accessToken() default "";
 
-    //XxlRpcInvokeCallback invokeCallback() ;
+    //JobsRpcInvokeCallback invokeCallback() ;
 
 }

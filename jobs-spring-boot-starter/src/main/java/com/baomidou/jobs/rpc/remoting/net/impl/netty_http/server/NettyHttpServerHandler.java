@@ -1,10 +1,10 @@
 package com.baomidou.jobs.rpc.remoting.net.impl.netty_http.server;
 
-import com.baomidou.jobs.rpc.remoting.provider.XxlRpcProviderFactory;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
+import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
+import com.baomidou.jobs.exception.JobsRpcException;
 import com.baomidou.jobs.rpc.util.ThrowableUtil;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcRequest;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcResponse;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -26,10 +26,10 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
     private static final Logger logger = LoggerFactory.getLogger(NettyHttpServerHandler.class);
 
 
-    private XxlRpcProviderFactory xxlRpcProviderFactory;
+    private JobsRpcProviderFactory xxlRpcProviderFactory;
     private ThreadPoolExecutor serverHandlerPool;
 
-    public NettyHttpServerHandler(final XxlRpcProviderFactory xxlRpcProviderFactory, final ThreadPoolExecutor serverHandlerPool) {
+    public NettyHttpServerHandler(final JobsRpcProviderFactory xxlRpcProviderFactory, final ThreadPoolExecutor serverHandlerPool) {
         this.xxlRpcProviderFactory = xxlRpcProviderFactory;
         this.serverHandlerPool = serverHandlerPool;
     }
@@ -73,15 +73,15 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
 
                 // valid
                 if (requestBytes.length == 0) {
-                    throw new XxlRpcException("xxl-rpc request data empty.");
+                    throw new JobsRpcException("xxl-rpc request data empty.");
                 }
 
                 // request deserialize
-                XxlRpcRequest xxlRpcRequest = (XxlRpcRequest) xxlRpcProviderFactory.getSerializer().deserialize(requestBytes, XxlRpcRequest.class);
+                JobsRpcRequest xxlRpcRequest = (JobsRpcRequest) xxlRpcProviderFactory.getSerializer().deserialize(requestBytes, JobsRpcRequest.class);
                 requestId = xxlRpcRequest.getRequestId();
 
                 // invoke + response
-                XxlRpcResponse xxlRpcResponse = xxlRpcProviderFactory.invokeService(xxlRpcRequest);
+                JobsRpcResponse xxlRpcResponse = xxlRpcProviderFactory.invokeService(xxlRpcRequest);
 
                 // response serialize
                 byte[] responseBytes = xxlRpcProviderFactory.getSerializer().serialize(xxlRpcResponse);
@@ -93,7 +93,7 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
             logger.error(e.getMessage(), e);
 
             // response error
-            XxlRpcResponse xxlRpcResponse = new XxlRpcResponse();
+            JobsRpcResponse xxlRpcResponse = new JobsRpcResponse();
             xxlRpcResponse.setRequestId(requestId);
             xxlRpcResponse.setErrorMsg(ThrowableUtil.toString(e));
 
@@ -126,7 +126,7 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        logger.error(">>>>>>>>>>> xxl-rpc provider netty_http server caught exception", cause);
+        logger.error("Jobs rpc provider netty_http server caught exception", cause);
         ctx.close();
     }
 
@@ -134,7 +134,7 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent){
             ctx.channel().close();      // close idle channel
-            logger.debug(">>>>>>>>>>> xxl-rpc provider netty_http server close an idle channel.");
+            logger.debug("Jobs rpc provider netty_http server close an idle channel.");
         } else {
             super.userEventTriggered(ctx, evt);
         }

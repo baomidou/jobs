@@ -5,17 +5,17 @@ import java.util.Objects;
 /**
  * @author xuxueli 2018-12-03
  */
-public class XxlRegistryDataParamVO {
+public class JobsRegistryDataParamVO {
 
 
     private String key;
     private String value;
 
 
-    public XxlRegistryDataParamVO() {
+    public JobsRegistryDataParamVO() {
     }
 
-    public XxlRegistryDataParamVO(String key, String value) {
+    public JobsRegistryDataParamVO(String key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -42,7 +42,7 @@ public class XxlRegistryDataParamVO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        XxlRegistryDataParamVO that = (XxlRegistryDataParamVO) o;
+        JobsRegistryDataParamVO that = (JobsRegistryDataParamVO) o;
         return Objects.equals(key, that.key) &&
                 Objects.equals(value, that.value);
     }
@@ -54,7 +54,7 @@ public class XxlRegistryDataParamVO {
 
     @Override
     public String toString() {
-        return "XxlRegistryDataParamVO{" +
+        return "JobsRegistryDataParamVO{" +
                 "key='" + key + '\'' +
                 ", value='" + value + '\'' +
                 '}';

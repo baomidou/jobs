@@ -4,7 +4,7 @@ package com.baomidou.jobs.rpc.remoting.invoker.call;
 /**
  * @author xuxueli 2018-10-23
  */
-public abstract class XxlRpcInvokeCallback<T> {
+public abstract class JobsRpcInvokeCallback<T> {
 
     public abstract void onSuccess(T result);
 
@@ -13,15 +13,15 @@ public abstract class XxlRpcInvokeCallback<T> {
 
     // ---------------------- thread invoke callback ----------------------
 
-    private static ThreadLocal<XxlRpcInvokeCallback> threadInvokerFuture = new ThreadLocal<XxlRpcInvokeCallback>();
+    private static ThreadLocal<JobsRpcInvokeCallback> threadInvokerFuture = new ThreadLocal<JobsRpcInvokeCallback>();
 
     /**
      * get callback
      *
      * @return
      */
-    public static XxlRpcInvokeCallback getCallback() {
-        XxlRpcInvokeCallback invokeCallback = threadInvokerFuture.get();
+    public static JobsRpcInvokeCallback getCallback() {
+        JobsRpcInvokeCallback invokeCallback = threadInvokerFuture.get();
         threadInvokerFuture.remove();
         return invokeCallback;
     }
@@ -31,7 +31,7 @@ public abstract class XxlRpcInvokeCallback<T> {
      *
      * @param invokeCallback
      */
-    public static void setCallback(XxlRpcInvokeCallback invokeCallback) {
+    public static void setCallback(JobsRpcInvokeCallback invokeCallback) {
         threadInvokerFuture.set(invokeCallback);
     }
 

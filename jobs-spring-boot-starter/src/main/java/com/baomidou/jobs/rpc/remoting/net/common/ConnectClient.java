@@ -1,10 +1,10 @@
 package com.baomidou.jobs.rpc.remoting.net.common;
 
+import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.serialize.Serializer;
-import com.baomidou.jobs.rpc.remoting.invoker.XxlRpcInvokerFactory;
-import com.baomidou.jobs.rpc.remoting.invoker.reference.XxlRpcReferenceBean;
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.net.params.BaseCallback;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,13 +19,13 @@ public abstract class ConnectClient {
 
     // ---------------------- iface ----------------------
 
-    public abstract void init(String address, final Serializer serializer, final XxlRpcInvokerFactory xxlRpcInvokerFactory) throws Exception;
+    public abstract void init(String address, final Serializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception;
 
     public abstract void close();
 
     public abstract boolean isValidate();
 
-    public abstract void send(XxlRpcRequest xxlRpcRequest) throws Exception ;
+    public abstract void send(JobsRpcRequest xxlRpcRequest) throws Exception ;
 
 
     // ---------------------- client pool map ----------------------
@@ -33,9 +33,9 @@ public abstract class ConnectClient {
     /**
      * async send
      */
-    public static void asyncSend(XxlRpcRequest xxlRpcRequest, String address,
+    public static void asyncSend(JobsRpcRequest xxlRpcRequest, String address,
                                  Class<? extends ConnectClient> connectClientImpl,
-                                 final XxlRpcReferenceBean xxlRpcReferenceBean) throws Exception {
+                                 final JobsRpcReferenceBean xxlRpcReferenceBean) throws Exception {
 
         // client pool	[tips03 : may save 35ms/100invoke if move it to constructor, but it is necessary. cause by ConcurrentHashMap.get]
         ConnectClient clientPool = ConnectClient.getPool(address, connectClientImpl, xxlRpcReferenceBean);
@@ -52,7 +52,7 @@ public abstract class ConnectClient {
     private static volatile ConcurrentHashMap<String, ConnectClient> connectClientMap;        // (static) alread addStopCallBack
     private static volatile ConcurrentHashMap<String, Object> connectClientLockMap = new ConcurrentHashMap<>();
     private static ConnectClient getPool(String address, Class<? extends ConnectClient> connectClientImpl,
-                                         final XxlRpcReferenceBean xxlRpcReferenceBean) throws Exception {
+                                         final JobsRpcReferenceBean xxlRpcReferenceBean) throws Exception {
 
         // init base compont, avoid repeat init
         if (connectClientMap == null) {

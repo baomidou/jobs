@@ -3,15 +3,15 @@ package com.baomidou.jobs.executor;
 import com.baomidou.jobs.JobsConstant;
 import com.baomidou.jobs.executor.impl.JobsExecutorImpl;
 import com.baomidou.jobs.handler.IJobsHandler;
+import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
 import com.baomidou.jobs.service.IJobsService;
 import com.baomidou.jobs.thread.ExecutorRegistryThread;
 import com.baomidou.jobs.rpc.registry.ServiceRegistry;
-import com.baomidou.jobs.rpc.remoting.invoker.XxlRpcInvokerFactory;
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.invoker.call.CallType;
-import com.baomidou.jobs.rpc.remoting.invoker.reference.XxlRpcReferenceBean;
 import com.baomidou.jobs.rpc.remoting.invoker.route.LoadBalance;
 import com.baomidou.jobs.rpc.remoting.net.NetEnum;
-import com.baomidou.jobs.rpc.remoting.provider.XxlRpcProviderFactory;
+import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import com.baomidou.jobs.rpc.serialize.Serializer;
 import com.baomidou.jobs.rpc.util.IpUtil;
 import com.baomidou.jobs.rpc.util.NetUtil;
@@ -98,7 +98,7 @@ public abstract class JobsAbstractExecutor {
             for (String address : addressArr) {
                 if (address != null && address.trim().length() > 0) {
                     String addressUrl = address.concat(JobsConstant.JOBS_API);
-                    IJobsService jobsAdmin = (IJobsService) new XxlRpcReferenceBean(
+                    IJobsService jobsAdmin = (IJobsService) new JobsRpcReferenceBean(
                             NetEnum.NETTY_HTTP,
                             serializer,
                             CallType.SYNC,
@@ -120,7 +120,7 @@ public abstract class JobsAbstractExecutor {
     private void stopInvokerFactory() {
         // stop invoker factory
         try {
-            XxlRpcInvokerFactory.getInstance().stop();
+            JobsRpcInvokerFactory.getInstance().stop();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -138,7 +138,7 @@ public abstract class JobsAbstractExecutor {
     /**
      * rpc provider factory
      */
-    private XxlRpcProviderFactory XXL_RPC_PROVIDER_FACTORY = null;
+    private JobsRpcProviderFactory XXL_RPC_PROVIDER_FACTORY = null;
 
     private void initRpcProvider(String ip, int port, String appName, String accessToken) throws Exception {
 
@@ -147,7 +147,7 @@ public abstract class JobsAbstractExecutor {
         serviceRegistryParam.put("appName", appName);
         serviceRegistryParam.put("address", IpUtil.getIpPort(ip, port));
 
-        XXL_RPC_PROVIDER_FACTORY = new XxlRpcProviderFactory();
+        XXL_RPC_PROVIDER_FACTORY = new JobsRpcProviderFactory();
         XXL_RPC_PROVIDER_FACTORY.initConfig(NetEnum.NETTY_HTTP, Serializer.SerializeEnum.HESSIAN.getSerializer(),
                 ip, port, accessToken, ExecutorServiceRegistry.class, serviceRegistryParam);
 

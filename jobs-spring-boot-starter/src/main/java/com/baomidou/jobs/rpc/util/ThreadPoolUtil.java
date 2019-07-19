@@ -1,5 +1,7 @@
 package com.baomidou.jobs.rpc.util;
 
+import com.baomidou.jobs.exception.JobsRpcException;
+
 import java.util.concurrent.*;
 
 /**
@@ -29,7 +31,7 @@ public class ThreadPoolUtil {
                 new RejectedExecutionHandler() {
                     @Override
                     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                        throw new XxlRpcException("xxl-rpc "+serverType+" Thread pool is EXHAUSTED!");
+                        throw new JobsRpcException("xxl-rpc "+serverType+" Thread pool is EXHAUSTED!");
                     }
                 });		// default maxThreads 300, minThreads 60
 

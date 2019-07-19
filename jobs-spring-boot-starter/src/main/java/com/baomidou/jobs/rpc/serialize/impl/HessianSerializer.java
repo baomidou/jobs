@@ -3,7 +3,7 @@ package com.baomidou.jobs.rpc.serialize.impl;
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import com.baomidou.jobs.rpc.serialize.Serializer;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
+import com.baomidou.jobs.exception.JobsRpcException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,17 +25,17 @@ public class HessianSerializer extends Serializer {
 			byte[] result = os.toByteArray();
 			return result;
 		} catch (IOException e) {
-			throw new XxlRpcException(e);
+			throw new JobsRpcException(e);
 		} finally {
 			try {
 				ho.close();
 			} catch (IOException e) {
-				throw new XxlRpcException(e);
+				throw new JobsRpcException(e);
 			}
 			try {
 				os.close();
 			} catch (IOException e) {
-				throw new XxlRpcException(e);
+				throw new JobsRpcException(e);
 			}
 		}
 
@@ -49,17 +49,17 @@ public class HessianSerializer extends Serializer {
 			Object result = hi.readObject();
 			return result;
 		} catch (IOException e) {
-			throw new XxlRpcException(e);
+			throw new JobsRpcException(e);
 		} finally {
 			try {
 				hi.close();
 			} catch (Exception e) {
-				throw new XxlRpcException(e);
+				throw new JobsRpcException(e);
 			}
 			try {
 				is.close();
 			} catch (IOException e) {
-				throw new XxlRpcException(e);
+				throw new JobsRpcException(e);
 			}
 		}
 	}

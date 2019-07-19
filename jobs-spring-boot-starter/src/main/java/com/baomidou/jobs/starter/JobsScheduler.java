@@ -1,16 +1,16 @@
 package com.baomidou.jobs.starter;
 
 import com.baomidou.jobs.executor.IJobsExecutor;
+import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
 import com.baomidou.jobs.service.IJobsService;
 import com.baomidou.jobs.service.JobsHeartbeat;
 import com.baomidou.jobs.service.JobsHelper;
-import com.baomidou.jobs.rpc.remoting.invoker.XxlRpcInvokerFactory;
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.invoker.call.CallType;
-import com.baomidou.jobs.rpc.remoting.invoker.reference.XxlRpcReferenceBean;
 import com.baomidou.jobs.rpc.remoting.invoker.route.LoadBalance;
 import com.baomidou.jobs.rpc.remoting.net.NetEnum;
 import com.baomidou.jobs.rpc.remoting.net.impl.servlet.server.ServletServerHandler;
-import com.baomidou.jobs.rpc.remoting.provider.XxlRpcProviderFactory;
+import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import com.baomidou.jobs.rpc.serialize.Serializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
@@ -74,8 +74,8 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
 
     private void initRpcProvider() {
         // init
-        XxlRpcProviderFactory xxlRpcProviderFactory = new XxlRpcProviderFactory();
-        xxlRpcProviderFactory.initConfig(
+        JobsRpcProviderFactory jobsRpcProviderFactory = new JobsRpcProviderFactory();
+        jobsRpcProviderFactory.initConfig(
                 NetEnum.NETTY_HTTP,
                 Serializer.SerializeEnum.HESSIAN.getSerializer(),
                 null,
@@ -85,14 +85,14 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
                 null);
 
         // add services
-        xxlRpcProviderFactory.addService(IJobsService.class.getName(), null, JobsHelper.getJobsService());
+        jobsRpcProviderFactory.addService(IJobsService.class.getName(), null, JobsHelper.getJobsService());
 
         // servlet handler
-        servletServerHandler = new ServletServerHandler(xxlRpcProviderFactory);
+        servletServerHandler = new ServletServerHandler(jobsRpcProviderFactory);
     }
 
     private void stopRpcProvider() throws Exception {
-        XxlRpcInvokerFactory.getInstance().stop();
+        JobsRpcInvokerFactory.getInstance().stop();
     }
 
     public static void invokeAdminService(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -119,7 +119,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
         }
 
         // set-cache
-        jobsExecutor = (IJobsExecutor) new XxlRpcReferenceBean(
+        jobsExecutor = (IJobsExecutor) new JobsRpcReferenceBean(
                 NetEnum.NETTY_HTTP,
                 Serializer.SerializeEnum.HESSIAN.getSerializer(),
                 CallType.SYNC,

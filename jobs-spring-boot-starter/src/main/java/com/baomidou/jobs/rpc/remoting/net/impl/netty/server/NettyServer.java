@@ -3,9 +3,9 @@ package com.baomidou.jobs.rpc.remoting.net.impl.netty.server;
 import com.baomidou.jobs.rpc.remoting.net.Server;
 import com.baomidou.jobs.rpc.remoting.net.impl.netty.codec.NettyDecoder;
 import com.baomidou.jobs.rpc.remoting.net.impl.netty.codec.NettyEncoder;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcRequest;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcResponse;
-import com.baomidou.jobs.rpc.remoting.provider.XxlRpcProviderFactory;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
+import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import com.baomidou.jobs.rpc.util.ThreadPoolUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -16,6 +16,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -24,12 +26,13 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuxueli 2015-10-29 18:17:14
  */
+@Slf4j
 public class NettyServer extends Server {
 
     private Thread thread;
 
     @Override
-    public void start(final XxlRpcProviderFactory xxlRpcProviderFactory) throws Exception {
+    public void start(final JobsRpcProviderFactory xxlRpcProviderFactory) throws Exception {
 
         thread = new Thread(new Runnable() {
             @Override
@@ -50,8 +53,8 @@ public class NettyServer extends Server {
                                 public void initChannel(SocketChannel channel) throws Exception {
                                     channel.pipeline()
                                             .addLast(new IdleStateHandler(0,0,10, TimeUnit.MINUTES))
-                                            .addLast(new NettyDecoder(XxlRpcRequest.class, xxlRpcProviderFactory.getSerializer()))
-                                            .addLast(new NettyEncoder(XxlRpcResponse.class, xxlRpcProviderFactory.getSerializer()))
+                                            .addLast(new NettyDecoder(JobsRpcRequest.class, xxlRpcProviderFactory.getSerializer()))
+                                            .addLast(new NettyEncoder(JobsRpcResponse.class, xxlRpcProviderFactory.getSerializer()))
                                             .addLast(new NettyServerHandler(xxlRpcProviderFactory, serverHandlerPool));
                                 }
                             })
@@ -61,7 +64,7 @@ public class NettyServer extends Server {
                     // bind
                     ChannelFuture future = bootstrap.bind(xxlRpcProviderFactory.getPort()).sync();
 
-                    logger.info(">>>>>>>>>>> xxl-rpc remoting server start success, nettype = {}, port = {}", NettyServer.class.getName(), xxlRpcProviderFactory.getPort());
+                    log.info("Jobs rpc remoting server start success, nettype = {}, port = {}", NettyServer.class.getName(), xxlRpcProviderFactory.getPort());
                     onStarted();
 
                     // wait util stop
@@ -69,9 +72,9 @@ public class NettyServer extends Server {
 
                 } catch (Exception e) {
                     if (e instanceof InterruptedException) {
-                        logger.info(">>>>>>>>>>> xxl-rpc remoting server stop.");
+                        log.info("Jobs rpc remoting server stop.");
                     } else {
-                        logger.error(">>>>>>>>>>> xxl-rpc remoting server error.", e);
+                        log.error("Jobs rpc remoting server error.", e);
                     }
                 } finally {
 
@@ -79,13 +82,13 @@ public class NettyServer extends Server {
                     try {
                         serverHandlerPool.shutdown();    // shutdownNow
                     } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
+                        log.error(e.getMessage(), e);
                     }
                     try {
                         workerGroup.shutdownGracefully();
                         bossGroup.shutdownGracefully();
                     } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
+                        log.error(e.getMessage(), e);
                     }
 
                 }
@@ -106,7 +109,6 @@ public class NettyServer extends Server {
 
         // on stop
         onStoped();
-        logger.info(">>>>>>>>>>> xxl-rpc remoting server destroy success.");
+        log.info("Jobs rpc remoting server destroy success.");
     }
-
 }

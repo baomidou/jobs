@@ -1,7 +1,7 @@
 package com.baomidou.jobs.rpc.remoting.net.impl.netty.client;
 
 import com.baomidou.jobs.rpc.remoting.net.Client;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcRequest;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.common.ConnectClient;
 
 /**
@@ -14,7 +14,7 @@ public class NettyClient extends Client {
 	private Class<? extends ConnectClient> connectClientImpl = NettyConnectClient.class;
 
 	@Override
-	public void asyncSend(String address, XxlRpcRequest xxlRpcRequest) throws Exception {
+	public void asyncSend(String address, JobsRpcRequest xxlRpcRequest) throws Exception {
 		ConnectClient.asyncSend(xxlRpcRequest, address, connectClientImpl, xxlRpcReferenceBean);
 	}
 

@@ -3,7 +3,7 @@ package com.baomidou.jobs.rpc.remoting.invoker.generic;
 /**
  * @author xuxueli 2018-12-04
  */
-public interface XxlRpcGenericService {
+public interface JobsRpcGenericService {
 
     /**
      * generic invoke
@@ -15,6 +15,6 @@ public interface XxlRpcGenericService {
      * @param args
      * @return
      */
-    public Object invoke(String iface, String version, String method, String[] parameterTypes, Object[] args);
+    Object invoke(String iface, String version, String method, String[] parameterTypes, Object[] args);
 
 }

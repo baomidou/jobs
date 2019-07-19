@@ -1,8 +1,8 @@
 package com.baomidou.jobs.rpc.registry.impl;
 
 import com.baomidou.jobs.rpc.registry.ServiceRegistry;
-import com.baomidou.jobs.rpc.registry.client.XxlRegistryClient;
-import com.baomidou.jobs.rpc.registry.client.model.XxlRegistryDataParamVO;
+import com.baomidou.jobs.rpc.registry.client.JobsRegistryClient;
+import com.baomidou.jobs.rpc.registry.client.model.JobsRegistryDataParamVO;
 
 import java.util.*;
 
@@ -11,15 +11,15 @@ import java.util.*;
  *
  * @author xuxueli 2018-11-30
  */
-public class XxlRegistryServiceRegistry extends ServiceRegistry {
+public class JobsRegistryServiceRegistry extends ServiceRegistry {
 
     public static final String XXL_REGISTRY_ADDRESS = "XXL_REGISTRY_ADDRESS";
     public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
     public static final String BIZ = "BIZ";
     public static final String ENV = "ENV";
 
-    private XxlRegistryClient xxlRegistryClient;
-    public XxlRegistryClient getXxlRegistryClient() {
+    private JobsRegistryClient xxlRegistryClient;
+    public JobsRegistryClient getXxlRegistryClient() {
         return xxlRegistryClient;
     }
 
@@ -34,7 +34,7 @@ public class XxlRegistryServiceRegistry extends ServiceRegistry {
         biz = (biz!=null&&biz.trim().length()>0)?biz:"default";
         env = (env!=null&&env.trim().length()>0)?env:"default";
 
-        xxlRegistryClient = new XxlRegistryClient(xxlRegistryAddress, accessToken, biz, env);
+        xxlRegistryClient = new JobsRegistryClient(xxlRegistryAddress, accessToken, biz, env);
     }
 
     @Override
@@ -51,9 +51,9 @@ public class XxlRegistryServiceRegistry extends ServiceRegistry {
         }
 
         // init
-        List<XxlRegistryDataParamVO> registryDataList = new ArrayList<>();
+        List<JobsRegistryDataParamVO> registryDataList = new ArrayList<>();
         for (String key:keys) {
-            registryDataList.add(new XxlRegistryDataParamVO(key, value));
+            registryDataList.add(new JobsRegistryDataParamVO(key, value));
         }
 
         return xxlRegistryClient.registry(registryDataList);
@@ -66,9 +66,9 @@ public class XxlRegistryServiceRegistry extends ServiceRegistry {
         }
 
         // init
-        List<XxlRegistryDataParamVO> registryDataList = new ArrayList<>();
+        List<JobsRegistryDataParamVO> registryDataList = new ArrayList<>();
         for (String key:keys) {
-            registryDataList.add(new XxlRegistryDataParamVO(key, value));
+            registryDataList.add(new JobsRegistryDataParamVO(key, value));
         }
 
         return xxlRegistryClient.remove(registryDataList);

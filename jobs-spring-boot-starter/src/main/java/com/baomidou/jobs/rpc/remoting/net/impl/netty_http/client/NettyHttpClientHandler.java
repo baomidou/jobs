@@ -1,9 +1,9 @@
 package com.baomidou.jobs.rpc.remoting.net.impl.netty_http.client;
 
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.serialize.Serializer;
-import com.baomidou.jobs.rpc.remoting.invoker.XxlRpcInvokerFactory;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcResponse;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
+import com.baomidou.jobs.exception.JobsRpcException;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -21,9 +21,9 @@ public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttp
     private static final Logger logger = LoggerFactory.getLogger(NettyHttpClientHandler.class);
 
 
-    private XxlRpcInvokerFactory xxlRpcInvokerFactory;
+    private JobsRpcInvokerFactory xxlRpcInvokerFactory;
     private Serializer serializer;
-    public NettyHttpClientHandler(final XxlRpcInvokerFactory xxlRpcInvokerFactory, Serializer serializer) {
+    public NettyHttpClientHandler(final JobsRpcInvokerFactory xxlRpcInvokerFactory, Serializer serializer) {
         this.xxlRpcInvokerFactory = xxlRpcInvokerFactory;
         this.serializer = serializer;
     }
@@ -37,11 +37,11 @@ public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttp
 
         // valid
         if (responseBytes.length == 0) {
-            throw new XxlRpcException("xxl-rpc request data empty.");
+            throw new JobsRpcException("xxl-rpc request data empty.");
         }
 
         // response deserialize
-        XxlRpcResponse xxlRpcResponse = (XxlRpcResponse) serializer.deserialize(responseBytes, XxlRpcResponse.class);
+        JobsRpcResponse xxlRpcResponse = (JobsRpcResponse) serializer.deserialize(responseBytes, JobsRpcResponse.class);
 
         // notify response
         xxlRpcInvokerFactory.notifyInvokerFuture(xxlRpcResponse.getRequestId(), xxlRpcResponse);
@@ -51,7 +51,7 @@ public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttp
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         //super.exceptionCaught(ctx, cause);
-        logger.error(">>>>>>>>>>> xxl-rpc netty_http client caught exception", cause);
+        logger.error("Jobs rpc netty_http client caught exception", cause);
         ctx.close();
     }
 
@@ -65,7 +65,7 @@ public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttp
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent){
             ctx.channel().close();      // close idle channel
-            logger.debug(">>>>>>>>>>> xxl-rpc netty_http client close an idle channel.");
+            logger.debug("Jobs rpc netty_http client close an idle channel.");
         } else {
             super.userEventTriggered(ctx, evt);
         }

@@ -1,5 +1,6 @@
 package com.baomidou.jobs.rpc.util;
 
+import com.baomidou.jobs.exception.JobsRpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +38,7 @@ public class NetUtil {
                 portTmp--;
             }
         }
-        throw new XxlRpcException("no available port.");
+        throw new JobsRpcException("no available port.");
     }
 
     /**
@@ -53,7 +54,7 @@ public class NetUtil {
             serverSocket = new ServerSocket(port);
             used = false;
         } catch (IOException e) {
-            logger.info(">>>>>>>>>>> xxl-rpc, port[{}] is in use.", port);
+            logger.info("Jobs rpc, port[{}] is in use.", port);
             used = true;
         } finally {
             if (serverSocket != null) {

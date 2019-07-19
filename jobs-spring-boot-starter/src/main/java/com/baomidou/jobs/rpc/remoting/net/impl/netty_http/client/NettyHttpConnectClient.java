@@ -1,9 +1,9 @@
 package com.baomidou.jobs.rpc.remoting.net.impl.netty_http.client;
 
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.serialize.Serializer;
-import com.baomidou.jobs.rpc.remoting.invoker.XxlRpcInvokerFactory;
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.net.common.ConnectClient;
-import com.baomidou.jobs.rpc.remoting.net.params.XxlRpcRequest;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -34,7 +34,7 @@ public class NettyHttpConnectClient extends ConnectClient {
     private String host;
 
     @Override
-    public void init(String address, final Serializer serializer, final XxlRpcInvokerFactory xxlRpcInvokerFactory) throws Exception {
+    public void init(String address, final Serializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception {
 
         if (!address.toLowerCase().startsWith("http")) {
             address = "http://" + address;	// IP:PORT, need parse to url
@@ -71,7 +71,7 @@ public class NettyHttpConnectClient extends ConnectClient {
             return;
         }
 
-        logger.debug(">>>>>>>>>>> xxl-rpc netty client proxy, connect to server success at host:{}, port:{}", host, port);
+        logger.debug("Jobs rpc netty client proxy, connect to server success at host:{}, port:{}", host, port);
     }
 
 
@@ -92,12 +92,12 @@ public class NettyHttpConnectClient extends ConnectClient {
         if (this.group!=null && !this.group.isShutdown()) {
             this.group.shutdownGracefully();
         }
-        logger.debug(">>>>>>>>>>> xxl-rpc netty client close.");
+        logger.debug("Jobs rpc netty client close.");
     }
 
 
     @Override
-    public void send(XxlRpcRequest xxlRpcRequest) throws Exception {
+    public void send(JobsRpcRequest xxlRpcRequest) throws Exception {
         byte[] requestBytes = serializer.serialize(xxlRpcRequest);
 
         DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST, new URI(address).getRawPath(), Unpooled.wrappedBuffer(requestBytes));

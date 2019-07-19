@@ -1,8 +1,8 @@
 package com.baomidou.jobs.rpc.remoting.net.params;
 
-import com.baomidou.jobs.rpc.remoting.invoker.XxlRpcInvokerFactory;
-import com.baomidou.jobs.rpc.remoting.invoker.call.XxlRpcInvokeCallback;
-import com.baomidou.jobs.rpc.util.XxlRpcException;
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
+import com.baomidou.jobs.rpc.remoting.invoker.call.JobsRpcInvokeCallback;
+import com.baomidou.jobs.exception.JobsRpcException;
 
 import java.util.concurrent.*;
 
@@ -11,23 +11,23 @@ import java.util.concurrent.*;
  *
  * @author xuxueli 2015-11-5 14:26:37
  */
-public class XxlRpcFutureResponse implements Future<XxlRpcResponse> {
+public class JobsRpcFutureResponse implements Future<JobsRpcResponse> {
 
-	private XxlRpcInvokerFactory invokerFactory;
+	private JobsRpcInvokerFactory invokerFactory;
 
 	// net data
-	private XxlRpcRequest request;
-	private XxlRpcResponse response;
+	private JobsRpcRequest request;
+	private JobsRpcResponse response;
 
 	// future lock
 	private boolean done = false;
 	private Object lock = new Object();
 
 	// callback, can be null
-	private XxlRpcInvokeCallback invokeCallback;
+	private JobsRpcInvokeCallback invokeCallback;
 
 
-	public XxlRpcFutureResponse(final XxlRpcInvokerFactory invokerFactory, XxlRpcRequest request, XxlRpcInvokeCallback invokeCallback) {
+	public JobsRpcFutureResponse(final JobsRpcInvokerFactory invokerFactory, JobsRpcRequest request, JobsRpcInvokeCallback invokeCallback) {
 		this.invokerFactory = invokerFactory;
 		this.request = request;
 		this.invokeCallback = invokeCallback;
@@ -49,17 +49,17 @@ public class XxlRpcFutureResponse implements Future<XxlRpcResponse> {
 
 	// ---------------------- get ----------------------
 
-	public XxlRpcRequest getRequest() {
+	public JobsRpcRequest getRequest() {
 		return request;
 	}
-	public XxlRpcInvokeCallback getInvokeCallback() {
+	public JobsRpcInvokeCallback getInvokeCallback() {
 		return invokeCallback;
 	}
 
 
 	// ---------------------- for invoke back ----------------------
 
-	public void setResponse(XxlRpcResponse response) {
+	public void setResponse(JobsRpcResponse response) {
 		this.response = response;
 		synchronized (lock) {
 			done = true;
@@ -88,16 +88,16 @@ public class XxlRpcFutureResponse implements Future<XxlRpcResponse> {
 	}
 
 	@Override
-	public XxlRpcResponse get() throws InterruptedException, ExecutionException {
+	public JobsRpcResponse get() throws InterruptedException, ExecutionException {
 		try {
 			return get(-1, TimeUnit.MILLISECONDS);
 		} catch (TimeoutException e) {
-			throw new XxlRpcException(e);
+			throw new JobsRpcException(e);
 		}
 	}
 
 	@Override
-	public XxlRpcResponse get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+	public JobsRpcResponse get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 		if (!done) {
 			synchronized (lock) {
 				try {
@@ -114,7 +114,7 @@ public class XxlRpcFutureResponse implements Future<XxlRpcResponse> {
 		}
 
 		if (!done) {
-			throw new XxlRpcException("xxl-rpc, request timeout at:"+ System.currentTimeMillis() +", request:" + request.toString());
+			throw new JobsRpcException("xxl-rpc, request timeout at:"+ System.currentTimeMillis() +", request:" + request.toString());
 		}
 		return response;
 	}

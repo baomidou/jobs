@@ -1,12 +1,12 @@
 package com.baomidou.jobs.rpc.remoting.invoker.reference.impl;
 
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.invoker.call.CallType;
-import com.baomidou.jobs.rpc.remoting.invoker.call.XxlRpcInvokeCallback;
+import com.baomidou.jobs.rpc.remoting.invoker.call.JobsRpcInvokeCallback;
+import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
 import com.baomidou.jobs.rpc.remoting.invoker.route.LoadBalance;
 import com.baomidou.jobs.rpc.remoting.net.NetEnum;
 import com.baomidou.jobs.rpc.serialize.Serializer;
-import com.baomidou.jobs.rpc.remoting.invoker.XxlRpcInvokerFactory;
-import com.baomidou.jobs.rpc.remoting.invoker.reference.XxlRpcReferenceBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.InitializingBean;
  *
  * @author xuxueli 2015-10-29 20:18:32
  */
-public class XxlRpcSpringReferenceBean implements FactoryBean<Object>, InitializingBean {
+public class JobsRpcSpringReferenceBean implements FactoryBean<Object>, InitializingBean {
 
 
     // ---------------------- config ----------------------
@@ -33,9 +33,9 @@ public class XxlRpcSpringReferenceBean implements FactoryBean<Object>, Initializ
     private String address;
     private String accessToken;
 
-    private XxlRpcInvokeCallback invokeCallback;
+    private JobsRpcInvokeCallback invokeCallback;
 
-    private XxlRpcInvokerFactory xxlRpcInvokerFactory;
+    private JobsRpcInvokerFactory xxlRpcInvokerFactory;
 
     // set
     public void setNetType(String netType) {
@@ -74,17 +74,17 @@ public class XxlRpcSpringReferenceBean implements FactoryBean<Object>, Initializ
         this.accessToken = accessToken;
     }
 
-    public void setInvokeCallback(XxlRpcInvokeCallback invokeCallback) {
+    public void setInvokeCallback(JobsRpcInvokeCallback invokeCallback) {
         this.invokeCallback = invokeCallback;
     }
 
-    public void setXxlRpcInvokerFactory(XxlRpcInvokerFactory xxlRpcInvokerFactory) {
+    public void setXxlRpcInvokerFactory(JobsRpcInvokerFactory xxlRpcInvokerFactory) {
         this.xxlRpcInvokerFactory = xxlRpcInvokerFactory;
     }
 
     // ---------------------- init ----------------------
 
-    private XxlRpcReferenceBean xxlRpcReferenceBean;
+    private JobsRpcReferenceBean xxlRpcReferenceBean;
     private void init() {
 
         // prepare config
@@ -95,7 +95,7 @@ public class XxlRpcSpringReferenceBean implements FactoryBean<Object>, Initializ
         LoadBalance loadBalanceEnum = LoadBalance.match(loadBalance, null);
 
         // init config
-        xxlRpcReferenceBean = new XxlRpcReferenceBean(
+        xxlRpcReferenceBean = new JobsRpcReferenceBean(
                 netTypeEnum,
                 serializer,
                 callTypeEnum,

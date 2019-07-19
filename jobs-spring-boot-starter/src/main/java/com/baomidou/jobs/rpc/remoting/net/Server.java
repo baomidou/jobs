@@ -1,7 +1,9 @@
 package com.baomidou.jobs.rpc.remoting.net;
 
 import com.baomidou.jobs.rpc.remoting.net.params.BaseCallback;
-import com.baomidou.jobs.rpc.remoting.provider.XxlRpcProviderFactory;
+import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,21 +12,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author xuxueli 2015-11-24 20:59:49
  */
+@Slf4j
+@Setter
 public abstract class Server {
-	protected static final Logger logger = LoggerFactory.getLogger(Server.class);
-
-
 	private BaseCallback startedCallback;
 	private BaseCallback stopedCallback;
-
-	public void setStartedCallback(BaseCallback startedCallback) {
-		this.startedCallback = startedCallback;
-	}
-
-	public void setStopedCallback(BaseCallback stopedCallback) {
-		this.stopedCallback = stopedCallback;
-	}
-
 
 	/**
 	 * start server
@@ -32,7 +24,7 @@ public abstract class Server {
 	 * @param xxlRpcProviderFactory
 	 * @throws Exception
 	 */
-	public abstract void start(final XxlRpcProviderFactory xxlRpcProviderFactory) throws Exception;
+	public abstract void start(final JobsRpcProviderFactory xxlRpcProviderFactory) throws Exception;
 
 	/**
 	 * callback when started
@@ -42,7 +34,7 @@ public abstract class Server {
 			try {
 				startedCallback.run();
 			} catch (Exception e) {
-				logger.error(">>>>>>>>>>> xxl-rpc, server startedCallback error.", e);
+				log.error("Jobs rpc, server startedCallback error.", e);
 			}
 		}
 	}
@@ -62,9 +54,8 @@ public abstract class Server {
 			try {
 				stopedCallback.run();
 			} catch (Exception e) {
-				logger.error(">>>>>>>>>>> xxl-rpc, server stopedCallback error.", e);
+				log.error("Jobs rpc, server stopedCallback error.", e);
 			}
 		}
 	}
-
 }
