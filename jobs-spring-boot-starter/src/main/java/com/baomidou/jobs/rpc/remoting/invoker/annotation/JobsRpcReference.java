@@ -25,7 +25,6 @@ public @interface JobsRpcReference {
 
     LoadBalance loadBalance() default LoadBalance.ROUND;
 
-    //Class<?> iface;
     String version() default "";
 
     long timeout() default 1000;
@@ -33,7 +32,4 @@ public @interface JobsRpcReference {
     String address() default "";
 
     String accessToken() default "";
-
-    //JobsRpcInvokeCallback invokeCallback() ;
-
 }

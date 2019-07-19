@@ -5,6 +5,7 @@ import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import com.baomidou.jobs.rpc.util.ThrowableUtil;
 import com.baomidou.jobs.exception.JobsRpcException;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +21,10 @@ import java.io.OutputStream;
  *
  * @author xuxueli 2015-11-24 22:25:15
  */
+@Slf4j
 public class ServletServerHandler {
-    private static Logger logger = LoggerFactory.getLogger(ServletServerHandler.class);
-
     private JobsRpcProviderFactory xxlRpcProviderFactory;
+
     public ServletServerHandler(JobsRpcProviderFactory xxlRpcProviderFactory) {
         this.xxlRpcProviderFactory = xxlRpcProviderFactory;
     }
@@ -33,17 +34,18 @@ public class ServletServerHandler {
      */
     public void handle(String target, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        if ("/services".equals(target)) {	// services mapping
+        if ("/services".equals(target)) {
+            // services mapping
 
             StringBuffer stringBuffer = new StringBuffer("<ui>");
-            for (String serviceKey: xxlRpcProviderFactory.getServiceData().keySet()) {
+            for (String serviceKey : xxlRpcProviderFactory.getServiceData().keySet()) {
                 stringBuffer.append("<li>").append(serviceKey).append(": ").append(xxlRpcProviderFactory.getServiceData().get(serviceKey)).append("</li>");
             }
             stringBuffer.append("</ui>");
 
             writeResponse(response, stringBuffer.toString().getBytes());
             return;
-        } else {	// default remoting mapping
+        } else {    // default remoting mapping
 
             // request parse
             JobsRpcRequest xxlRpcRequest = null;
@@ -84,8 +86,8 @@ public class ServletServerHandler {
     private JobsRpcRequest parseRequest(HttpServletRequest request) throws Exception {
         // deserialize request
         byte[] requestBytes = readBytes(request);
-        if (requestBytes == null || requestBytes.length==0) {
-            throw new JobsRpcException("xxl-rpc request data is empty.");
+        if (requestBytes == null || requestBytes.length == 0) {
+            throw new JobsRpcException("Jobs rpc request data is empty.");
         }
         JobsRpcRequest rpcXxlRpcRequest = (JobsRpcRequest) xxlRpcProviderFactory.getSerializer().deserialize(requestBytes, JobsRpcRequest.class);
         return rpcXxlRpcRequest;
@@ -116,12 +118,9 @@ public class ServletServerHandler {
                 }
                 return message;
             } catch (IOException e) {
-                logger.error(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
         }
-        return new byte[] {};
+        return new byte[]{};
     }
-
-
-
 }

@@ -1,58 +1,18 @@
 package com.baomidou.jobs.rpc.registry.client.model;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
  * @author xuxueli 2018-12-03
  */
+@Data
 public class JobsRegistryParamVO {
-
-
     private String accessToken;
     private String biz;
     private String env;
-
-
     private List<JobsRegistryDataParamVO> registryDataList;
     private List<String> keys;
 
-    public String getBiz() {
-        return biz;
-    }
-
-    public void setBiz(String biz) {
-        this.biz = biz;
-    }
-
-    public String getEnv() {
-        return env;
-    }
-
-    public void setEnv(String env) {
-        this.env = env;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public List<JobsRegistryDataParamVO> getRegistryDataList() {
-        return registryDataList;
-    }
-
-    public void setRegistryDataList(List<JobsRegistryDataParamVO> registryDataList) {
-        this.registryDataList = registryDataList;
-    }
-
-    public List<String> getKeys() {
-        return keys;
-    }
-
-    public void setKeys(List<String> keys) {
-        this.keys = keys;
-    }
 }

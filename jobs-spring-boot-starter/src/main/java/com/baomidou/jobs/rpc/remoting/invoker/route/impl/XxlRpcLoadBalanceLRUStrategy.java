@@ -1,6 +1,6 @@
 package com.baomidou.jobs.rpc.remoting.invoker.route.impl;
 
-import com.baomidou.jobs.rpc.remoting.invoker.route.XxlRpcLoadBalance;
+import com.baomidou.jobs.rpc.remoting.invoker.route.JobsRpcLoadBalance;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author xuxueli 2018-12-04
  */
-public class XxlRpcLoadBalanceLRUStrategy extends XxlRpcLoadBalance {
+public class XxlRpcLoadBalanceLRUStrategy extends JobsRpcLoadBalance {
 
     private ConcurrentHashMap<String, LinkedHashMap<String, String>> jobLRUMap = new ConcurrentHashMap<String, LinkedHashMap<String, String>>();
     private long CACHE_VALID_TIME = 0;

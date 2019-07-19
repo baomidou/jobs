@@ -37,7 +37,7 @@ public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttp
 
         // valid
         if (responseBytes.length == 0) {
-            throw new JobsRpcException("xxl-rpc request data empty.");
+            throw new JobsRpcException("Jobs rpc request data empty.");
         }
 
         // response deserialize

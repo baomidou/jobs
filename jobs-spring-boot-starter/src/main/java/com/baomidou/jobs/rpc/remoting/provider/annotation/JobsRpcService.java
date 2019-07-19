@@ -20,5 +20,4 @@ public @interface JobsRpcService {
      * @return
      */
     String version() default "";
-
 }

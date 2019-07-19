@@ -15,25 +15,17 @@ public class ThreadPoolUtil {
      * @param serverType
      * @return
      */
-    public static ThreadPoolExecutor makeServerThreadPool(final String serverType){
+    public static ThreadPoolExecutor makeServerThreadPool(final String serverType) {
         ThreadPoolExecutor serverHandlerPool = new ThreadPoolExecutor(
                 60,
                 300,
                 60L,
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<Runnable>(1000),
-                new ThreadFactory() {
-                    @Override
-                    public Thread newThread(Runnable r) {
-                        return new Thread(r, "xxl-rpc, "+serverType+"-serverHandlerPool-" + r.hashCode());
-                    }
-                },
-                new RejectedExecutionHandler() {
-                    @Override
-                    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                        throw new JobsRpcException("xxl-rpc "+serverType+" Thread pool is EXHAUSTED!");
-                    }
-                });		// default maxThreads 300, minThreads 60
+                new LinkedBlockingQueue<>(1000),
+                r -> new Thread(r, "jobs-rpc, " + serverType + "-serverHandlerPool-" + r.hashCode()),
+                (r, executor) -> {
+                    throw new JobsRpcException("jobs-rpc " + serverType + " Thread pool is EXHAUSTED!");
+                });        // default maxThreads 300, minThreads 60
 
         return serverHandlerPool;
     }

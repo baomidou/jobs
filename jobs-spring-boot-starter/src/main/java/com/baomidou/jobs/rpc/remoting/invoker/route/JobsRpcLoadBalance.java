@@ -9,7 +9,7 @@ import java.util.TreeSet;
  *
  * @author xuxueli 2018-12-04
  */
-public abstract class XxlRpcLoadBalance {
+public abstract class JobsRpcLoadBalance {
 
     public abstract String route(String serviceKey, TreeSet<String> addressSet);
 

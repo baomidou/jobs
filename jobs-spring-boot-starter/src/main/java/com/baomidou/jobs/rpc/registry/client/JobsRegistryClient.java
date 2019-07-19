@@ -2,8 +2,7 @@ package com.baomidou.jobs.rpc.registry.client;
 
 import com.baomidou.jobs.rpc.registry.client.model.JobsRegistryDataParamVO;
 import com.baomidou.jobs.rpc.registry.client.util.json.BasicJson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,13 +14,10 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuxueli 2018-12-01 21:48:05
  */
+@Slf4j
 public class JobsRegistryClient {
-    private static Logger logger = LoggerFactory.getLogger(JobsRegistryClient.class);
-
-
     private volatile Set<JobsRegistryDataParamVO> registryData = new HashSet<>();
     private volatile ConcurrentMap<String, TreeSet<String>> discoveryData = new ConcurrentHashMap<>();
-
     private Thread registryThread;
     private Thread discoveryThread;
     private volatile boolean registryThreadStop = false;
@@ -31,34 +27,31 @@ public class JobsRegistryClient {
 
     public JobsRegistryClient(String adminAddress, String accessToken, String biz, String env) {
         registryBaseClient = new JobsRegistryBaseClient(adminAddress, accessToken, biz, env);
-        logger.info(">>>>>>>>>>> xxl-registry, JobsRegistryClient init .... [adminAddress={}, accessToken={}, biz={}, env={}]", adminAddress, accessToken, biz, env);
+        log.info("Jobs registry, JobsRegistryClient init .... [adminAddress={}, accessToken={}, biz={}, env={}]", adminAddress, accessToken, biz, env);
 
         // registry thread
-        registryThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!registryThreadStop) {
-                    try {
-                        if (registryData.size() > 0) {
+        registryThread = new Thread(() -> {
+            while (!registryThreadStop) {
+                try {
+                    if (registryData.size() > 0) {
 
-                            boolean ret = registryBaseClient.registry(new ArrayList<JobsRegistryDataParamVO>(registryData));
-                            logger.debug(">>>>>>>>>>> xxl-registry, refresh registry data {}, registryData = {}", ret?"success":"fail",registryData);
-                        }
-                    } catch (Exception e) {
-                        if (!registryThreadStop) {
-                            logger.error(">>>>>>>>>>> xxl-registry, registryThread error.", e);
-                        }
+                        boolean ret = registryBaseClient.registry(new ArrayList<JobsRegistryDataParamVO>(registryData));
+                        log.debug("Jobs registry, refresh registry data {}, registryData = {}", ret?"success":"fail",registryData);
                     }
-                    try {
-                        TimeUnit.SECONDS.sleep(10);
-                    } catch (Exception e) {
-                        if (!registryThreadStop) {
-                            logger.error(">>>>>>>>>>> xxl-registry, registryThread error.", e);
-                        }
+                } catch (Exception e) {
+                    if (!registryThreadStop) {
+                        log.error("Jobs registry, registryThread error.", e);
                     }
                 }
-                logger.info(">>>>>>>>>>> xxl-registry, registryThread stoped.");
+                try {
+                    TimeUnit.SECONDS.sleep(10);
+                } catch (Exception e) {
+                    if (!registryThreadStop) {
+                        log.error("Jobs registry, registryThread error.", e);
+                    }
+                }
             }
+            log.info("Jobs registry, registryThread stoped.");
         });
         registryThread.setName("xxl-registry, JobsRegistryClient registryThread.");
         registryThread.setDaemon(true);
@@ -75,7 +68,7 @@ public class JobsRegistryClient {
                             TimeUnit.SECONDS.sleep(3);
                         } catch (Exception e) {
                             if (!registryThreadStop) {
-                                logger.error(">>>>>>>>>>> xxl-registry, discoveryThread error.", e);
+                                log.error("Jobs registry, discoveryThread error.", e);
                             }
                         }
                     } else {
@@ -92,20 +85,20 @@ public class JobsRegistryClient {
                             refreshDiscoveryData(discoveryData.keySet());
                         } catch (Exception e) {
                             if (!registryThreadStop) {
-                                logger.error(">>>>>>>>>>> xxl-registry, discoveryThread error.", e);
+                                log.error("Jobs registry, discoveryThread error.", e);
                             }
                         }
                     }
 
                 }
-                logger.info(">>>>>>>>>>> xxl-registry, discoveryThread stoped.");
+                log.info("Jobs registry, discoveryThread stoped.");
             }
         });
         discoveryThread.setName("xxl-registry, JobsRegistryClient discoveryThread.");
         discoveryThread.setDaemon(true);
         discoveryThread.start();
 
-        logger.info(">>>>>>>>>>> xxl-registry, JobsRegistryClient init success.");
+        log.info("Jobs registry, JobsRegistryClient init success.");
     }
 
 
@@ -257,9 +250,9 @@ public class JobsRegistryClient {
         }
 
         if (updatedData.size() > 0) {
-            logger.info(">>>>>>>>>>> xxl-registry, refresh discovery data finish, discoveryData(updated) = {}", updatedData);
+            log.info("Jobs registry, refresh discovery data finish, discoveryData(updated) = {}", updatedData);
         }
-        logger.debug(">>>>>>>>>>> xxl-registry, refresh discovery data finish, discoveryData = {}", discoveryData);
+        log.debug("Jobs registry, refresh discovery data finish, discoveryData = {}", discoveryData);
     }
 
 
@@ -274,6 +267,4 @@ public class JobsRegistryClient {
         }
         return null;
     }
-
-
 }

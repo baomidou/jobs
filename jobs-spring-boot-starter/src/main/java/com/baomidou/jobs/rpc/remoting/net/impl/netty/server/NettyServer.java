@@ -28,69 +28,62 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class NettyServer extends Server {
-
     private Thread thread;
 
     @Override
     public void start(final JobsRpcProviderFactory xxlRpcProviderFactory) throws Exception {
+        thread = new Thread(() -> {
 
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+            // param
+            final ThreadPoolExecutor serverHandlerPool = ThreadPoolUtil.makeServerThreadPool(NettyServer.class.getSimpleName());
+            EventLoopGroup bossGroup = new NioEventLoopGroup();
+            EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-                // param
-                final ThreadPoolExecutor serverHandlerPool = ThreadPoolUtil.makeServerThreadPool(NettyServer.class.getSimpleName());
-                EventLoopGroup bossGroup = new NioEventLoopGroup();
-                EventLoopGroup workerGroup = new NioEventLoopGroup();
+            try {
+                // start server
+                ServerBootstrap bootstrap = new ServerBootstrap();
+                bootstrap.group(bossGroup, workerGroup)
+                        .channel(NioServerSocketChannel.class)
+                        .childHandler(new ChannelInitializer<SocketChannel>() {
+                            @Override
+                            public void initChannel(SocketChannel channel) throws Exception {
+                                channel.pipeline()
+                                        .addLast(new IdleStateHandler(0,0,10, TimeUnit.MINUTES))
+                                        .addLast(new NettyDecoder(JobsRpcRequest.class, xxlRpcProviderFactory.getSerializer()))
+                                        .addLast(new NettyEncoder(JobsRpcResponse.class, xxlRpcProviderFactory.getSerializer()))
+                                        .addLast(new NettyServerHandler(xxlRpcProviderFactory, serverHandlerPool));
+                            }
+                        })
+                        .childOption(ChannelOption.TCP_NODELAY, true)
+                        .childOption(ChannelOption.SO_KEEPALIVE, true);
 
+                // bind
+                ChannelFuture future = bootstrap.bind(xxlRpcProviderFactory.getPort()).sync();
+
+                log.info("Jobs rpc remoting server start success, nettype = {}, port = {}", NettyServer.class.getName(), xxlRpcProviderFactory.getPort());
+                onStarted();
+
+                // wait util stop
+                future.channel().closeFuture().sync();
+
+            } catch (Exception e) {
+                if (e instanceof InterruptedException) {
+                    log.info("Jobs rpc remoting server stop.");
+                } else {
+                    log.error("Jobs rpc remoting server error.", e);
+                }
+            } finally {
+                // stop
                 try {
-                    // start server
-                    ServerBootstrap bootstrap = new ServerBootstrap();
-                    bootstrap.group(bossGroup, workerGroup)
-                            .channel(NioServerSocketChannel.class)
-                            .childHandler(new ChannelInitializer<SocketChannel>() {
-                                @Override
-                                public void initChannel(SocketChannel channel) throws Exception {
-                                    channel.pipeline()
-                                            .addLast(new IdleStateHandler(0,0,10, TimeUnit.MINUTES))
-                                            .addLast(new NettyDecoder(JobsRpcRequest.class, xxlRpcProviderFactory.getSerializer()))
-                                            .addLast(new NettyEncoder(JobsRpcResponse.class, xxlRpcProviderFactory.getSerializer()))
-                                            .addLast(new NettyServerHandler(xxlRpcProviderFactory, serverHandlerPool));
-                                }
-                            })
-                            .childOption(ChannelOption.TCP_NODELAY, true)
-                            .childOption(ChannelOption.SO_KEEPALIVE, true);
-
-                    // bind
-                    ChannelFuture future = bootstrap.bind(xxlRpcProviderFactory.getPort()).sync();
-
-                    log.info("Jobs rpc remoting server start success, nettype = {}, port = {}", NettyServer.class.getName(), xxlRpcProviderFactory.getPort());
-                    onStarted();
-
-                    // wait util stop
-                    future.channel().closeFuture().sync();
-
+                    serverHandlerPool.shutdown();
                 } catch (Exception e) {
-                    if (e instanceof InterruptedException) {
-                        log.info("Jobs rpc remoting server stop.");
-                    } else {
-                        log.error("Jobs rpc remoting server error.", e);
-                    }
-                } finally {
-
-                    // stop
-                    try {
-                        serverHandlerPool.shutdown();    // shutdownNow
-                    } catch (Exception e) {
-                        log.error(e.getMessage(), e);
-                    }
-                    try {
-                        workerGroup.shutdownGracefully();
-                        bossGroup.shutdownGracefully();
-                    } catch (Exception e) {
-                        log.error(e.getMessage(), e);
-                    }
-
+                    log.error(e.getMessage(), e);
+                }
+                try {
+                    workerGroup.shutdownGracefully();
+                    bossGroup.shutdownGracefully();
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
                 }
             }
         });

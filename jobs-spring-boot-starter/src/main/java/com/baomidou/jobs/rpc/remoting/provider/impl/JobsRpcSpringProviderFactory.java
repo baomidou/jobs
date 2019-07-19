@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContextAware;
 import java.util.Map;
 
 /**
- * xxl-rpc provider (for spring)
+ * Jobs rpc provider (for spring)
  *
  * @author xuxueli 2018-10-18 18:09:20
  */
@@ -87,7 +87,7 @@ public class JobsRpcSpringProviderFactory extends JobsRpcProviderFactory impleme
             for (Object serviceBean : serviceBeanMap.values()) {
                 // valid
                 if (serviceBean.getClass().getInterfaces().length ==0) {
-                    throw new JobsRpcException("xxl-rpc, service(JobsRpcService) must inherit interface.");
+                    throw new JobsRpcException("Jobs rpc, service(JobsRpcService) must inherit interface.");
                 }
                 // add service
                 JobsRpcService xxlRpcService = serviceBean.getClass().getAnnotation(JobsRpcService.class);

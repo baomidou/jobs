@@ -19,6 +19,7 @@ public class JobsRegistryServiceRegistry extends ServiceRegistry {
     public static final String ENV = "ENV";
 
     private JobsRegistryClient xxlRegistryClient;
+
     public JobsRegistryClient getXxlRegistryClient() {
         return xxlRegistryClient;
     }
@@ -31,8 +32,8 @@ public class JobsRegistryServiceRegistry extends ServiceRegistry {
         String env = param.get(ENV);
 
         // fill
-        biz = (biz!=null&&biz.trim().length()>0)?biz:"default";
-        env = (env!=null&&env.trim().length()>0)?env:"default";
+        biz = (biz != null && biz.trim().length() > 0) ? biz : "default";
+        env = (env != null && env.trim().length() > 0) ? env : "default";
 
         xxlRegistryClient = new JobsRegistryClient(xxlRegistryAddress, accessToken, biz, env);
     }
@@ -46,13 +47,13 @@ public class JobsRegistryServiceRegistry extends ServiceRegistry {
 
     @Override
     public boolean registry(Set<String> keys, String value) {
-        if (keys==null || keys.size() == 0 || value == null) {
+        if (keys == null || keys.size() == 0 || value == null) {
             return false;
         }
 
         // init
         List<JobsRegistryDataParamVO> registryDataList = new ArrayList<>();
-        for (String key:keys) {
+        for (String key : keys) {
             registryDataList.add(new JobsRegistryDataParamVO(key, value));
         }
 
@@ -61,13 +62,13 @@ public class JobsRegistryServiceRegistry extends ServiceRegistry {
 
     @Override
     public boolean remove(Set<String> keys, String value) {
-        if (keys==null || keys.size() == 0 || value == null) {
+        if (keys == null || keys.size() == 0 || value == null) {
             return false;
         }
 
         // init
         List<JobsRegistryDataParamVO> registryDataList = new ArrayList<>();
-        for (String key:keys) {
+        for (String key : keys) {
             registryDataList.add(new JobsRegistryDataParamVO(key, value));
         }
 

@@ -1,6 +1,6 @@
 package com.baomidou.jobs.rpc.remoting.invoker.route.impl;
 
-import com.baomidou.jobs.rpc.remoting.invoker.route.XxlRpcLoadBalance;
+import com.baomidou.jobs.rpc.remoting.invoker.route.JobsRpcLoadBalance;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -16,7 +16,7 @@ import java.util.*;
  *
  * @author xuxueli 2018-12-04
  */
-public class XxlRpcLoadBalanceConsistentHashStrategy extends XxlRpcLoadBalance {
+public class XxlRpcLoadBalanceConsistentHashStrategy extends JobsRpcLoadBalance {
 
     private int VIRTUAL_NODE_NUM = 5;
 

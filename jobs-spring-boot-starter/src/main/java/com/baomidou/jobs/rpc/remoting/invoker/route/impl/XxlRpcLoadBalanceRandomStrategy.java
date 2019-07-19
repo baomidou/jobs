@@ -1,6 +1,6 @@
 package com.baomidou.jobs.rpc.remoting.invoker.route.impl;
 
-import com.baomidou.jobs.rpc.remoting.invoker.route.XxlRpcLoadBalance;
+import com.baomidou.jobs.rpc.remoting.invoker.route.JobsRpcLoadBalance;
 
 import java.util.Random;
 import java.util.TreeSet;
@@ -10,7 +10,7 @@ import java.util.TreeSet;
  *
  * @author xuxueli 2018-12-04
  */
-public class XxlRpcLoadBalanceRandomStrategy extends XxlRpcLoadBalance {
+public class XxlRpcLoadBalanceRandomStrategy extends JobsRpcLoadBalance {
 
     private Random random = new Random();
 

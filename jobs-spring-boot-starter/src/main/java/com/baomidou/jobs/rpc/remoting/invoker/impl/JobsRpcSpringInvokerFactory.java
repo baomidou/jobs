@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * xxl-rpc invoker factory, init service-registry and spring-bean by annotation (for spring)
+ * Jobs rpc invoker factory, init service-registry and spring-bean by annotation (for spring)
  *
  * @author xuxueli 2018-10-19
  */
@@ -69,7 +69,7 @@ public class JobsRpcSpringInvokerFactory extends InstantiationAwareBeanPostProce
                     // valid
                     Class iface = field.getType();
                     if (!iface.isInterface()) {
-                        throw new JobsRpcException("xxl-rpc, reference(JobsRpcReference) must be interface.");
+                        throw new JobsRpcException("Jobs rpc, reference(JobsRpcReference) must be interface.");
                     }
 
                     JobsRpcReference rpcReference = field.getAnnotation(JobsRpcReference.class);

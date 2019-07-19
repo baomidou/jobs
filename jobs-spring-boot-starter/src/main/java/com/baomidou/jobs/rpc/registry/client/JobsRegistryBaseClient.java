@@ -4,6 +4,7 @@ import com.baomidou.jobs.rpc.registry.client.model.JobsRegistryDataParamVO;
 import com.baomidou.jobs.rpc.registry.client.model.JobsRegistryParamVO;
 import com.baomidou.jobs.rpc.registry.client.util.BasicHttpUtil;
 import com.baomidou.jobs.rpc.registry.client.util.json.BasicJson;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,10 +15,8 @@ import java.util.*;
  *
  * @author xuxueli 2018-12-01 21:40:04
  */
+@Slf4j
 public class JobsRegistryBaseClient {
-    private static Logger logger = LoggerFactory.getLogger(JobsRegistryBaseClient.class);
-
-
     private String adminAddress;
     private String accessToken;
     private String biz;
@@ -114,7 +113,7 @@ public class JobsRegistryBaseClient {
                     || !resopnseMap.containsKey("code")
                     || !"200".equals(String.valueOf(resopnseMap.get("code")))
                     ) {
-                logger.warn("JobsRegistryBaseClient response fail, responseData={}", responseData);
+                log.warn("JobsRegistryBaseClient response fail, responseData={}", responseData);
                 return null;
             }
 

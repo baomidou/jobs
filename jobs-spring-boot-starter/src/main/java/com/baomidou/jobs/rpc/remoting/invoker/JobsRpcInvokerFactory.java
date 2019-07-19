@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 /**
- * xxl-rpc invoker factory, init service-registry
+ * Jobs rpc invoker factory, init service-registry
  *
  * @author xuxueli 2018-10-19
  */
@@ -156,9 +156,9 @@ public class JobsRpcInvokerFactory {
                             60L,
                             TimeUnit.SECONDS,
                             new LinkedBlockingQueue<Runnable>(1000),
-                            r -> new Thread(r, "xxl-rpc, JobsRpcInvokerFactory-responseCallbackThreadPool-" + r.hashCode()),
+                            r -> new Thread(r, "Jobs rpc, JobsRpcInvokerFactory-responseCallbackThreadPool-" + r.hashCode()),
                             (r, executor) -> {
-                                throw new JobsRpcException("xxl-rpc Invoke Callback Thread pool is EXHAUSTED!");
+                                throw new JobsRpcException("Jobs rpc Invoke Callback Thread pool is EXHAUSTED!");
                             });		// default maxThreads 300, minThreads 60
                 }
             }

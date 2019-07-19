@@ -35,7 +35,9 @@ public class JobsRpcProviderFactory {
 
 
 	public JobsRpcProviderFactory() {
+		// to do nothing
 	}
+
 	public void initConfig(NetEnum netType,
 						  Serializer serializer,
 						  String ip,
@@ -55,10 +57,10 @@ public class JobsRpcProviderFactory {
 
 		// valid
 		if (this.netType==null) {
-			throw new JobsRpcException("xxl-rpc provider netType missing.");
+			throw new JobsRpcException("Jobs rpc provider netType missing.");
 		}
 		if (this.serializer==null) {
-			throw new JobsRpcException("xxl-rpc provider serializer missing.");
+			throw new JobsRpcException("Jobs rpc provider serializer missing.");
 		}
 		if (this.ip == null) {
 			this.ip = IpUtil.getIp();
@@ -67,11 +69,11 @@ public class JobsRpcProviderFactory {
 			this.port = 7080;
 		}
 		if (NetUtil.isPortUsed(this.port)) {
-			throw new JobsRpcException("xxl-rpc provider port["+ this.port +"] is used.");
+			throw new JobsRpcException("Jobs rpc provider port["+ this.port +"] is used.");
 		}
 		if (this.serviceRegistryClass != null) {
 			if (this.serviceRegistryParam == null) {
-				throw new JobsRpcException("xxl-rpc provider serviceRegistryParam is missing.");
+				throw new JobsRpcException("Jobs rpc provider serviceRegistryParam is missing.");
 			}
 		}
 
@@ -111,7 +113,8 @@ public class JobsRpcProviderFactory {
 				}
 			}
 		});
-		server.setStopedCallback(new BaseCallback() {		// serviceRegistry stoped
+		server.setStopedCallback(new BaseCallback() {
+			// serviceRegistry stoped
 			@Override
 			public void run() {
 				// stop registry
@@ -138,7 +141,7 @@ public class JobsRpcProviderFactory {
 	/**
 	 * init local rpc service map
 	 */
-	private Map<String, Object> serviceData = new HashMap<String, Object>();
+	private Map<String, Object> serviceData = new HashMap<>();
 	public Map<String, Object> getServiceData() {
 		return serviceData;
 	}
@@ -219,7 +222,7 @@ public class JobsRpcProviderFactory {
 
 			xxlRpcResponse.setResult(result);
 		} catch (Throwable t) {
-			log.error("xxl-rpc provider invokeService error.", t);
+			log.error("Jobs rpc provider invokeService error.", t);
 			xxlRpcResponse.setErrorMsg(ThrowableUtil.toString(t));
 		}
 

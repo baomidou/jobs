@@ -31,265 +31,264 @@ import java.util.concurrent.TimeUnit;
  * @author xuxueli 2015-10-29 20:18:32
  */
 public class JobsRpcReferenceBean {
-	private static final Logger logger = LoggerFactory.getLogger(JobsRpcReferenceBean.class);
-	// [tips01: save 30ms/100invoke. why why why??? with this logger, it can save lots of time.]
+    private static final Logger logger = LoggerFactory.getLogger(JobsRpcReferenceBean.class);
+    // [tips01: save 30ms/100invoke. why why why??? with this logger, it can save lots of time.]
 
 
-	// ---------------------- config ----------------------
+    // ---------------------- config ----------------------
 
-	private NetEnum netType;
-	private Serializer serializer;
-	private CallType callType;
-	private LoadBalance loadBalance;
+    private NetEnum netType;
+    private Serializer serializer;
+    private CallType callType;
+    private LoadBalance loadBalance;
 
-	private Class<?> iface;
-	private String version;
+    private Class<?> iface;
+    private String version;
 
-	private long timeout = 1000;
+    private long timeout = 1000;
 
-	private String address;
-	private String accessToken;
+    private String address;
+    private String accessToken;
 
-	private JobsRpcInvokeCallback invokeCallback;
+    private JobsRpcInvokeCallback invokeCallback;
 
-	private JobsRpcInvokerFactory invokerFactory;
+    private JobsRpcInvokerFactory invokerFactory;
 
-	public JobsRpcReferenceBean(NetEnum netType,
-								Serializer serializer,
-								CallType callType,
-								LoadBalance loadBalance,
-								Class<?> iface,
-								String version,
-								long timeout,
-								String address,
-								String accessToken,
-								JobsRpcInvokeCallback invokeCallback,
-								JobsRpcInvokerFactory invokerFactory
-	) {
+    public JobsRpcReferenceBean(NetEnum netType,
+                                Serializer serializer,
+                                CallType callType,
+                                LoadBalance loadBalance,
+                                Class<?> iface,
+                                String version,
+                                long timeout,
+                                String address,
+                                String accessToken,
+                                JobsRpcInvokeCallback invokeCallback,
+                                JobsRpcInvokerFactory invokerFactory
+    ) {
 
-		this.netType = netType;
-		this.serializer = serializer;
-		this.callType = callType;
-		this.loadBalance = loadBalance;
-		this.iface = iface;
-		this.version = version;
-		this.timeout = timeout;
-		this.address = address;
-		this.accessToken = accessToken;
-		this.invokeCallback = invokeCallback;
-		this.invokerFactory = invokerFactory;
+        this.netType = netType;
+        this.serializer = serializer;
+        this.callType = callType;
+        this.loadBalance = loadBalance;
+        this.iface = iface;
+        this.version = version;
+        this.timeout = timeout;
+        this.address = address;
+        this.accessToken = accessToken;
+        this.invokeCallback = invokeCallback;
+        this.invokerFactory = invokerFactory;
 
-		// valid
-		if (this.netType==null) {
-			throw new JobsRpcException("xxl-rpc reference netType missing.");
-		}
-		if (this.serializer==null) {
-			throw new JobsRpcException("xxl-rpc reference serializer missing.");
-		}
-		if (this.callType==null) {
-			throw new JobsRpcException("xxl-rpc reference callType missing.");
-		}
-		if (this.loadBalance==null) {
-			throw new JobsRpcException("xxl-rpc reference loadBalance missing.");
-		}
-		if (this.iface==null) {
-			throw new JobsRpcException("xxl-rpc reference iface missing.");
-		}
-		if (this.timeout < 0) {
-			this.timeout = 0;
-		}
-		if (this.invokerFactory == null) {
-			this.invokerFactory = JobsRpcInvokerFactory.getInstance();
-		}
+        // valid
+        if (this.netType == null) {
+            throw new JobsRpcException("Jobs rpc reference netType missing.");
+        }
+        if (this.serializer == null) {
+            throw new JobsRpcException("Jobs rpc reference serializer missing.");
+        }
+        if (this.callType == null) {
+            throw new JobsRpcException("Jobs rpc reference callType missing.");
+        }
+        if (this.loadBalance == null) {
+            throw new JobsRpcException("Jobs rpc reference loadBalance missing.");
+        }
+        if (this.iface == null) {
+            throw new JobsRpcException("Jobs rpc reference iface missing.");
+        }
+        if (this.timeout < 0) {
+            this.timeout = 0;
+        }
+        if (this.invokerFactory == null) {
+            this.invokerFactory = JobsRpcInvokerFactory.getInstance();
+        }
 
-		// init Client
-		initClient();
-	}
+        // init Client
+        initClient();
+    }
 
-	// get
-	public Serializer getSerializer() {
-		return serializer;
-	}
-	public long getTimeout() {
-		return timeout;
-	}
+    // get
+    public Serializer getSerializer() {
+        return serializer;
+    }
 
-	public JobsRpcInvokerFactory getInvokerFactory() {
-		return invokerFactory;
-	}
+    public long getTimeout() {
+        return timeout;
+    }
 
-	// ---------------------- initClient ----------------------
+    public JobsRpcInvokerFactory getInvokerFactory() {
+        return invokerFactory;
+    }
 
-	Client client = null;
+    // ---------------------- initClient ----------------------
 
-	private void initClient() {
-		try {
-			client = netType.clientClass.newInstance();
-			client.init(this);
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new JobsRpcException(e);
-		}
-	}
+    Client client = null;
+
+    private void initClient() {
+        try {
+            client = netType.clientClass.newInstance();
+            client.init(this);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new JobsRpcException(e);
+        }
+    }
 
 
-	// ---------------------- util ----------------------
+    // ---------------------- util ----------------------
 
-	public Object getObject() {
-		return Proxy.newProxyInstance(Thread.currentThread()
-				.getContextClassLoader(), new Class[] { iface },
-				new InvocationHandler() {
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object getObject() {
+        return Proxy.newProxyInstance(Thread.currentThread()
+                        .getContextClassLoader(), new Class[]{iface},
+                new InvocationHandler() {
+                    @Override
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-						// method param
-						String className = method.getDeclaringClass().getName();	// iface.getName()
-						String varsion_ = version;
-						String methodName = method.getName();
-						Class<?>[] parameterTypes = method.getParameterTypes();
-						Object[] parameters = args;
+                        // method param
+                        String className = method.getDeclaringClass().getName();    // iface.getName()
+                        String varsion_ = version;
+                        String methodName = method.getName();
+                        Class<?>[] parameterTypes = method.getParameterTypes();
+                        Object[] parameters = args;
 
-						// filter for generic
-						if (className.equals(JobsRpcGenericService.class.getName()) && methodName.equals("invoke")) {
+                        // filter for generic
+                        if (className.equals(JobsRpcGenericService.class.getName()) && methodName.equals("invoke")) {
 
-							Class<?>[] paramTypes = null;
-							if (args[3]!=null) {
-								String[] paramTypes_str = (String[]) args[3];
-								if (paramTypes_str.length > 0) {
-									paramTypes = new Class[paramTypes_str.length];
-									for (int i = 0; i < paramTypes_str.length; i++) {
-										paramTypes[i] = ClassUtil.resolveClass(paramTypes_str[i]);
-									}
-								}
-							}
+                            Class<?>[] paramTypes = null;
+                            if (args[3] != null) {
+                                String[] paramTypes_str = (String[]) args[3];
+                                if (paramTypes_str.length > 0) {
+                                    paramTypes = new Class[paramTypes_str.length];
+                                    for (int i = 0; i < paramTypes_str.length; i++) {
+                                        paramTypes[i] = ClassUtil.resolveClass(paramTypes_str[i]);
+                                    }
+                                }
+                            }
 
-							className = (String) args[0];
-							varsion_ = (String) args[1];
-							methodName = (String) args[2];
-							parameterTypes = paramTypes;
-							parameters = (Object[]) args[4];
-						}
+                            className = (String) args[0];
+                            varsion_ = (String) args[1];
+                            methodName = (String) args[2];
+                            parameterTypes = paramTypes;
+                            parameters = (Object[]) args[4];
+                        }
 
-						// filter method like "Object.toString()"
-						if (className.equals(Object.class.getName())) {
-							logger.info("Jobs rpc proxy class-method not support [{}#{}]", className, methodName);
-							throw new JobsRpcException("xxl-rpc proxy class-method not support");
-						}
+                        // filter method like "Object.toString()"
+                        if (className.equals(Object.class.getName())) {
+                            logger.info("Jobs rpc proxy class-method not support [{}#{}]", className, methodName);
+                            throw new JobsRpcException("Jobs rpc proxy class-method not support");
+                        }
 
-						// address
-						String finalAddress = address;
-						if (finalAddress==null || finalAddress.trim().length()==0) {
-							if (invokerFactory!=null && invokerFactory.getServiceRegistry()!=null) {
-								// discovery
-								String serviceKey = JobsRpcProviderFactory.makeServiceKey(className, varsion_);
-								TreeSet<String> addressSet = invokerFactory.getServiceRegistry().discovery(serviceKey);
-								// load balance
-								if (addressSet==null || addressSet.size()==0) {
-									// pass
-								} else if (addressSet.size()==1) {
-									finalAddress = addressSet.first();
-								} else {
-									finalAddress = loadBalance.xxlRpcInvokerRouter.route(serviceKey, addressSet);
-								}
+                        // address
+                        String finalAddress = address;
+                        if (finalAddress == null || finalAddress.trim().length() == 0) {
+                            if (invokerFactory != null && invokerFactory.getServiceRegistry() != null) {
+                                // discovery
+                                String serviceKey = JobsRpcProviderFactory.makeServiceKey(className, varsion_);
+                                TreeSet<String> addressSet = invokerFactory.getServiceRegistry().discovery(serviceKey);
+                                // load balance
+                                if (addressSet == null || addressSet.size() == 0) {
+                                    // pass
+                                } else if (addressSet.size() == 1) {
+                                    finalAddress = addressSet.first();
+                                } else {
+                                    finalAddress = loadBalance.xxlRpcInvokerRouter.route(serviceKey, addressSet);
+                                }
 
-							}
-						}
-						if (finalAddress==null || finalAddress.trim().length()==0) {
-							throw new JobsRpcException("xxl-rpc reference bean["+ className +"] address empty");
-						}
+                            }
+                        }
+                        if (finalAddress == null || finalAddress.trim().length() == 0) {
+                            throw new JobsRpcException("Jobs rpc reference bean[" + className + "] address empty");
+                        }
 
-						// request
-						JobsRpcRequest xxlRpcRequest = new JobsRpcRequest();
-	                    xxlRpcRequest.setRequestId(UUID.randomUUID().toString());
-	                    xxlRpcRequest.setCreateMillisTime(System.currentTimeMillis());
-	                    xxlRpcRequest.setAccessToken(accessToken);
-	                    xxlRpcRequest.setClassName(className);
-	                    xxlRpcRequest.setMethodName(methodName);
-	                    xxlRpcRequest.setParameterTypes(parameterTypes);
-	                    xxlRpcRequest.setParameters(parameters);
-	                    
-	                    // send
-						if (CallType.SYNC == callType) {
-							// future-response set
-							JobsRpcFutureResponse futureResponse = new JobsRpcFutureResponse(invokerFactory, xxlRpcRequest, null);
-							try {
-								// do invoke
-								client.asyncSend(finalAddress, xxlRpcRequest);
+                        // request
+                        JobsRpcRequest xxlRpcRequest = new JobsRpcRequest();
+                        xxlRpcRequest.setRequestId(UUID.randomUUID().toString());
+                        xxlRpcRequest.setCreateMillisTime(System.currentTimeMillis());
+                        xxlRpcRequest.setAccessToken(accessToken);
+                        xxlRpcRequest.setClassName(className);
+                        xxlRpcRequest.setMethodName(methodName);
+                        xxlRpcRequest.setParameterTypes(parameterTypes);
+                        xxlRpcRequest.setParameters(parameters);
 
-								// future get
-								JobsRpcResponse xxlRpcResponse = futureResponse.get(timeout, TimeUnit.MILLISECONDS);
-								if (xxlRpcResponse.getErrorMsg() != null) {
-									throw new JobsRpcException(xxlRpcResponse.getErrorMsg());
-								}
-								return xxlRpcResponse.getResult();
-							} catch (Exception e) {
-								logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, xxlRpcRequest);
-
-								throw (e instanceof JobsRpcException)?e:new JobsRpcException(e);
-							} finally{
-								// future-response remove
-								futureResponse.removeInvokerFuture();
-							}
-						} else if (CallType.FUTURE == callType) {
-							// future-response set
-							JobsRpcFutureResponse futureResponse = new JobsRpcFutureResponse(invokerFactory, xxlRpcRequest, null);
+                        // send
+                        if (CallType.SYNC == callType) {
+                            // future-response set
+                            JobsRpcFutureResponse futureResponse = new JobsRpcFutureResponse(invokerFactory, xxlRpcRequest, null);
                             try {
-								// invoke future set
-								JobsRpcInvokeFuture invokeFuture = new JobsRpcInvokeFuture(futureResponse);
-								JobsRpcInvokeFuture.setFuture(invokeFuture);
+                                // do invoke
+                                client.asyncSend(finalAddress, xxlRpcRequest);
+
+                                // future get
+                                JobsRpcResponse xxlRpcResponse = futureResponse.get(timeout, TimeUnit.MILLISECONDS);
+                                if (xxlRpcResponse.getErrorMsg() != null) {
+                                    throw new JobsRpcException(xxlRpcResponse.getErrorMsg());
+                                }
+                                return xxlRpcResponse.getResult();
+                            } catch (Exception e) {
+                                logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, xxlRpcRequest);
+
+                                throw (e instanceof JobsRpcException) ? e : new JobsRpcException(e);
+                            } finally {
+                                // future-response remove
+                                futureResponse.removeInvokerFuture();
+                            }
+                        } else if (CallType.FUTURE == callType) {
+                            // future-response set
+                            JobsRpcFutureResponse futureResponse = new JobsRpcFutureResponse(invokerFactory, xxlRpcRequest, null);
+                            try {
+                                // invoke future set
+                                JobsRpcInvokeFuture invokeFuture = new JobsRpcInvokeFuture(futureResponse);
+                                JobsRpcInvokeFuture.setFuture(invokeFuture);
 
                                 // do invoke
                                 client.asyncSend(finalAddress, xxlRpcRequest);
 
                                 return null;
                             } catch (Exception e) {
-								logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, xxlRpcRequest);
+                                logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, xxlRpcRequest);
 
-								// future-response remove
-								futureResponse.removeInvokerFuture();
+                                // future-response remove
+                                futureResponse.removeInvokerFuture();
 
-								throw (e instanceof JobsRpcException)?e:new JobsRpcException(e);
+                                throw (e instanceof JobsRpcException) ? e : new JobsRpcException(e);
                             }
 
-						} else if (CallType.CALLBACK == callType) {
+                        } else if (CallType.CALLBACK == callType) {
 
-							// get callback
-							JobsRpcInvokeCallback finalInvokeCallback = invokeCallback;
-							JobsRpcInvokeCallback threadInvokeCallback = JobsRpcInvokeCallback.getCallback();
-							if (threadInvokeCallback != null) {
-								finalInvokeCallback = threadInvokeCallback;
-							}
-							if (finalInvokeCallback == null) {
-								throw new JobsRpcException("xxl-rpc JobsRpcInvokeCallback（CallType="+ CallType.CALLBACK.name() +"） cannot be null.");
-							}
+                            // get callback
+                            JobsRpcInvokeCallback finalInvokeCallback = invokeCallback;
+                            JobsRpcInvokeCallback threadInvokeCallback = JobsRpcInvokeCallback.getCallback();
+                            if (threadInvokeCallback != null) {
+                                finalInvokeCallback = threadInvokeCallback;
+                            }
+                            if (finalInvokeCallback == null) {
+                                throw new JobsRpcException("Jobs rpc JobsRpcInvokeCallback（CallType=" + CallType.CALLBACK.name() + "） cannot be null.");
+                            }
 
-							// future-response set
-							JobsRpcFutureResponse futureResponse = new JobsRpcFutureResponse(invokerFactory, xxlRpcRequest, finalInvokeCallback);
-							try {
-								client.asyncSend(finalAddress, xxlRpcRequest);
-							} catch (Exception e) {
-								logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, xxlRpcRequest);
+                            // future-response set
+                            JobsRpcFutureResponse futureResponse = new JobsRpcFutureResponse(invokerFactory, xxlRpcRequest, finalInvokeCallback);
+                            try {
+                                client.asyncSend(finalAddress, xxlRpcRequest);
+                            } catch (Exception e) {
+                                logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, xxlRpcRequest);
 
-								// future-response remove
-								futureResponse.removeInvokerFuture();
+                                // future-response remove
+                                futureResponse.removeInvokerFuture();
 
-								throw (e instanceof JobsRpcException)?e:new JobsRpcException(e);
-							}
+                                throw (e instanceof JobsRpcException) ? e : new JobsRpcException(e);
+                            }
 
-							return null;
-						} else if (CallType.ONEWAY == callType) {
+                            return null;
+                        } else if (CallType.ONEWAY == callType) {
                             client.asyncSend(finalAddress, xxlRpcRequest);
                             return null;
                         } else {
-							throw new JobsRpcException("xxl-rpc callType["+ callType +"] invalid");
-						}
+                            throw new JobsRpcException("Jobs rpc callType[" + callType + "] invalid");
+                        }
 
-					}
-				});
-	}
+                    }
+                });
+    }
 
-
-	public Class<?> getObjectType() {
-		return iface;
-	}
-
+    public Class<?> getObjectType() {
+        return iface;
+    }
 }

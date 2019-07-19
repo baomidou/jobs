@@ -114,7 +114,7 @@ public class JobsRpcFutureResponse implements Future<JobsRpcResponse> {
 		}
 
 		if (!done) {
-			throw new JobsRpcException("xxl-rpc, request timeout at:"+ System.currentTimeMillis() +", request:" + request.toString());
+			throw new JobsRpcException("Jobs rpc, request timeout at:"+ System.currentTimeMillis() +", request:" + request.toString());
 		}
 		return response;
 	}

@@ -8,7 +8,7 @@ import java.util.TreeSet;
 /**
  * service registry
  *
- *  /xxl-rpc/dev/
+ *  /Jobs rpc/dev/
  *              - key01(service01)
  *                  - value01 (ip:port01)
  *                  - value02 (ip:port02)

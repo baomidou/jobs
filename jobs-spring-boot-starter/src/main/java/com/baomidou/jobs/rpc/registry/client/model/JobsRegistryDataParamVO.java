@@ -6,11 +6,8 @@ import java.util.Objects;
  * @author xuxueli 2018-12-03
  */
 public class JobsRegistryDataParamVO {
-
-
     private String key;
     private String value;
-
 
     public JobsRegistryDataParamVO() {
     }
