@@ -79,7 +79,6 @@ public class JobsTrigger {
         String address = null;
         List<String> registryList = jobsService.getAppAddressList(jobsInfo.getApp());
         if (null != registryList) {
-            registryList.add("127.0.0.1:9999");
             address = JobsHelper.getJobsExecutorRouter().route(jobsInfo.getApp(), registryList);
         }
 

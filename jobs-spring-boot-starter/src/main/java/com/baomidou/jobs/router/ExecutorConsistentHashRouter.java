@@ -33,7 +33,7 @@ public class ExecutorConsistentHashRouter implements IJobsExecutorRouter {
         ConsistentHash<String> consistentHash = new ConsistentHash(nodeCount);
         consistentHash.add(addressList);
         String address = consistentHash.getNode(app + new Random().nextInt(nodeCount));
-        log.info("{} Consistent Hash Address [ {} ]", app, address);
+        log.debug("{} Consistent Hash Address [ {} ]", app, address);
         return address;
     }
 }
