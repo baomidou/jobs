@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Data
 @ToString
 public class RegistryParam implements Serializable {
+    private RegisterStatusEnum registerStatusEnum = RegisterStatusEnum.ENABLED;
     private String app;
     private String address;
 

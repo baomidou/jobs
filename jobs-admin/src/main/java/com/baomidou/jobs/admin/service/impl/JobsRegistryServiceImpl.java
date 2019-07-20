@@ -39,8 +39,8 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService {
     }
 
     @Override
-    public int save(String app, String address) {
-        return jobRegistryMapper.insert(new JobsRegistry().setApp(app).setStatus(0)
+    public int save(String app, String address, int status) {
+        return jobRegistryMapper.insert(new JobsRegistry().setApp(app).setStatus(status)
                 .setAddress(address).setUpdateTime(JobsClock.currentTimeMillis()));
     }
 }

@@ -61,7 +61,7 @@ public class JobsInfo implements Serializable {
 	 */
 	private String remark;
 	/**
-	 * 状态：0、运行 1、停止
+	 * 状态：0、启用 1、已禁用
 	 */
 	private Integer status;
 	/**

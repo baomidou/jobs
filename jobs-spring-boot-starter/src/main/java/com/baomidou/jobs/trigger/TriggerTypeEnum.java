@@ -6,7 +6,6 @@ package com.baomidou.jobs.trigger;
  * @author xuxueli 2018-09-16 04:56:41
  */
 public enum TriggerTypeEnum {
-
     MANUAL("手动触发"),
     CRON("Cron触发"),
     RETRY("失败重试触发"),

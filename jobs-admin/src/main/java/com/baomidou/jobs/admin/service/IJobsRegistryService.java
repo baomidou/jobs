@@ -28,6 +28,6 @@ public interface IJobsRegistryService {
 
     int update(String app, String address, int status);
 
-    int save(String app, String address);
+    int save(String app, String address, int status);
 
 }

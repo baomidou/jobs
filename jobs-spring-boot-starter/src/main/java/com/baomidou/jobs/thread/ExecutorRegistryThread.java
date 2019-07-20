@@ -2,6 +2,7 @@ package com.baomidou.jobs.thread;
 
 import com.baomidou.jobs.JobsConstant;
 import com.baomidou.jobs.executor.JobsAbstractExecutor;
+import com.baomidou.jobs.model.param.RegisterStatusEnum;
 import com.baomidou.jobs.model.param.RegistryParam;
 import com.baomidou.jobs.service.IJobsService;
 import lombok.extern.slf4j.Slf4j;
@@ -79,6 +80,7 @@ public class ExecutorRegistryThread {
                 RegistryParam registryParam = new RegistryParam(appName, address);
                 for (IJobsService jobsService : JobsAbstractExecutor.getJobsServiceList()) {
                     try {
+                        registryParam.setRegisterStatusEnum(RegisterStatusEnum.DISABLED);
                         if (jobsService.removeApp(registryParam)) {
                             log.info("Jobs registry-remove success, registryParam:{}", registryParam);
                             break;

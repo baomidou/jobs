@@ -1,13 +1,11 @@
 package com.baomidou.jobs.admin.service.impl;
 
-import com.baomidou.jobs.JobsClock;
 import com.baomidou.jobs.admin.service.IJobsInfoService;
 import com.baomidou.jobs.admin.service.IJobsLockService;
 import com.baomidou.jobs.admin.service.IJobsLogService;
 import com.baomidou.jobs.admin.service.IJobsRegistryService;
 import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.jobs.model.JobsLog;
-import com.baomidou.jobs.model.param.HandleCallbackParam;
 import com.baomidou.jobs.model.param.RegistryParam;
 import com.baomidou.jobs.service.IJobsService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,39 +33,12 @@ public class JobsServiceImpl implements IJobsService {
     public IJobsLogService jobsLogService;
 
     @Override
-    public boolean callback(List<HandleCallbackParam> handleCallbackParamList) {
-        for (HandleCallbackParam handleCallbackParam : handleCallbackParamList) {
-            boolean callbackResult = callback(handleCallbackParam);
-            log.debug("callback {}, handleCallbackParam={}, callbackResult={}",
-                    callbackResult, handleCallbackParam, callbackResult);
-        }
-        return true;
-    }
-
-    private boolean callback(HandleCallbackParam handleCallbackParam) {
-        // valid log item
-        JobsLog log = jobsLogService.getById(handleCallbackParam.getLogId());
-        if (log == null) {
-            return false;
-        }
-        if (log.getTriggerCode() > 0) {
-            // avoid repeat callback, trigger child job etc
-            return false;
-        }
-
-        // success, save log
-        log.setHandleTime(JobsClock.currentTimeMillis());
-        log.setHandleCode(handleCallbackParam.getExecuteResult().getCode());
-        log.setHandleMsg(handleCallbackParam.getExecuteResult().getMsg());
-        jobsLogService.updateById(log);
-        return true;
-    }
-
-    @Override
     public boolean registry(RegistryParam registryParam) {
-        int ret = jobsRegistryService.update(registryParam.getApp(), registryParam.getAddress(), 0);
+        int ret = jobsRegistryService.update(registryParam.getApp(), registryParam.getAddress(),
+                registryParam.getRegisterStatusEnum().getValue());
         if (ret < 1) {
-            ret = jobsRegistryService.save(registryParam.getApp(), registryParam.getAddress());
+            ret = jobsRegistryService.save(registryParam.getApp(), registryParam.getAddress(),
+                registryParam.getRegisterStatusEnum().getValue());
         }
         return ret > 0;
     }
@@ -104,8 +75,8 @@ public class JobsServiceImpl implements IJobsService {
 
     @Override
     public boolean removeApp(RegistryParam registryParam) {
-        return jobsRegistryService.update(registryParam.getApp(),
-                registryParam.getAddress(), 1) > 0;
+        return jobsRegistryService.update(registryParam.getApp(), registryParam.getAddress(),
+                registryParam.getRegisterStatusEnum().getValue()) > 0;
     }
 
     @Override

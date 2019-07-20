@@ -3,7 +3,6 @@ package com.baomidou.jobs.service;
 import com.baomidou.jobs.JobsConstant;
 import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.jobs.model.JobsLog;
-import com.baomidou.jobs.model.param.HandleCallbackParam;
 import com.baomidou.jobs.model.param.RegistryParam;
 
 import java.util.List;
@@ -16,14 +15,6 @@ import java.util.UUID;
  * @since 2019-07-18
  */
 public interface IJobsService {
-
-    /**
-     * 调度回调
-     *
-     * @param handleCallbackParamList 回调参数列表
-     * @return
-     */
-    boolean callback(List<HandleCallbackParam> handleCallbackParamList);
 
     /**
      * 节点注册
