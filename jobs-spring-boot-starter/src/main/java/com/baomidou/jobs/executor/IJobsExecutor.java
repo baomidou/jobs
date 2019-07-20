@@ -1,22 +1,21 @@
 package com.baomidou.jobs.executor;
 
-import com.baomidou.jobs.model.param.TriggerParam;
 import com.baomidou.jobs.api.JobsResponse;
+import com.baomidou.jobs.model.param.TriggerParam;
 
 /**
- * Jobs executor interface
- * 
+ * Jobs 执行器
+ *
  * @author jobob
- * @since 2019-07-22
+ * @since 2019-07-13
  */
 public interface IJobsExecutor {
 
     /**
-     * 调度运行
+     * 执行任务调度
      *
      * @param triggerParam 触发参数
      * @return
      */
     JobsResponse<String> run(TriggerParam triggerParam);
-
 }

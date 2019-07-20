@@ -1,5 +1,6 @@
 package com.baomidou.jobs.admin.service.impl;
 
+import com.baomidou.jobs.JobsClock;
 import com.baomidou.jobs.admin.service.IJobsInfoService;
 import com.baomidou.jobs.admin.service.IJobsLockService;
 import com.baomidou.jobs.admin.service.IJobsLogService;
@@ -13,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,19 +55,10 @@ public class JobsServiceImpl implements IJobsService {
             return false;
         }
 
-        // handle msg
-        StringBuffer handleMsg = new StringBuffer();
-        if (log.getHandleMsg() != null) {
-            handleMsg.append(log.getHandleMsg()).append(",");
-        }
-        if (handleCallbackParam.getExecuteResult().getMsg() != null) {
-            handleMsg.append(handleCallbackParam.getExecuteResult().getMsg());
-        }
-
         // success, save log
-        log.setHandleTime(new Date());
+        log.setHandleTime(JobsClock.currentTimeMillis());
         log.setHandleCode(handleCallbackParam.getExecuteResult().getCode());
-        log.setHandleMsg(handleMsg.toString());
+        log.setHandleMsg(handleCallbackParam.getExecuteResult().getMsg());
         jobsLogService.updateById(log);
         return true;
     }
@@ -128,8 +119,8 @@ public class JobsServiceImpl implements IJobsService {
             return false;
         }
         if (null == jobsLog.getId()) {
-            return jobsLogService.updateById(jobsLog);
+            return jobsLogService.save(jobsLog);
         }
-        return jobsLogService.save(jobsLog);
+        return jobsLogService.updateById(jobsLog);
     }
 }

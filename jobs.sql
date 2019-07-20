@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 16/07/2019 23:44:43
+ Date: 20/07/2019 00:32:48
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,6 @@ CREATE TABLE `jobs_info` (
   `cron` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务执行CRON',
   `handler` varchar(255) DEFAULT NULL COMMENT '执行器任务handler',
   `param` varchar(512) DEFAULT NULL COMMENT '执行器任务参数',
-  `route_strategy` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '执行器路由策略',
   `timeout` int(11) NOT NULL DEFAULT '0' COMMENT '任务执行超时时间，单位秒',
   `fail_retry_count` int(11) NOT NULL DEFAULT '0' COMMENT '失败重试次数',
   `last_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '上次调度时间',
@@ -44,7 +43,7 @@ CREATE TABLE `jobs_info` (
 -- Records of jobs_info
 -- ----------------------------
 BEGIN;
-INSERT INTO `jobs_info` VALUES (3, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 'FIRST', 30, 3, 1563291740000, 1563291750000, 'jobs', '测试', 0, 1563152000000, 1563152000000);
+INSERT INTO `jobs_info` VALUES (3, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 30, 3, 1563549960000, 1563549970000, 'jobs', '测试', 0, 1563152000000, 1563152000000);
 COMMIT;
 
 -- ----------------------------
@@ -53,12 +52,12 @@ COMMIT;
 DROP TABLE IF EXISTS `jobs_lock`;
 CREATE TABLE `jobs_lock` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
-  `owner` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '持有者',
+  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
+  `owner` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '持有者',
   `create_time` bigint(20) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2542 DEFAULT CHARSET=utf8 COMMENT='任务锁';
+) ENGINE=InnoDB AUTO_INCREMENT=39134 DEFAULT CHARSET=utf8 COMMENT='任务锁';
 
 -- ----------------------------
 -- Table structure for jobs_log
@@ -81,7 +80,7 @@ CREATE TABLE `jobs_log` (
   PRIMARY KEY (`id`),
   KEY `I_trigger_time` (`trigger_time`),
   KEY `I_handle_code` (`handle_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务调度日志';
+) ENGINE=InnoDB AUTO_INCREMENT=450 DEFAULT CHARSET=utf8 COMMENT='任务调度日志';
 
 -- ----------------------------
 -- Table structure for jobs_registry
@@ -93,13 +92,13 @@ CREATE TABLE `jobs_registry` (
   `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'IP 地址',
   `update_time` bigint(20) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='任务注册信息';
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8 COMMENT='任务注册信息';
 
 -- ----------------------------
 -- Records of jobs_registry
 -- ----------------------------
 BEGIN;
-INSERT INTO `jobs_registry` VALUES (6, 'jobs-executor-sample', '192.168.0.6:9999', 1563291738416);
+INSERT INTO `jobs_registry` VALUES (186, 'jobs-executor-sample', '192.168.0.6:9999', 1563549950902);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

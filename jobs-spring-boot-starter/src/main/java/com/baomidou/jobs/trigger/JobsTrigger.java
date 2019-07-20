@@ -8,12 +8,10 @@ import com.baomidou.jobs.handler.IJobsAlarmHandler;
 import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.jobs.model.JobsLog;
 import com.baomidou.jobs.model.param.TriggerParam;
-import com.baomidou.jobs.router.ExecutorRouteStrategyEnum;
+import com.baomidou.jobs.rpc.util.ThrowableUtil;
 import com.baomidou.jobs.service.IJobsService;
 import com.baomidou.jobs.service.JobsHelper;
 import com.baomidou.jobs.starter.JobsScheduler;
-import com.baomidou.jobs.rpc.util.IpUtil;
-import com.baomidou.jobs.rpc.util.ThrowableUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -59,8 +57,6 @@ public class JobsTrigger {
      * @param triggerType
      */
     private static boolean processTrigger(JobsInfo jobsInfo, int finalFailRetryCount, TriggerTypeEnum triggerType) {
-        // route strategy
-        ExecutorRouteStrategyEnum executorRouteStrategyEnum = ExecutorRouteStrategyEnum.match(jobsInfo.getRouteStrategy(), null);
         IJobsService jobsService = JobsHelper.getJobsService();
 
         // 1、save log-id
@@ -80,21 +76,17 @@ public class JobsTrigger {
         triggerParam.setLogDateTime(JobsClock.currentTimeMillis());
 
         // 3、init address
-        String routeAddressResultMsg = "";
         String address = null;
         List<String> registryList = jobsService.getAppAddressList(jobsInfo.getApp());
         if (null != registryList) {
-            JobsResponse<String> routeAddressResult = executorRouteStrategyEnum.getRouter()
-                    .route(triggerParam, registryList);
-            if (routeAddressResult.getCode() == JobsConstant.CODE_SUCCESS) {
-                address = routeAddressResult.getData();
-            }
-            routeAddressResultMsg = routeAddressResult.getMsg();
+            registryList.add("127.0.0.1:9999");
+            address = JobsHelper.getJobsExecutorRouter().route(jobsInfo.getApp(), registryList);
         }
 
         // 4、trigger remote executor
         JobsResponse<String> triggerResult;
         if (address != null) {
+            jobLog.setTriggerTime(JobsClock.currentTimeMillis());
             triggerResult = runExecutor(triggerParam, address);
             /**
              * 调度失败、触发报警处理器
@@ -109,24 +101,13 @@ public class JobsTrigger {
             triggerResult = JobsResponse.failed("Trigger address is null");
         }
 
-        // 5、collection trigger info
-        StringBuffer triggerMsgSb = new StringBuffer();
-        triggerMsgSb.append("任务触发类型：").append(triggerType.getTitle());
-        triggerMsgSb.append(",调度机器：").append(IpUtil.getIp());
-        triggerMsgSb.append(",执行器-地址列表：").append(registryList);
-        triggerMsgSb.append(",路由策略：").append(executorRouteStrategyEnum.getTitle());
-        triggerMsgSb.append(",任务超时时间：").append(jobsInfo.getTimeout());
-        triggerMsgSb.append(",失败重试次数：").append(finalFailRetryCount);
-        triggerMsgSb.append(",触发调度：").append(routeAddressResultMsg);
-        triggerMsgSb.append(triggerResult.getMsg());
-
-        // 6、save log trigger-info
+        // 5、save log trigger-info
         jobLog.setExecutorAddress(address);
         jobLog.setExecutorHandler(jobsInfo.getHandler());
         jobLog.setExecutorParam(jobsInfo.getParam());
         jobLog.setExecutorFailRetryCount(finalFailRetryCount);
         jobLog.setTriggerCode(triggerResult.getCode());
-        jobLog.setTriggerMsg(triggerMsgSb.toString());
+        jobLog.setTriggerMsg(triggerResult.getMsg());
         jobsService.saveOrUpdateLogById(jobLog);
 
         log.debug("Jobs trigger end, jobId:{}", jobLog.getId());

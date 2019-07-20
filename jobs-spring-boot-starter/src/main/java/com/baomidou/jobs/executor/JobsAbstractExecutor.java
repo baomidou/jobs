@@ -1,20 +1,19 @@
 package com.baomidou.jobs.executor;
 
 import com.baomidou.jobs.JobsConstant;
-import com.baomidou.jobs.executor.impl.JobsExecutorImpl;
 import com.baomidou.jobs.handler.IJobsHandler;
-import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
-import com.baomidou.jobs.service.IJobsService;
-import com.baomidou.jobs.thread.ExecutorRegistryThread;
 import com.baomidou.jobs.rpc.registry.ServiceRegistry;
 import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.invoker.call.CallType;
+import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
 import com.baomidou.jobs.rpc.remoting.invoker.route.LoadBalance;
 import com.baomidou.jobs.rpc.remoting.net.NetEnum;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import com.baomidou.jobs.rpc.serialize.Serializer;
 import com.baomidou.jobs.rpc.util.IpUtil;
 import com.baomidou.jobs.rpc.util.NetUtil;
+import com.baomidou.jobs.service.IJobsService;
+import com.baomidou.jobs.thread.ExecutorRegistryThread;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -152,7 +151,7 @@ public abstract class JobsAbstractExecutor {
                 ip, port, accessToken, ExecutorServiceRegistry.class, serviceRegistryParam);
 
         // add services
-        XXL_RPC_PROVIDER_FACTORY.addService(IJobsExecutor.class.getName(), null, new JobsExecutorImpl());
+        XXL_RPC_PROVIDER_FACTORY.addService(IJobsExecutor.class.getName(), null, new JobsExecutor());
 
         // start
         XXL_RPC_PROVIDER_FACTORY.start();

@@ -13,10 +13,8 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class JobsSpringExecutor extends JobsAbstractExecutor implements ApplicationContextAware {
 
-
     @Override
     public void start() throws Exception {
-
         // init JobsHandler Repository
         initJobHandlerRepository(applicationContext);
 
@@ -48,5 +46,4 @@ public class JobsSpringExecutor extends JobsAbstractExecutor implements Applicat
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
-
 }

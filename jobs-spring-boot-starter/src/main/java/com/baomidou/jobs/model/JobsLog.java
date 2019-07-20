@@ -43,7 +43,7 @@ public class JobsLog implements Serializable {
 	/**
 	 * 处理器
 	 */
-	private Date handleTime;
+	private Long handleTime;
 	private Integer handleCode;
 	private String handleMsg;
 

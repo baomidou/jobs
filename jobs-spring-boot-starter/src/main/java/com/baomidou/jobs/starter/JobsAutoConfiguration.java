@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class JobsAutoConfiguration {
 
     @Bean(initMethod = "start", destroyMethod = "destroy")
-    public JobsSpringExecutor xxlJobExecutor(JobsProperties jobsProperties) {
+    public JobsSpringExecutor jobsSpringExecutor(JobsProperties jobsProperties) {
         JobsSpringExecutor jobsSpringExecutor = new JobsSpringExecutor();
         jobsSpringExecutor.setAccessToken(jobsProperties.getAdminAccessToken());
         jobsSpringExecutor.setAdminAddress(jobsProperties.getAdminAddress());

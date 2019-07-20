@@ -37,10 +37,6 @@ public class JobsInfo implements Serializable {
 	 */
 	private String param;
 	/**
-	 * 执行器路由策略
-	 */
-	private String routeStrategy;
-	/**
 	 * 任务执行超时时间，单位秒
 	 */
 	private Integer timeout;

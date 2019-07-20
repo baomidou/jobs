@@ -1,5 +1,7 @@
 package com.baomidou.jobs.disruptor;
 
+import com.baomidou.jobs.router.ExecutorConsistentHashRouter;
+import com.baomidou.jobs.router.IJobsExecutorRouter;
 import com.baomidou.jobs.starter.JobsProperties;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SleepingWaitStrategy;
@@ -41,6 +43,12 @@ public class JobsDisruptorAutoConfiguration {
     @ConditionalOnMissingBean
     public JobsEventHandler jobsEventHandler() {
         return new JobsEventHandler();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IJobsExecutorRouter jobsExecutorRouter() {
+        return new ExecutorConsistentHashRouter();
     }
 
     @Bean

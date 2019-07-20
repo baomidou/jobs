@@ -78,7 +78,7 @@ public class TriggerCallbackThread {
 
             // last callback
             try {
-                List<HandleCallbackParam> callbackParamList = new ArrayList<HandleCallbackParam>();
+                List<HandleCallbackParam> callbackParamList = new ArrayList<>();
                 int drainToNum = getInstance().callBackQueue.drainTo(callbackParamList);
                 if (callbackParamList != null && callbackParamList.size() > 0) {
                     doCallback(callbackParamList);
