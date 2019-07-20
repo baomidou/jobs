@@ -15,11 +15,8 @@ import java.io.Serializable;
 @ToString
 public class TriggerParam implements Serializable{
     private Long jobId;
-    private String executorHandler;
-    private String executorParams;
-    private int executorTimeout;
-
-    private Long logId;
-    private Long logDateTime;
+    private String handler;
+    private String param;
+    private int timeout;
 
 }

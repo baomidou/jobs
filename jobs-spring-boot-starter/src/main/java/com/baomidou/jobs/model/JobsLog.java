@@ -26,27 +26,29 @@ public class JobsLog implements Serializable {
 	 */
 	private Long jobId;
 	/**
-	 * 执行器
+	 * 执行器地址
 	 */
-	private String executorAddress;
-	private String executorHandler;
-	private String executorParam;
-	private Integer executorFailRetryCount;
-
+	private String address;
 	/**
-	 * 触发器
+	 * 执行器，任务 Handler 名称
+	 */
+	private String handler;
+	/**
+	 * 执行器，任务参数
+	 */
+	private String param;
+	/**
+	 * 失败重试次数
+	 */
+	private Integer failRetryCount;
+	/**
+	 * 触发器调度返回码
 	 */
 	private Integer triggerCode;
-	private String triggerMsg;
-	private Long triggerTime;
-
 	/**
-	 * 处理器
+	 * 触发器调度返回信息
 	 */
-	private Long handleTime;
-	private Integer handleCode;
-	private String handleMsg;
-
+	private String triggerMsg;
 	/**
 	 * 创建时间
 	 */

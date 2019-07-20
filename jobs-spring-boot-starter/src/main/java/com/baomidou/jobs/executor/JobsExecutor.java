@@ -23,9 +23,9 @@ public class JobsExecutor implements IJobsExecutor {
      */
     @Override
     public JobsResponse<String> run(TriggerParam triggerParam) {
-        IJobsHandler jobsHandler = JobsAbstractExecutor.getJobsHandler(triggerParam.getExecutorHandler());
+        IJobsHandler jobsHandler = JobsAbstractExecutor.getJobsHandler(triggerParam.getHandler());
         try {
-            return jobsHandler.execute(triggerParam.getExecutorParams());
+            return jobsHandler.execute(triggerParam.getParam());
         } catch (Exception e) {
             return JobsResponse.failed(JobsHelper.getErrorInfo(e));
         }

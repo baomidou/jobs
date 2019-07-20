@@ -63,17 +63,14 @@ public class JobsTrigger {
         JobsLog jobLog = new JobsLog();
         jobLog.setJobId(jobsInfo.getId());
         jobLog.setCreateTime(JobsClock.currentTimeMillis());
-        jobsService.saveOrUpdateLogById(jobLog);
         log.debug("Jobs trigger start, jobId:{}", jobLog.getId());
 
         // 2、init trigger-param
         TriggerParam triggerParam = new TriggerParam();
         triggerParam.setJobId(jobsInfo.getId());
-        triggerParam.setExecutorHandler(jobsInfo.getHandler());
-        triggerParam.setExecutorParams(jobsInfo.getParam());
-        triggerParam.setExecutorTimeout(jobsInfo.getTimeout());
-        triggerParam.setLogId(jobLog.getId());
-        triggerParam.setLogDateTime(JobsClock.currentTimeMillis());
+        triggerParam.setHandler(jobsInfo.getHandler());
+        triggerParam.setParam(jobsInfo.getParam());
+        triggerParam.setTimeout(jobsInfo.getTimeout());
 
         // 3、init address
         String address = null;
@@ -84,8 +81,7 @@ public class JobsTrigger {
 
         // 4、trigger remote executor
         JobsResponse<String> triggerResult;
-        if (address != null) {
-            jobLog.setTriggerTime(JobsClock.currentTimeMillis());
+        if (null != address) {
             triggerResult = runExecutor(triggerParam, address);
             /**
              * 调度失败、触发报警处理器
@@ -95,18 +91,17 @@ public class JobsTrigger {
             }
         } else {
             triggerResult = JobsResponse.failed("Trigger address is null");
-            jobsAlarmHandler(jobsInfo, address, triggerResult);
+            jobsAlarmHandler(jobsInfo, null, triggerResult);
         }
 
         // 5、save log trigger-info
-        jobLog.setExecutorAddress(address);
-        jobLog.setExecutorHandler(jobsInfo.getHandler());
-        jobLog.setExecutorParam(jobsInfo.getParam());
-        jobLog.setExecutorFailRetryCount(finalFailRetryCount);
+        jobLog.setAddress(address);
+        jobLog.setHandler(jobsInfo.getHandler());
+        jobLog.setParam(jobsInfo.getParam());
+        jobLog.setFailRetryCount(finalFailRetryCount);
         jobLog.setTriggerCode(triggerResult.getCode());
         jobLog.setTriggerMsg(triggerResult.getMsg());
         jobsService.saveOrUpdateLogById(jobLog);
-
         log.debug("Jobs trigger end, jobId:{}", jobLog.getId());
         return true;
     }
