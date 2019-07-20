@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 20/07/2019 00:32:48
+ Date: 20/07/2019 17:22:19
 */
 
 SET NAMES utf8mb4;
@@ -43,7 +43,7 @@ CREATE TABLE `jobs_info` (
 -- Records of jobs_info
 -- ----------------------------
 BEGIN;
-INSERT INTO `jobs_info` VALUES (3, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 30, 3, 1563549960000, 1563549970000, 'jobs', '测试', 0, 1563152000000, 1563152000000);
+INSERT INTO `jobs_info` VALUES (3, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 30, 3, 1563614120000, 1563614130000, 'jobs', '测试', 0, 1563152000000, 1563152000000);
 COMMIT;
 
 -- ----------------------------
@@ -57,7 +57,7 @@ CREATE TABLE `jobs_lock` (
   `create_time` bigint(20) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=39134 DEFAULT CHARSET=utf8 COMMENT='任务锁';
+) ENGINE=InnoDB AUTO_INCREMENT=53427 DEFAULT CHARSET=utf8 COMMENT='任务锁';
 
 -- ----------------------------
 -- Table structure for jobs_log
@@ -80,7 +80,7 @@ CREATE TABLE `jobs_log` (
   PRIMARY KEY (`id`),
   KEY `I_trigger_time` (`trigger_time`),
   KEY `I_handle_code` (`handle_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=450 DEFAULT CHARSET=utf8 COMMENT='任务调度日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务调度日志';
 
 -- ----------------------------
 -- Table structure for jobs_registry
@@ -90,15 +90,9 @@ CREATE TABLE `jobs_registry` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键 ID',
   `app` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '服务名',
   `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'IP 地址',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态 0、正常 1、不可用',
   `update_time` bigint(20) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8 COMMENT='任务注册信息';
-
--- ----------------------------
--- Records of jobs_registry
--- ----------------------------
-BEGIN;
-INSERT INTO `jobs_registry` VALUES (186, 'jobs-executor-sample', '192.168.0.6:9999', 1563549950902);
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=204 DEFAULT CHARSET=utf8 COMMENT='任务注册信息';
 
 SET FOREIGN_KEY_CHECKS = 1;

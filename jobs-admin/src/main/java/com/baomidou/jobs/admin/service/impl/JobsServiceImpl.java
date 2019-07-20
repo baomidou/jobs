@@ -65,7 +65,7 @@ public class JobsServiceImpl implements IJobsService {
 
     @Override
     public boolean registry(RegistryParam registryParam) {
-        int ret = jobsRegistryService.update(registryParam.getApp(), registryParam.getAddress());
+        int ret = jobsRegistryService.update(registryParam.getApp(), registryParam.getAddress(), 0);
         if (ret < 1) {
             ret = jobsRegistryService.save(registryParam.getApp(), registryParam.getAddress());
         }
@@ -104,8 +104,8 @@ public class JobsServiceImpl implements IJobsService {
 
     @Override
     public boolean removeApp(RegistryParam registryParam) {
-        int result = jobsRegistryService.remove(registryParam.getApp(), registryParam.getAddress());
-        return result > 0;
+        return jobsRegistryService.update(registryParam.getApp(),
+                registryParam.getAddress(), 1) > 0;
     }
 
     @Override

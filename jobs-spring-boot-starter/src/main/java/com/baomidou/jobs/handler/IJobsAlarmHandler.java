@@ -15,10 +15,10 @@ public interface IJobsAlarmHandler {
     /**
      * 调度失败
      *
-     * @param jobInfo      任务信息
+     * @param jobsInfo     任务信息
      * @param address      调度地址
      * @param jobsResponse 异常响应
      * @return
      */
-    boolean failed(JobsInfo jobInfo, String address, JobsResponse<String> jobsResponse);
+    boolean failed(JobsInfo jobsInfo, String address, JobsResponse<String> jobsResponse);
 }

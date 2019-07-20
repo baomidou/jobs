@@ -134,7 +134,7 @@ public interface IJobsService {
     }
 
     /**
-     * 删除超时数据
+     * 移除超时节点
      *
      * @param timeout 超时时长
      * @return
@@ -142,7 +142,7 @@ public interface IJobsService {
     int removeTimeOutApp(int timeout);
 
     /**
-     * 删除对应客户端
+     * 移除节点
      *
      * @param registryParam 注册参数
      * @return

@@ -26,9 +26,8 @@ public interface IJobsRegistryService {
      */
     List<String> listAddress(String app);
 
-    int update(String app, String address);
+    int update(String app, String address, int status);
 
     int save(String app, String address);
 
-    int remove(String app, String address);
 }

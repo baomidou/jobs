@@ -91,13 +91,11 @@ public class JobsTrigger {
              * 调度失败、触发报警处理器
              */
             if (triggerResult.getCode() == JobsConstant.CODE_FAILED) {
-                IJobsAlarmHandler jobsAlarmHandler = JobsHelper.getJobsAlarmHandler();
-                if (null != jobsAlarmHandler) {
-                    jobsAlarmHandler.failed(jobsInfo, address, triggerResult);
-                }
+                jobsAlarmHandler(jobsInfo, address, triggerResult);
             }
         } else {
             triggerResult = JobsResponse.failed("Trigger address is null");
+            jobsAlarmHandler(jobsInfo, address, triggerResult);
         }
 
         // 5、save log trigger-info
@@ -111,6 +109,13 @@ public class JobsTrigger {
 
         log.debug("Jobs trigger end, jobId:{}", jobLog.getId());
         return true;
+    }
+
+    public static void jobsAlarmHandler(JobsInfo jobsInfo, String address, JobsResponse<String> jobsResponse) {
+        IJobsAlarmHandler jobsAlarmHandler = JobsHelper.getJobsAlarmHandler();
+        if (null != jobsAlarmHandler) {
+            jobsAlarmHandler.failed(jobsInfo, address, jobsResponse);
+        }
     }
 
     /**

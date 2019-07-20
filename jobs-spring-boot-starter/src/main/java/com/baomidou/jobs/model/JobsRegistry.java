@@ -29,6 +29,10 @@ public class JobsRegistry implements Serializable {
      */
     private String address;
     /**
+     * 状态：0、正常 1、不可用
+     */
+    private Integer status;
+    /**
      * 更新时间
      */
     private Long updateTime;
