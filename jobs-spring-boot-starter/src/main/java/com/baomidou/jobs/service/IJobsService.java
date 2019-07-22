@@ -4,6 +4,8 @@ import com.baomidou.jobs.JobsConstant;
 import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.jobs.model.JobsLog;
 import com.baomidou.jobs.model.param.RegistryParam;
+import com.baomidou.jobs.trigger.JobsTrigger;
+import com.baomidou.jobs.trigger.TriggerTypeEnum;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +25,17 @@ public interface IJobsService {
      * @return
      */
     boolean registry(RegistryParam registryParam);
+
+    /**
+     * 手动触发任务ID执行
+     *
+     * @param jobId 任务ID
+     * @param param 执行参数
+     * @return
+     */
+    default boolean execute(Long jobId, String param) {
+        return JobsTrigger.trigger(jobId, TriggerTypeEnum.MANUAL, -1, param);
+    }
 
     /**
      * 待调度任务列表
