@@ -58,11 +58,11 @@ public class JobsHelper implements InitializingBean {
         return JOB_HELPER._jobsDisruptorTemplate;
     }
 
-    public static String getErrorInfo(Exception e) {
+    public static String getErrorInfo(Throwable t) {
         try {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
+            t.printStackTrace(pw);
             String str = sw.toString();
             sw.close();
             pw.close();

@@ -1,6 +1,7 @@
 package com.baomidou.jobs.executor;
 
 import com.baomidou.jobs.api.JobsResponse;
+import com.baomidou.jobs.exception.JobsException;
 import com.baomidou.jobs.model.param.TriggerParam;
 
 /**
@@ -17,5 +18,5 @@ public interface IJobsExecutor {
      * @param triggerParam 触发参数
      * @return
      */
-    JobsResponse<String> run(TriggerParam triggerParam);
+    JobsResponse<String> run(TriggerParam triggerParam) throws JobsException;
 }

@@ -1,6 +1,7 @@
 package com.baomidou.jobs.sample.handler;
 
 import com.baomidou.jobs.api.JobsResponse;
+import com.baomidou.jobs.exception.JobsException;
 import com.baomidou.jobs.handler.IJobsHandler;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class DemoJobHandler implements IJobsHandler {
 
     @Override
-    public JobsResponse<String> execute(String param) throws Exception {
+    public JobsResponse<String> execute(String param) throws JobsException {
         System.out.println("执行 DemoJobHandler");
         return JobsResponse.ok();
     }

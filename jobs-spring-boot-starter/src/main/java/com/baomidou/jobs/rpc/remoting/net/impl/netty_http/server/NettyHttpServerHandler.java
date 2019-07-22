@@ -3,8 +3,8 @@ package com.baomidou.jobs.rpc.remoting.net.impl.netty_http.server;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import com.baomidou.jobs.exception.JobsRpcException;
-import com.baomidou.jobs.rpc.util.ThrowableUtil;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
+import com.baomidou.jobs.service.JobsHelper;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -95,7 +95,7 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
             // response error
             JobsRpcResponse xxlRpcResponse = new JobsRpcResponse();
             xxlRpcResponse.setRequestId(requestId);
-            xxlRpcResponse.setErrorMsg(ThrowableUtil.toString(e));
+            xxlRpcResponse.setErrorMsg(JobsHelper.getErrorInfo(e));
 
             // response serialize
             byte[] responseBytes = xxlRpcProviderFactory.getSerializer().serialize(xxlRpcResponse);

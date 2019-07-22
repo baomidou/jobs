@@ -105,7 +105,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
      */
     private static Map<String, IJobsExecutor> JOBS_EXECUTOR = new ConcurrentHashMap<>();
 
-    public static IJobsExecutor getJobsExecutor(String address) throws Exception {
+    public static IJobsExecutor getJobsExecutor(String address) {
         // valid
         if (address == null || address.trim().length() == 0) {
             return null;

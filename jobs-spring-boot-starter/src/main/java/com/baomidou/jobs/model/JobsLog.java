@@ -46,6 +46,10 @@ public class JobsLog implements Serializable {
 	 */
 	private Integer triggerCode;
 	/**
+	 * 触发器调度类型
+	 */
+	private String triggerType;
+	/**
 	 * 触发器调度返回信息
 	 */
 	private String triggerMsg;

@@ -1,9 +1,9 @@
 package com.baomidou.jobs.executor;
 
 import com.baomidou.jobs.api.JobsResponse;
+import com.baomidou.jobs.exception.JobsException;
 import com.baomidou.jobs.handler.IJobsHandler;
 import com.baomidou.jobs.model.param.TriggerParam;
-import com.baomidou.jobs.service.JobsHelper;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,12 +22,8 @@ public class JobsExecutor implements IJobsExecutor {
      * @return
      */
     @Override
-    public JobsResponse<String> run(TriggerParam triggerParam) {
+    public JobsResponse<String> run(TriggerParam triggerParam) throws JobsException {
         IJobsHandler jobsHandler = JobsAbstractExecutor.getJobsHandler(triggerParam.getHandler());
-        try {
-            return jobsHandler.execute(triggerParam.getParam());
-        } catch (Exception e) {
-            return JobsResponse.failed(JobsHelper.getErrorInfo(e));
-        }
+        return jobsHandler.execute(triggerParam.getParam());
     }
 }

@@ -43,8 +43,7 @@ public class JobsInfoServiceImpl implements IJobsInfoService {
 
     @Override
     public boolean execute(Long id, String param) {
-        JobsTrigger.trigger(id, TriggerTypeEnum.MANUAL, -1, param);
-        return true;
+        return JobsTrigger.trigger(id, TriggerTypeEnum.MANUAL, -1, param);
     }
 
     @Override

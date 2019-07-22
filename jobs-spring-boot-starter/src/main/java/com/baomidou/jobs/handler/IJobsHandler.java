@@ -1,38 +1,23 @@
 package com.baomidou.jobs.handler;
 
 import com.baomidou.jobs.api.JobsResponse;
+import com.baomidou.jobs.exception.JobsException;
 
 /**
  * job handler interface
  *
- * @author xxl jobob
- * @since 2019-06-22
+ * @author jobob
+ * @since 2019-07-20
  */
 public interface IJobsHandler {
 
 
 	/**
-	 * execute handler, invoked when executor receives a scheduling request
+	 * 任务调度执行方法
 	 *
-	 * @param param
+	 * @param param 执行参数
 	 * @return
-	 * @throws Exception
+	 * @throws JobsException
 	 */
-	JobsResponse<String> execute(String param) throws Exception;
-
-
-	/**
-	 * init handler, invoked when JobsThread init
-	 */
-	default void init() {
-		// do something
-	}
-
-
-	/**
-	 * destroy handler, invoked when JobsThread destroy
-	 */
-	default void destroy() {
-		// do something
-	}
+	JobsResponse<String> execute(String param) throws JobsException;
 }

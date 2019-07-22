@@ -10,7 +10,7 @@ import com.baomidou.jobs.rpc.serialize.Serializer;
 import com.baomidou.jobs.rpc.util.IpUtil;
 import com.baomidou.jobs.exception.JobsRpcException;
 import com.baomidou.jobs.rpc.util.NetUtil;
-import com.baomidou.jobs.rpc.util.ThrowableUtil;
+import com.baomidou.jobs.service.JobsHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
@@ -223,7 +223,7 @@ public class JobsRpcProviderFactory {
 			xxlRpcResponse.setResult(result);
 		} catch (Throwable t) {
 			log.error("Jobs rpc provider invokeService error.", t);
-			xxlRpcResponse.setErrorMsg(ThrowableUtil.toString(t));
+			xxlRpcResponse.setErrorMsg(JobsHelper.getErrorInfo(t));
 		}
 
 		return xxlRpcResponse;

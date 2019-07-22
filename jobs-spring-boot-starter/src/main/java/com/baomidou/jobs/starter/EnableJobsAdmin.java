@@ -1,7 +1,7 @@
 package com.baomidou.jobs.starter;
 
-import com.baomidou.jobs.service.JobsHelper;
 import com.baomidou.jobs.disruptor.JobsDisruptorAutoConfiguration;
+import com.baomidou.jobs.service.JobsHelper;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 

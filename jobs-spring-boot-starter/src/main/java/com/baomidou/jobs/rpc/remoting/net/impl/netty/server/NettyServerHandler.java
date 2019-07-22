@@ -3,13 +3,11 @@ package com.baomidou.jobs.rpc.remoting.net.impl.netty.server;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
-import com.baomidou.jobs.rpc.util.ThrowableUtil;
+import com.baomidou.jobs.service.JobsHelper;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -43,7 +41,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<JobsRpcReque
             // catch error
             JobsRpcResponse xxlRpcResponse = new JobsRpcResponse();
             xxlRpcResponse.setRequestId(xxlRpcRequest.getRequestId());
-            xxlRpcResponse.setErrorMsg(ThrowableUtil.toString(e));
+            xxlRpcResponse.setErrorMsg(JobsHelper.getErrorInfo(e));
 
             ctx.writeAndFlush(xxlRpcResponse);
         }

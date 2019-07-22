@@ -1,13 +1,11 @@
 package com.baomidou.jobs.rpc.remoting.net.impl.servlet.server;
 
-import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
+import com.baomidou.jobs.exception.JobsRpcException;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
-import com.baomidou.jobs.rpc.util.ThrowableUtil;
-import com.baomidou.jobs.exception.JobsRpcException;
+import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
+import com.baomidou.jobs.service.JobsHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +51,7 @@ public class ServletServerHandler {
 
                 xxlRpcRequest = parseRequest(request);
             } catch (Exception e) {
-                writeResponse(response, ThrowableUtil.toString(e).getBytes());
+                writeResponse(response, JobsHelper.getErrorInfo(e).getBytes());
                 return;
             }
 
