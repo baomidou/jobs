@@ -3,7 +3,9 @@
 
 目标是构建一个 Spring Boot 分布式任务 starter 插拔组件
 
-VUE 前端：<a target="_blank" href="https://gitee.com/baomidou/jobs-admin-web">jobs-admin-web</a>
+
+<a target="_blank" href="https://gitee.com/baomidou/jobs">Gitee</a>&nbsp;&nbsp;
+<a target="_blank" href="https://github.com/baomidou/jobs">Github</a>
 
 # 特点
 - 不需独立部署类似 Swagger 模式的可插拔组件，引入 starter 注解启动
@@ -27,6 +29,7 @@ VUE 前端：<a target="_blank" href="https://gitee.com/baomidou/jobs-admin-web"
 # 鸣谢
 Jobs 参考 <a target="_blank" href="https://github.com/xuxueli/xxl-job">xxl-job</a> 可以理解为它的分支，目的是构建类似 Swagger 模式的插拔组件。
 
+VUE 前端：<a target="_blank" href="https://gitee.com/baomidou/jobs-admin-web">jobs-admin-web</a>
 
 ### 界面效果
 
