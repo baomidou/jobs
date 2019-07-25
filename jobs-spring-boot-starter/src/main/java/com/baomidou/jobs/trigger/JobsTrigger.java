@@ -4,7 +4,7 @@ import com.baomidou.jobs.JobsClock;
 import com.baomidou.jobs.JobsConstant;
 import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.exception.JobsException;
-import com.baomidou.jobs.handler.IJobsAlarmHandler;
+import com.baomidou.jobs.handler.IJobsResultHandler;
 import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.jobs.model.JobsLog;
 import com.baomidou.jobs.model.param.TriggerParam;
@@ -81,15 +81,10 @@ public class JobsTrigger {
             jobLog.setAddress(address);
             triggerResult = runExecutor(triggerParam, address, registryList,
                     finalFailRetryCount, actualRetryCount);
-            /**
-             * 调度失败、触发报警处理器
-             */
-            if (triggerResult.getCode() == JobsConstant.CODE_FAILED) {
-                jobsAlarmHandler(jobsInfo, address, triggerResult);
-            }
+            jobsResultHandler(jobsInfo, address, triggerResult);
         } else {
             triggerResult = JobsResponse.failed("Trigger address is null");
-            jobsAlarmHandler(jobsInfo, null, triggerResult);
+            jobsResultHandler(jobsInfo, null, triggerResult);
         }
 
         // save log trigger-info
@@ -104,10 +99,10 @@ public class JobsTrigger {
         return true;
     }
 
-    public static void jobsAlarmHandler(JobsInfo jobsInfo, String address, JobsResponse<String> jobsResponse) {
-        IJobsAlarmHandler jobsAlarmHandler = JobsHelper.getJobsAlarmHandler();
-        if (null != jobsAlarmHandler) {
-            jobsAlarmHandler.failed(jobsInfo, address, jobsResponse);
+    public static void jobsResultHandler(JobsInfo jobsInfo, String address, JobsResponse<String> jobsResponse) {
+        IJobsResultHandler jobsResultHandler = JobsHelper.getJobsResultHandler();
+        if (null != jobsResultHandler) {
+            jobsResultHandler.handle(jobsInfo, address, jobsResponse);
         }
     }
 
@@ -163,15 +158,5 @@ public class JobsTrigger {
             }
         }
         return jobsResponse;
-    }
-
-
-    /**
-     * 重试执行
-     */
-    public static JobsResponse<String> run(TriggerParam triggerParam) throws JobsException {
-        System.out.println(triggerParam.toString());
-//        throw new JobsException("111");
-        return JobsResponse.ok();
     }
 }

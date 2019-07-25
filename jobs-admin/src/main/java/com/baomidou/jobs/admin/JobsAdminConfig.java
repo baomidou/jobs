@@ -1,6 +1,6 @@
 package com.baomidou.jobs.admin;
 
-import com.baomidou.jobs.handler.IJobsAlarmHandler;
+import com.baomidou.jobs.handler.IJobsResultHandler;
 import com.baomidou.jobs.starter.EnableJobsAdmin;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +25,15 @@ public class JobsAdminConfig {
         return new PaginationInterceptor();
     }
 
+    /**
+     * 任务调度结果处理器，可用于失败报警成功通知
+     *
+     * @return
+     */
     @Bean
-    public IJobsAlarmHandler jobsAlarmHandler() {
-        return (jobInfo, address, jobsResponse) -> {
-            System.out.println("Jobs 报警处理器，调度地址：" + address);
-            return false;
-        };
+    public IJobsResultHandler jobsResultHandler() {
+        return (jobInfo, address, jobsResponse) ->
+                System.out.println("Jobs 报警处理器，调度地址："
+                        + address);
     }
 }

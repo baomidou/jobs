@@ -1,7 +1,7 @@
 package com.baomidou.jobs.service;
 
 import com.baomidou.jobs.disruptor.JobsDisruptorTemplate;
-import com.baomidou.jobs.handler.IJobsAlarmHandler;
+import com.baomidou.jobs.handler.IJobsResultHandler;
 import com.baomidou.jobs.router.IJobsExecutorRouter;
 import com.baomidou.jobs.starter.JobsProperties;
 import org.springframework.beans.factory.InitializingBean;
@@ -32,7 +32,7 @@ public class JobsHelper implements InitializingBean {
     @Resource
     private IJobsExecutorRouter _jobsExecutorRouter;
     @Resource
-    private IJobsAlarmHandler _jobsAlarmHandler;
+    private IJobsResultHandler _jobsResultHandler;
     @Resource
     private JobsProperties _jobsProperties;
     @Resource
@@ -46,8 +46,8 @@ public class JobsHelper implements InitializingBean {
         return JOB_HELPER._jobsExecutorRouter;
     }
 
-    public static IJobsAlarmHandler getJobsAlarmHandler() {
-        return JOB_HELPER._jobsAlarmHandler;
+    public static IJobsResultHandler getJobsResultHandler() {
+        return JOB_HELPER._jobsResultHandler;
     }
 
     public static JobsProperties getJobsProperties() {
