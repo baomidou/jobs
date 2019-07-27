@@ -59,10 +59,10 @@ public class JobsTrigger {
         IJobsService jobsService = JobsHelper.getJobsService();
 
         // save log-id
-        JobsLog jobLog = new JobsLog();
-        jobLog.setJobId(jobsInfo.getId());
-        jobLog.setCreateTime(JobsClock.currentTimeMillis());
-        log.debug("Jobs trigger start, jobId:{}", jobLog.getId());
+        JobsLog jobsInfo = new JobsLog();
+        jobsInfo.setJobId(jobsInfo.getId());
+        jobsInfo.setCreateTime(JobsClock.currentTimeMillis());
+        log.debug("Jobs trigger start, jobId:{}", jobsInfo.getId());
 
         // init trigger-param
         TriggerParam triggerParam = new TriggerParam();
@@ -78,7 +78,7 @@ public class JobsTrigger {
         if (null != registryList && 0 != registryList.size()) {
             // 路由选举执行地址
             String address = JobsHelper.getJobsExecutorRouter().route(jobsInfo.getApp(), registryList);
-            jobLog.setAddress(address);
+            jobsInfo.setAddress(address);
             triggerResult = runExecutor(triggerParam, address, registryList,
                     finalFailRetryCount, actualRetryCount);
             jobsResultHandler(jobsInfo, address, triggerResult);
@@ -88,14 +88,14 @@ public class JobsTrigger {
         }
 
         // save log trigger-info
-        jobLog.setHandler(jobsInfo.getHandler());
-        jobLog.setParam(jobsInfo.getParam());
-        jobLog.setFailRetryCount(actualRetryCount);
-        jobLog.setTriggerCode(triggerResult.getCode());
-        jobLog.setTriggerType(triggerType.getTitle());
-        jobLog.setTriggerMsg(triggerResult.getMsg());
-        jobsService.saveOrUpdateLogById(jobLog);
-        log.debug("Jobs trigger end, jobId:{}", jobLog.getId());
+        jobsInfo.setHandler(jobsInfo.getHandler());
+        jobsInfo.setParam(jobsInfo.getParam());
+        jobsInfo.setFailRetryCount(actualRetryCount);
+        jobsInfo.setTriggerCode(triggerResult.getCode());
+        jobsInfo.setTriggerType(triggerType.getTitle());
+        jobsInfo.setTriggerMsg(triggerResult.getMsg());
+        jobsService.saveOrUpdateLogById(jobsInfo);
+        log.debug("Jobs trigger end, jobId:{}", jobsInfo.getId());
         return true;
     }
 

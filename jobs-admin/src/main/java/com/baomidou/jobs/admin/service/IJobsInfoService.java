@@ -1,7 +1,10 @@
 package com.baomidou.jobs.admin.service;
 
+import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.model.JobsInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -11,6 +14,8 @@ import java.util.List;
  * @since 2019-07-18
  */
 public interface IJobsInfoService {
+
+    JobsResponse<IPage<JobsInfo>> page(HttpServletRequest request, JobsInfo jobsInfo);
 
     /**
      * 执行任务总数

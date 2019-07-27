@@ -1,9 +1,10 @@
 package com.baomidou.jobs.admin.controller;
 
 import com.baomidou.jobs.admin.service.IJobsInfoService;
-import org.springframework.web.bind.annotation.*;
 import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.model.JobsInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -23,8 +24,8 @@ public class JobsInfoController extends BaseController {
      * 分页
      */
     @GetMapping("/page")
-    public JobsResponse<Object> page(JobsInfo jobInfo) {
-        return success(null);//jobInfoService.page(request, jobInfo));
+    public JobsResponse<IPage<JobsInfo>> page(JobsInfo jobInfo) {
+        return jobInfoService.page(request, jobInfo);
     }
 
     /**

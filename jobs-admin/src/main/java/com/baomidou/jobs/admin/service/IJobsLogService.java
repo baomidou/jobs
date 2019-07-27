@@ -1,6 +1,10 @@
 package com.baomidou.jobs.admin.service;
 
+import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.model.JobsLog;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 任务日志接口
@@ -24,9 +28,9 @@ public interface IJobsLogService {
 
     JobsLog getById(Long id);
 
-    boolean updateById(JobsLog jobLog);
+    boolean updateById(JobsLog jobsInfo);
 
-    boolean save(JobsLog jobLog);
+    boolean save(JobsLog jobsInfo);
 
     /**
      *
@@ -34,4 +38,6 @@ public interface IJobsLogService {
      * @return
      */
     boolean removeById(Long id);
+
+    JobsResponse<IPage<JobsLog>> page(HttpServletRequest request, JobsLog jobsInfo);
 }

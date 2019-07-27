@@ -43,4 +43,10 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService {
         return jobRegistryMapper.insert(new JobsRegistry().setApp(app).setStatus(status)
                 .setAddress(address).setUpdateTime(JobsClock.currentTimeMillis()));
     }
+
+    @Override
+    public int countOnline() {
+        return jobRegistryMapper.selectCount(Wrappers.<JobsRegistry>lambdaQuery()
+        .eq(JobsRegistry::getStatus, 0));
+    }
 }

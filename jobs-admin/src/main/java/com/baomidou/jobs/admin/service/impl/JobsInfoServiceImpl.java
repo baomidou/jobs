@@ -1,18 +1,22 @@
 package com.baomidou.jobs.admin.service.impl;
 
 import com.baomidou.jobs.admin.mapper.JobsInfoMapper;
-import com.baomidou.jobs.cron.CronExpression;
-import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.jobs.admin.service.IJobsInfoService;
 import com.baomidou.jobs.admin.service.IJobsLogService;
+import com.baomidou.jobs.admin.service.JobsPageHelper;
+import com.baomidou.jobs.api.JobsResponse;
+import com.baomidou.jobs.cron.CronExpression;
+import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.jobs.trigger.JobsTrigger;
 import com.baomidou.jobs.trigger.TriggerTypeEnum;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +27,14 @@ public class JobsInfoServiceImpl implements IJobsInfoService {
     @Resource
     private JobsInfoMapper jobInfoMapper;
     @Autowired
-    private IJobsLogService jobLogService;
+    private IJobsLogService jobsInfoService;
+
+    @Override
+    public JobsResponse<IPage<JobsInfo>> page(HttpServletRequest request, JobsInfo jobsInfo) {
+        return JobsResponse.ok(jobInfoMapper.selectPage(
+                JobsPageHelper.getPage(request), Wrappers.query(jobsInfo)
+        ));
+    }
 
     @Override
     public int count() {
@@ -83,7 +94,7 @@ public class JobsInfoServiceImpl implements IJobsInfoService {
 
     @Override
     public boolean remove(Long id) {
-        jobLogService.removeById(id);
+        jobsInfoService.removeById(id);
         return jobInfoMapper.deleteById(id) > 0;
     }
 

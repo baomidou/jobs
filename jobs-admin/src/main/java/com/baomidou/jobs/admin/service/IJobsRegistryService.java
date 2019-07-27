@@ -30,4 +30,8 @@ public interface IJobsRegistryService {
 
     int save(String app, String address, int status);
 
+    /**
+     * 在线可用机器数
+     */
+    int countOnline();
 }

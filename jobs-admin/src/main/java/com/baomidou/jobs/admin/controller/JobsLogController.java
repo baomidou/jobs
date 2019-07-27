@@ -1,12 +1,13 @@
 package com.baomidou.jobs.admin.controller;
 
 import com.baomidou.jobs.admin.service.IJobsLogService;
+import com.baomidou.jobs.api.JobsResponse;
+import com.baomidou.jobs.model.JobsLog;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.jobs.api.JobsResponse;
-import com.baomidou.jobs.model.JobsLog;
 
 /**
  * 日志信息
@@ -18,14 +19,14 @@ import com.baomidou.jobs.model.JobsLog;
 @RequestMapping("/v1/jobs-log")
 public class JobsLogController extends BaseController {
     @Autowired
-    private IJobsLogService jobLogService;
+    private IJobsLogService jobsInfoService;
 
     /**
      * 分页
      */
     @GetMapping("/page")
-    public JobsResponse<Object> page(JobsLog jobLog) {
-        return success(null);//jobLogService.page(request, jobLog));
+    public JobsResponse<IPage<JobsLog>> page(JobsLog jobsInfo) {
+        return jobsInfoService.page(request, jobsInfo);
     }
 
     /**
@@ -33,7 +34,7 @@ public class JobsLogController extends BaseController {
      */
     @GetMapping("/count")
     public JobsResponse<Integer> count() {
-        return success(jobLogService.countAll());
+        return success(jobsInfoService.countAll());
     }
 
     /**
@@ -41,6 +42,6 @@ public class JobsLogController extends BaseController {
      */
     @GetMapping("/count-success")
     public JobsResponse<Integer> countSuccess() {
-        return success(jobLogService.countSuccess());
+        return success(jobsInfoService.countSuccess());
     }
 }
