@@ -24,19 +24,22 @@ public class JobsStatisticsServiceImpl implements IJobsStatisticsService {
     @Override
     public JobsImportantNumVO getImportantNum() {
         JobsImportantNumVO vo = new JobsImportantNumVO();
-        vo.setRunTaskNum(jobsLogService.countAll());
-        vo.setTriggeredNum(jobsLogService.countSuccess());
+        vo.setRunTaskNum(jobsRegistryService.countAll());
+        vo.setTriggeredNum(jobsLogService.countAll());
         vo.setOnlineExecutorNum(jobsRegistryService.countOnline());
         return vo;
     }
 
     @Override
     public JobsSuccessRatioVO getSuccessRatio() {
-        return null;
+        JobsSuccessRatioVO vo = new JobsSuccessRatioVO();
+        vo.setSuccessful(jobsLogService.countSuccess());
+        vo.setFailed(jobsLogService.countAll() - vo.getSuccessful());
+        return vo;
     }
 
     @Override
     public List<JobsDateDistributionVO> getDateDistribution() {
-        return null;
+        return jobsLogService.getJobsDateDistributionVO();
     }
 }

@@ -49,4 +49,9 @@ public class JobsRegistryServiceImpl implements IJobsRegistryService {
         return jobRegistryMapper.selectCount(Wrappers.<JobsRegistry>lambdaQuery()
         .eq(JobsRegistry::getStatus, 0));
     }
+
+    @Override
+    public int countAll() {
+        return jobRegistryMapper.selectCount(null);
+    }
 }

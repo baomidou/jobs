@@ -1,10 +1,12 @@
 package com.baomidou.jobs.admin.service;
 
+import com.baomidou.jobs.admin.service.vo.JobsDateDistributionVO;
 import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.model.JobsLog;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 任务日志接口
@@ -40,4 +42,6 @@ public interface IJobsLogService {
     boolean removeById(Long id);
 
     JobsResponse<IPage<JobsLog>> page(HttpServletRequest request, JobsLog jobsInfo);
+
+    List<JobsDateDistributionVO> getJobsDateDistributionVO();
 }

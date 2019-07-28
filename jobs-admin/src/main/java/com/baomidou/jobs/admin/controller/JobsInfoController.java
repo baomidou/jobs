@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 /**
  * 任务信息
  *
- * @author xxl jobob
+ * @author jobob
  * @since 2019-05-31
  */
 @RestController

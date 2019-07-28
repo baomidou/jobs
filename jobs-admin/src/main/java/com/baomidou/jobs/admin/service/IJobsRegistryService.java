@@ -34,4 +34,9 @@ public interface IJobsRegistryService {
      * 在线可用机器数
      */
     int countOnline();
+
+    /**
+     * 任务数量
+     */
+    int countAll();
 }

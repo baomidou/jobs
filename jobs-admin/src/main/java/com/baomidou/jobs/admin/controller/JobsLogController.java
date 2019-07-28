@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 日志信息
  *
- * @author xxl jobob
+ * @author jobob
  * @since 2019-05-31
  */
 @RestController

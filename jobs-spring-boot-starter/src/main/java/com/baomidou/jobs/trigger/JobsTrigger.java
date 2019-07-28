@@ -59,9 +59,9 @@ public class JobsTrigger {
         IJobsService jobsService = JobsHelper.getJobsService();
 
         // save log-id
-        JobsLog jobsInfo = new JobsLog();
-        jobsInfo.setJobId(jobsInfo.getId());
-        jobsInfo.setCreateTime(JobsClock.currentTimeMillis());
+        JobsLog temp = new JobsLog();
+        temp.setJobId(jobsInfo.getId());
+        temp.setCreateTime(JobsClock.currentTimeMillis());
         log.debug("Jobs trigger start, jobId:{}", jobsInfo.getId());
 
         // init trigger-param
@@ -78,7 +78,7 @@ public class JobsTrigger {
         if (null != registryList && 0 != registryList.size()) {
             // 路由选举执行地址
             String address = JobsHelper.getJobsExecutorRouter().route(jobsInfo.getApp(), registryList);
-            jobsInfo.setAddress(address);
+            temp.setAddress(address);
             triggerResult = runExecutor(triggerParam, address, registryList,
                     finalFailRetryCount, actualRetryCount);
             jobsResultHandler(jobsInfo, address, triggerResult);
@@ -88,13 +88,13 @@ public class JobsTrigger {
         }
 
         // save log trigger-info
-        jobsInfo.setHandler(jobsInfo.getHandler());
-        jobsInfo.setParam(jobsInfo.getParam());
-        jobsInfo.setFailRetryCount(actualRetryCount);
-        jobsInfo.setTriggerCode(triggerResult.getCode());
-        jobsInfo.setTriggerType(triggerType.getTitle());
-        jobsInfo.setTriggerMsg(triggerResult.getMsg());
-        jobsService.saveOrUpdateLogById(jobsInfo);
+        temp.setHandler(jobsInfo.getHandler());
+        temp.setParam(jobsInfo.getParam());
+        temp.setFailRetryCount(actualRetryCount);
+        temp.setTriggerCode(triggerResult.getCode());
+        temp.setTriggerType(triggerType.getTitle());
+        temp.setTriggerMsg(triggerResult.getMsg());
+        jobsService.saveOrUpdateLogById(temp);
         log.debug("Jobs trigger end, jobId:{}", jobsInfo.getId());
         return true;
     }

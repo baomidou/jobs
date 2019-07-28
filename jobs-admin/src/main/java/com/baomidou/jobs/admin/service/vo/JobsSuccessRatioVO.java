@@ -17,10 +17,6 @@ public class JobsSuccessRatioVO {
      */
     private Integer successful;
     /**
-     * 进行中
-     */
-    private Integer inProgress;
-    /**
      * 失败
      */
     private Integer  failed;
