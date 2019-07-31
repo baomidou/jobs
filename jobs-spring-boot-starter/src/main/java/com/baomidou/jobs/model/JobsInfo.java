@@ -21,6 +21,10 @@ public class JobsInfo implements Serializable {
 	 */
 	private Long id;
 	/**
+	 * 租户ID
+	 */
+	private String tenantId;
+	/**
 	 * 对应 JobsRegistry app 属性
 	 */
 	private String app;

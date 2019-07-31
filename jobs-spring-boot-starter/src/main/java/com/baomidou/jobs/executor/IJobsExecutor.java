@@ -16,7 +16,8 @@ public interface IJobsExecutor {
      * 执行任务调度
      *
      * @param triggerParam 触发参数
-     * @return
+     * @return JobsResponse<String>
+     * @throws JobsException
      */
     JobsResponse<String> run(TriggerParam triggerParam) throws JobsException;
 }

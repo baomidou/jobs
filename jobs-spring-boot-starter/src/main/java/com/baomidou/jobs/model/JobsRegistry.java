@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class JobsRegistry implements Serializable {
     /**
-     * 主键 ID
+     * 主键ID
      */
     private Long id;
     /**

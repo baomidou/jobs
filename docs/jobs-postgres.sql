@@ -12,7 +12,7 @@
  Target Server Version : 110000
  File Encoding         : 65001
 
- Date: 22/07/2019 22:02:48
+ Date: 31/07/2019 16:27:04
 */
 
 
@@ -22,6 +22,7 @@
 DROP TABLE IF EXISTS "public"."jobs_info";
 CREATE TABLE "public"."jobs_info" (
   "id" int8 NOT NULL,
+  "tenant_id" varchar(100) COLLATE "pg_catalog"."default",
   "app" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
   "cron" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
   "handler" varchar(255) COLLATE "pg_catalog"."default",
@@ -39,6 +40,7 @@ CREATE TABLE "public"."jobs_info" (
 ;
 ALTER TABLE "public"."jobs_info" OWNER TO "postgres";
 COMMENT ON COLUMN "public"."jobs_info"."id" IS '主键ID';
+COMMENT ON COLUMN "public"."jobs_info"."tenant_id" IS '租户ID';
 COMMENT ON COLUMN "public"."jobs_info"."app" IS '服务名';
 COMMENT ON COLUMN "public"."jobs_info"."cron" IS '任务执行CRON';
 COMMENT ON COLUMN "public"."jobs_info"."handler" IS '执行器任务handler';
@@ -58,7 +60,7 @@ COMMENT ON TABLE "public"."jobs_info" IS '任务信息';
 -- Records of jobs_info
 -- ----------------------------
 BEGIN;
-INSERT INTO "public"."jobs_info" VALUES (3, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 30, 3, 1563794040000, 1563794050000, 'jobs', '测试', 0, 1563152000000, 1563152000000);
+INSERT INTO "public"."jobs_info" VALUES (3, NULL, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 30, 3, 1564539320000, 1564539330000, 'jobs', '测试', 0, 1563152000000, 1563152000000);
 COMMIT;
 
 -- ----------------------------
@@ -109,7 +111,6 @@ COMMENT ON COLUMN "public"."jobs_log"."trigger_msg" IS '触发器调度返回信
 COMMENT ON COLUMN "public"."jobs_log"."create_time" IS '创建时间';
 COMMENT ON TABLE "public"."jobs_log" IS '任务调度日志';
 
-
 -- ----------------------------
 -- Table structure for jobs_registry
 -- ----------------------------
@@ -135,7 +136,7 @@ COMMENT ON TABLE "public"."jobs_registry" IS '任务注册信息';
 -- ----------------------------
 BEGIN;
 INSERT INTO "public"."jobs_registry" VALUES (1, 'jobs-executor-sample', '127.0.0.1:9999', 1, 1563626092397);
-INSERT INTO "public"."jobs_registry" VALUES (205, 'jobs-executor-sample', '192.168.0.6:9999', 0, 1563794040004);
+INSERT INTO "public"."jobs_registry" VALUES (205, 'jobs-executor-sample', '192.168.0.6:9999', 1, 1563794040004);
 COMMIT;
 
 -- ----------------------------

@@ -67,6 +67,7 @@ public class JobsTrigger {
         // init trigger-param
         TriggerParam triggerParam = new TriggerParam();
         triggerParam.setJobId(jobsInfo.getId());
+        triggerParam.setTenantId(jobsInfo.getTenantId());
         triggerParam.setHandler(jobsInfo.getHandler());
         triggerParam.setParam(jobsInfo.getParam());
         triggerParam.setTimeout(jobsInfo.getTimeout());

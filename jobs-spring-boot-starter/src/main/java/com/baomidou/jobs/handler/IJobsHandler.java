@@ -12,12 +12,13 @@ import com.baomidou.jobs.exception.JobsException;
 public interface IJobsHandler {
 
 
-	/**
-	 * 任务调度执行方法
-	 *
-	 * @param param 执行参数
-	 * @return
-	 * @throws JobsException
-	 */
-	JobsResponse<String> execute(String param) throws JobsException;
+    /**
+     * 任务调度执行方法
+     *
+     * @param tenantId 租户ID
+     * @param param    执行参数
+     * @return
+     * @throws JobsException
+     */
+    JobsResponse<String> execute(String tenantId, String param) throws JobsException;
 }

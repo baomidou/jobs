@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 21/07/2019 22:57:46
+ Date: 31/07/2019 16:23:45
 */
 
 SET NAMES utf8mb4;
@@ -23,6 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `jobs_info`;
 CREATE TABLE `jobs_info` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `tenant_id` varchar(100) DEFAULT NULL COMMENT '租户ID',
   `app` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '服务名',
   `cron` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务执行CRON',
   `handler` varchar(255) DEFAULT NULL COMMENT '执行器任务handler',
@@ -43,7 +44,7 @@ CREATE TABLE `jobs_info` (
 -- Records of jobs_info
 -- ----------------------------
 BEGIN;
-INSERT INTO `jobs_info` VALUES (3, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 30, 3, 1563633240000, 1563633250000, 'jobs', '测试', 0, 1563152000000, 1563152000000);
+INSERT INTO `jobs_info` VALUES (3, NULL, 'jobs-executor-sample', '0/10 * * * * ? *', 'demoJobHandler', NULL, 30, 3, 1564539320000, 1564539330000, 'jobs', '测试', 0, 1563152000000, 1563152000000);
 COMMIT;
 
 -- ----------------------------
@@ -57,7 +58,7 @@ CREATE TABLE `jobs_lock` (
   `create_time` bigint(20) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=64438 DEFAULT CHARSET=utf8 COMMENT='任务锁';
+) ENGINE=InnoDB AUTO_INCREMENT=241201 DEFAULT CHARSET=utf8 COMMENT='任务锁';
 
 -- ----------------------------
 -- Table structure for jobs_log
@@ -75,7 +76,7 @@ CREATE TABLE `jobs_log` (
   `trigger_msg` text COMMENT '触发器调度返回信息',
   `create_time` bigint(20) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务调度日志';
+) ENGINE=InnoDB AUTO_INCREMENT=2091 DEFAULT CHARSET=utf8 COMMENT='任务调度日志';
 
 -- ----------------------------
 -- Table structure for jobs_registry
@@ -88,14 +89,14 @@ CREATE TABLE `jobs_registry` (
   `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0、启用 1、已禁用',
   `update_time` bigint(20) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8 COMMENT='任务注册信息';
+) ENGINE=InnoDB AUTO_INCREMENT=208 DEFAULT CHARSET=utf8 COMMENT='任务注册信息';
 
 -- ----------------------------
 -- Records of jobs_registry
 -- ----------------------------
 BEGIN;
 INSERT INTO `jobs_registry` VALUES (1, 'jobs-executor-sample', '127.0.0.1:9999', 1, 1563626092397);
-INSERT INTO `jobs_registry` VALUES (205, 'jobs-executor-sample', '192.168.0.6:9999', 0, 1563633241599);
+INSERT INTO `jobs_registry` VALUES (205, 'jobs-executor-sample', '192.168.0.6:9999', 1, 1563794040004);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -18,7 +18,7 @@ ext {
 
     libraries = [
             mybatisPlusVersion = '3.1.1',
-            jobsVersion = '1.0.1',
+            jobsVersion = '1.0.2',
             springBootVersion = '2.1.6.RELEASE',
             springVersion = '5.1.8.RELEASE',
             junitVersion = '5.4.0',
@@ -46,7 +46,7 @@ ext {
 
 allprojects {
     group = 'com.baomidou'
-    version = "1.0.1"
+    version = "1.0.2"
 }
 
 description = "jobs 分布式任务调度平台"

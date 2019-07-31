@@ -15,6 +15,10 @@ import java.io.Serializable;
 @ToString
 public class TriggerParam implements Serializable{
     private Long jobId;
+    /**
+     * 租户ID
+     */
+    private String tenantId;
     private String handler;
     private String param;
     private int timeout;
