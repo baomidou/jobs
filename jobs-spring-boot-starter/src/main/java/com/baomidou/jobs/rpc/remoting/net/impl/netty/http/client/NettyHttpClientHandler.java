@@ -1,4 +1,4 @@
-package com.baomidou.jobs.rpc.remoting.net.impl.netty_http.client;
+package com.baomidou.jobs.rpc.remoting.net.impl.netty.http.client;
 
 import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.serialize.Serializer;
@@ -23,6 +23,7 @@ public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttp
 
     private JobsRpcInvokerFactory xxlRpcInvokerFactory;
     private Serializer serializer;
+
     public NettyHttpClientHandler(final JobsRpcInvokerFactory xxlRpcInvokerFactory, Serializer serializer) {
         this.xxlRpcInvokerFactory = xxlRpcInvokerFactory;
         this.serializer = serializer;
@@ -63,7 +64,7 @@ public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttp
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent){
+        if (evt instanceof IdleStateEvent) {
             ctx.channel().close();      // close idle channel
             logger.debug("Jobs rpc netty_http client close an idle channel.");
         } else {

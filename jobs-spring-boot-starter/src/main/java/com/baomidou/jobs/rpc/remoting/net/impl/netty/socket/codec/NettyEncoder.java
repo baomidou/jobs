@@ -1,4 +1,4 @@
-package com.baomidou.jobs.rpc.remoting.net.impl.netty.codec;
+package com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.codec;
 
 import com.baomidou.jobs.rpc.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
@@ -11,7 +11,6 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @author xuxueli 2015-10-29 19:43:00
  */
 public class NettyEncoder extends MessageToByteEncoder<Object> {
-
     private Class<?> genericClass;
     private Serializer serializer;
 

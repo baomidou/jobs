@@ -1,9 +1,9 @@
-package com.baomidou.jobs.rpc.remoting.net.impl.netty_http.client;
+package com.baomidou.jobs.rpc.remoting.net.impl.netty.http.client;
 
-import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
-import com.baomidou.jobs.rpc.serialize.Serializer;
 import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.net.common.ConnectClient;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
+import com.baomidou.jobs.rpc.serialize.Serializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -15,6 +15,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.timeout.IdleStateHandler;
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuxueli 2015-11-24 22:25:15
  */
+@Slf4j
 public class NettyHttpConnectClient extends ConnectClient {
 
     private EventLoopGroup group;
@@ -37,13 +40,13 @@ public class NettyHttpConnectClient extends ConnectClient {
     public void init(String address, final Serializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception {
 
         if (!address.toLowerCase().startsWith("http")) {
-            address = "http://" + address;	// IP:PORT, need parse to url
+            address = "http://" + address;    // IP:PORT, need parse to url
         }
 
         this.address = address;
         URL url = new URL(address);
         this.host = url.getHost();
-        int port = url.getPort()>-1?url.getPort():80;
+        int port = url.getPort() > -1 ? url.getPort() : 80;
 
 
         this.group = new NioEventLoopGroup();
@@ -54,9 +57,9 @@ public class NettyHttpConnectClient extends ConnectClient {
                     @Override
                     public void initChannel(SocketChannel channel) throws Exception {
                         channel.pipeline()
-                                .addLast(new IdleStateHandler(0,0,10, TimeUnit.MINUTES))
+                                .addLast(new IdleStateHandler(0, 0, 10, TimeUnit.MINUTES))
                                 .addLast(new HttpClientCodec())
-                                .addLast(new HttpObjectAggregator(5*1024*1024))
+                                .addLast(new HttpObjectAggregator(5 * 1024 * 1024))
                                 .addLast(new NettyHttpClientHandler(xxlRpcInvokerFactory, serializer));
                     }
                 })
@@ -71,7 +74,7 @@ public class NettyHttpConnectClient extends ConnectClient {
             return;
         }
 
-        logger.debug("Jobs rpc netty client proxy, connect to server success at host:{}, port:{}", host, port);
+        log.debug("Jobs rpc netty client proxy, connect to server success at host:{}, port:{}", host, port);
     }
 
 
@@ -86,13 +89,13 @@ public class NettyHttpConnectClient extends ConnectClient {
 
     @Override
     public void close() {
-        if (this.channel!=null && this.channel.isActive()) {
-            this.channel.close();		// if this.channel.isOpen()
+        if (this.channel != null && this.channel.isActive()) {
+            this.channel.close();        // if this.channel.isOpen()
         }
-        if (this.group!=null && !this.group.isShutdown()) {
+        if (this.group != null && !this.group.isShutdown()) {
             this.group.shutdownGracefully();
         }
-        logger.debug("Jobs rpc netty client close.");
+        log.debug("Jobs rpc netty client close.");
     }
 
 

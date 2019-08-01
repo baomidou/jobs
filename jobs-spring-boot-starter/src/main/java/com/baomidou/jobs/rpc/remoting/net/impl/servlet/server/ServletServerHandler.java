@@ -21,10 +21,10 @@ import java.io.OutputStream;
  */
 @Slf4j
 public class ServletServerHandler {
-    private JobsRpcProviderFactory xxlRpcProviderFactory;
+    private JobsRpcProviderFactory jobsRpcProviderFactory;
 
     public ServletServerHandler(JobsRpcProviderFactory xxlRpcProviderFactory) {
-        this.xxlRpcProviderFactory = xxlRpcProviderFactory;
+        this.jobsRpcProviderFactory = xxlRpcProviderFactory;
     }
 
     /**
@@ -36,8 +36,8 @@ public class ServletServerHandler {
             // services mapping
 
             StringBuffer stringBuffer = new StringBuffer("<ui>");
-            for (String serviceKey : xxlRpcProviderFactory.getServiceData().keySet()) {
-                stringBuffer.append("<li>").append(serviceKey).append(": ").append(xxlRpcProviderFactory.getServiceData().get(serviceKey)).append("</li>");
+            for (String serviceKey : jobsRpcProviderFactory.getServiceData().keySet()) {
+                stringBuffer.append("<li>").append(serviceKey).append(": ").append(jobsRpcProviderFactory.getServiceData().get(serviceKey)).append("</li>");
             }
             stringBuffer.append("</ui>");
 
@@ -56,10 +56,10 @@ public class ServletServerHandler {
             }
 
             // invoke
-            JobsRpcResponse xxlRpcResponse = xxlRpcProviderFactory.invokeService(xxlRpcRequest);
+            JobsRpcResponse xxlRpcResponse = jobsRpcProviderFactory.invokeService(xxlRpcRequest);
 
             // response-serialize + response-write
-            byte[] responseBytes = xxlRpcProviderFactory.getSerializer().serialize(xxlRpcResponse);
+            byte[] responseBytes = jobsRpcProviderFactory.getSerializer().serialize(xxlRpcResponse);
             writeResponse(response, responseBytes);
         }
 
@@ -87,7 +87,7 @@ public class ServletServerHandler {
         if (requestBytes == null || requestBytes.length == 0) {
             throw new JobsRpcException("Jobs rpc request data is empty.");
         }
-        JobsRpcRequest rpcXxlRpcRequest = (JobsRpcRequest) xxlRpcProviderFactory.getSerializer().deserialize(requestBytes, JobsRpcRequest.class);
+        JobsRpcRequest rpcXxlRpcRequest = (JobsRpcRequest) jobsRpcProviderFactory.getSerializer().deserialize(requestBytes, JobsRpcRequest.class);
         return rpcXxlRpcRequest;
     }
 

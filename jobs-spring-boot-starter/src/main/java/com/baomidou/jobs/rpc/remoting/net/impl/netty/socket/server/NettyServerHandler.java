@@ -1,4 +1,4 @@
-package com.baomidou.jobs.rpc.remoting.net.impl.netty.server;
+package com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.server;
 
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
@@ -26,7 +26,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<JobsRpcReque
         this.serverHandlerPool = serverHandlerPool;
     }
 
-
     @Override
     public void channelRead0(final ChannelHandlerContext ctx, final JobsRpcRequest xxlRpcRequest) throws Exception {
         try {
@@ -39,23 +38,22 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<JobsRpcReque
             });
         } catch (Exception e) {
             // catch error
-            JobsRpcResponse xxlRpcResponse = new JobsRpcResponse();
-            xxlRpcResponse.setRequestId(xxlRpcRequest.getRequestId());
-            xxlRpcResponse.setErrorMsg(JobsHelper.getErrorInfo(e));
-
-            ctx.writeAndFlush(xxlRpcResponse);
+            JobsRpcResponse jobsRpcResponse = new JobsRpcResponse();
+            jobsRpcResponse.setRequestId(xxlRpcRequest.getRequestId());
+            jobsRpcResponse.setErrorMsg(JobsHelper.getErrorInfo(e));
+            ctx.writeAndFlush(jobsRpcResponse);
         }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-    	log.error("Jobs rpc provider netty server caught exception", cause);
+        log.error("Jobs rpc provider netty server caught exception", cause);
         ctx.close();
     }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent){
+        if (evt instanceof IdleStateEvent) {
             ctx.channel().close();
             log.debug("Jobs rpc provider netty server close an idle channel.");
         } else {

@@ -1,8 +1,8 @@
-package com.baomidou.jobs.rpc.remoting.net.impl.netty.server;
+package com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.server;
 
 import com.baomidou.jobs.rpc.remoting.net.Server;
-import com.baomidou.jobs.rpc.remoting.net.impl.netty.codec.NettyDecoder;
-import com.baomidou.jobs.rpc.remoting.net.impl.netty.codec.NettyEncoder;
+import com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.codec.NettyDecoder;
+import com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.codec.NettyEncoder;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
@@ -31,7 +31,7 @@ public class NettyServer extends Server {
     private Thread thread;
 
     @Override
-    public void start(final JobsRpcProviderFactory xxlRpcProviderFactory) throws Exception {
+    public void start(final JobsRpcProviderFactory jobsRpcProviderFactory) throws Exception {
         thread = new Thread(() -> {
 
             // param
@@ -48,19 +48,19 @@ public class NettyServer extends Server {
                             @Override
                             public void initChannel(SocketChannel channel) throws Exception {
                                 channel.pipeline()
-                                        .addLast(new IdleStateHandler(0,0,10, TimeUnit.MINUTES))
-                                        .addLast(new NettyDecoder(JobsRpcRequest.class, xxlRpcProviderFactory.getSerializer()))
-                                        .addLast(new NettyEncoder(JobsRpcResponse.class, xxlRpcProviderFactory.getSerializer()))
-                                        .addLast(new NettyServerHandler(xxlRpcProviderFactory, serverHandlerPool));
+                                        .addLast(new IdleStateHandler(0, 0, 10, TimeUnit.MINUTES))
+                                        .addLast(new NettyDecoder(JobsRpcRequest.class, jobsRpcProviderFactory.getSerializer()))
+                                        .addLast(new NettyEncoder(JobsRpcResponse.class, jobsRpcProviderFactory.getSerializer()))
+                                        .addLast(new NettyServerHandler(jobsRpcProviderFactory, serverHandlerPool));
                             }
                         })
                         .childOption(ChannelOption.TCP_NODELAY, true)
                         .childOption(ChannelOption.SO_KEEPALIVE, true);
 
                 // bind
-                ChannelFuture future = bootstrap.bind(xxlRpcProviderFactory.getPort()).sync();
+                ChannelFuture future = bootstrap.bind(jobsRpcProviderFactory.getPort()).sync();
 
-                log.info("Jobs rpc remoting server start success, nettype = {}, port = {}", NettyServer.class.getName(), xxlRpcProviderFactory.getPort());
+                log.info("Jobs rpc remoting server start success, nettype = {}, port = {}", NettyServer.class.getName(), jobsRpcProviderFactory.getPort());
                 onStarted();
 
                 // wait util stop
@@ -101,7 +101,7 @@ public class NettyServer extends Server {
         }
 
         // on stop
-        onStoped();
+        onStopped();
         log.info("Jobs rpc remoting server destroy success.");
     }
 }

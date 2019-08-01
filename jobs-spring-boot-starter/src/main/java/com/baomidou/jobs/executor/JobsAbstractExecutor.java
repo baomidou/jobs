@@ -73,10 +73,8 @@ public abstract class JobsAbstractExecutor {
     public void destroy() {
         JOBS_HANDLER.clear();
 
-        // destory executor-server
         stopRpcProvider();
 
-        // destory invoker
         stopInvokerFactory();
     }
 
@@ -137,24 +135,23 @@ public abstract class JobsAbstractExecutor {
     /**
      * rpc provider factory
      */
-    private JobsRpcProviderFactory XXL_RPC_PROVIDER_FACTORY = null;
+    private JobsRpcProviderFactory JOBS_RPC_PROVIDER_FACTORY = null;
 
     private void initRpcProvider(String ip, int port, String appName, String accessToken) throws Exception {
-
         // init, provider factory
         Map<String, String> serviceRegistryParam = new HashMap<>(16);
         serviceRegistryParam.put("appName", appName);
         serviceRegistryParam.put("address", IpUtil.getIpPort(ip, port));
 
-        XXL_RPC_PROVIDER_FACTORY = new JobsRpcProviderFactory();
-        XXL_RPC_PROVIDER_FACTORY.initConfig(NetEnum.NETTY_HTTP, Serializer.SerializeEnum.HESSIAN.getSerializer(),
+        JOBS_RPC_PROVIDER_FACTORY = new JobsRpcProviderFactory();
+        JOBS_RPC_PROVIDER_FACTORY.initConfig(NetEnum.NETTY_HTTP, Serializer.SerializeEnum.HESSIAN.getSerializer(),
                 ip, port, accessToken, ExecutorServiceRegistry.class, serviceRegistryParam);
 
         // add services
-        XXL_RPC_PROVIDER_FACTORY.addService(IJobsExecutor.class.getName(), null, new JobsExecutor());
+        JOBS_RPC_PROVIDER_FACTORY.addService(IJobsExecutor.class.getName(), null, new JobsExecutor());
 
         // start
-        XXL_RPC_PROVIDER_FACTORY.start();
+        JOBS_RPC_PROVIDER_FACTORY.start();
 
     }
 
@@ -198,9 +195,8 @@ public abstract class JobsAbstractExecutor {
     }
 
     private void stopRpcProvider() {
-        // stop provider factory
         try {
-            XXL_RPC_PROVIDER_FACTORY.stop();
+            JOBS_RPC_PROVIDER_FACTORY.stop();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

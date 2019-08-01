@@ -1,4 +1,4 @@
-package com.baomidou.jobs.rpc.remoting.net.impl.netty.codec;
+package com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.codec;
 
 import com.baomidou.jobs.rpc.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
@@ -13,7 +13,6 @@ import java.util.List;
  * @author xuxueli 2015-10-29 19:02:36
  */
 public class NettyDecoder extends ByteToMessageDecoder {
-
     private Class<?> genericClass;
     private Serializer serializer;
 
@@ -34,7 +33,7 @@ public class NettyDecoder extends ByteToMessageDecoder {
         }
         if (in.readableBytes() < dataLength) {
             in.resetReaderIndex();
-            return;	// fix 1024k buffer splice limix
+            return;    // fix 1024k buffer splice limix
         }
         byte[] data = new byte[dataLength];
         in.readBytes(data);

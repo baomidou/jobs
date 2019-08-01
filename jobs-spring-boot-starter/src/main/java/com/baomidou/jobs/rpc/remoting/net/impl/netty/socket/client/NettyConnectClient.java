@@ -1,9 +1,9 @@
-package com.baomidou.jobs.rpc.remoting.net.impl.netty.client;
+package com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.client;
 
 import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.net.common.ConnectClient;
-import com.baomidou.jobs.rpc.remoting.net.impl.netty.codec.NettyDecoder;
-import com.baomidou.jobs.rpc.remoting.net.impl.netty.codec.NettyEncoder;
+import com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.codec.NettyDecoder;
+import com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.codec.NettyEncoder;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import com.baomidou.jobs.rpc.serialize.Serializer;
@@ -17,6 +17,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,12 +26,10 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuxueli
  */
+@Slf4j
 public class NettyConnectClient extends ConnectClient {
-
-
     private EventLoopGroup group;
     private Channel channel;
-
 
     @Override
     public void init(String address, final Serializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception {
@@ -47,7 +47,7 @@ public class NettyConnectClient extends ConnectClient {
                     @Override
                     public void initChannel(SocketChannel channel) throws Exception {
                         channel.pipeline()
-                                .addLast(new IdleStateHandler(0,0,10, TimeUnit.MINUTES))
+                                .addLast(new IdleStateHandler(0, 0, 10, TimeUnit.MINUTES))
                                 .addLast(new NettyEncoder(JobsRpcRequest.class, serializer))
                                 .addLast(new NettyDecoder(JobsRpcResponse.class, serializer))
                                 .addLast(new NettyClientHandler(xxlRpcInvokerFactory));
@@ -64,7 +64,7 @@ public class NettyConnectClient extends ConnectClient {
             return;
         }
 
-        logger.debug("Jobs rpc netty client proxy, connect to server success at host:{}, port:{}", host, port);
+        log.debug("Jobs rpc netty client proxy, connect to server success at host:{}, port:{}", host, port);
     }
 
 
@@ -84,7 +84,7 @@ public class NettyConnectClient extends ConnectClient {
         if (this.group != null && !this.group.isShutdown()) {
             this.group.shutdownGracefully();
         }
-        logger.debug("Jobs rpc netty client close.");
+        log.debug("Jobs rpc netty client close.");
     }
 
 

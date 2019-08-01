@@ -1,25 +1,24 @@
 package com.baomidou.jobs.rpc.remoting.invoker.reference;
 
+import com.baomidou.jobs.exception.JobsRpcException;
 import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.invoker.call.CallType;
 import com.baomidou.jobs.rpc.remoting.invoker.call.JobsRpcInvokeCallback;
 import com.baomidou.jobs.rpc.remoting.invoker.call.JobsRpcInvokeFuture;
 import com.baomidou.jobs.rpc.remoting.invoker.generic.JobsRpcGenericService;
 import com.baomidou.jobs.rpc.remoting.invoker.route.LoadBalance;
+import com.baomidou.jobs.rpc.remoting.net.Client;
 import com.baomidou.jobs.rpc.remoting.net.NetEnum;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcFutureResponse;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
+import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import com.baomidou.jobs.rpc.serialize.Serializer;
 import com.baomidou.jobs.rpc.util.ClassUtil;
-import com.baomidou.jobs.exception.JobsRpcException;
-import com.baomidou.jobs.rpc.remoting.net.Client;
-import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcFutureResponse;
-import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -30,13 +29,8 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuxueli 2015-10-29 20:18:32
  */
+@Slf4j
 public class JobsRpcReferenceBean {
-    private static final Logger logger = LoggerFactory.getLogger(JobsRpcReferenceBean.class);
-    // [tips01: save 30ms/100invoke. why why why??? with this logger, it can save lots of time.]
-
-
-    // ---------------------- config ----------------------
-
     private NetEnum netType;
     private Serializer serializer;
     private CallType callType;
@@ -170,7 +164,7 @@ public class JobsRpcReferenceBean {
 
                     // filter method like "Object.toString()"
                     if (className.equals(Object.class.getName())) {
-                        logger.info("Jobs rpc proxy class-method not support [{}#{}]", className, methodName);
+                        log.info("Jobs rpc proxy class-method not support [{}#{}]", className, methodName);
                         throw new JobsRpcException("Jobs rpc proxy class-method not support");
                     }
 
@@ -221,7 +215,7 @@ public class JobsRpcReferenceBean {
                             }
                             return xxlRpcResponse.getResult();
                         } catch (Exception e) {
-                            logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, jobsRpcRequest);
+                            log.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, jobsRpcRequest);
 
                             throw (e instanceof JobsRpcException) ? e : new JobsRpcException(e);
                         } finally {
@@ -241,7 +235,7 @@ public class JobsRpcReferenceBean {
 
                             return null;
                         } catch (Exception e) {
-                            logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, jobsRpcRequest);
+                            log.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, jobsRpcRequest);
 
                             // future-response remove
                             futureResponse.removeInvokerFuture();
@@ -266,7 +260,7 @@ public class JobsRpcReferenceBean {
                         try {
                             client.asyncSend(finalAddress, jobsRpcRequest);
                         } catch (Exception e) {
-                            logger.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, jobsRpcRequest);
+                            log.info("Jobs rpc, invoke error, address:{}, JobsRpcRequest{}", finalAddress, jobsRpcRequest);
 
                             // future-response remove
                             futureResponse.removeInvokerFuture();

@@ -1,11 +1,10 @@
 package com.baomidou.jobs.rpc.remoting.net;
 
-import com.baomidou.jobs.rpc.remoting.net.params.BaseCallback;
+import com.baomidou.jobs.exception.JobsRpcException;
+import com.baomidou.jobs.rpc.remoting.net.params.IJobsRpcCallback;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * server
@@ -15,16 +14,16 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 @Setter
 public abstract class Server {
-	private BaseCallback startedCallback;
-	private BaseCallback stopedCallback;
+	private IJobsRpcCallback startedCallback;
+	private IJobsRpcCallback stoppedCallback;
 
 	/**
 	 * start server
 	 *
-	 * @param xxlRpcProviderFactory
+	 * @param jobsRpcProviderFactory
 	 * @throws Exception
 	 */
-	public abstract void start(final JobsRpcProviderFactory xxlRpcProviderFactory) throws Exception;
+	public abstract void start(final JobsRpcProviderFactory jobsRpcProviderFactory) throws Exception;
 
 	/**
 	 * callback when started
@@ -32,8 +31,8 @@ public abstract class Server {
 	public void onStarted() {
 		if (startedCallback != null) {
 			try {
-				startedCallback.run();
-			} catch (Exception e) {
+				startedCallback.execute();
+			} catch (JobsRpcException e) {
 				log.error("Jobs rpc, server startedCallback error.", e);
 			}
 		}
@@ -47,14 +46,14 @@ public abstract class Server {
 	public abstract void stop() throws Exception;
 
 	/**
-	 * callback when stoped
+	 * callback when stopped
 	 */
-	public void onStoped() {
-		if (stopedCallback != null) {
+	public void onStopped() {
+		if (null != stoppedCallback) {
 			try {
-				stopedCallback.run();
-			} catch (Exception e) {
-				log.error("Jobs rpc, server stopedCallback error.", e);
+				stoppedCallback.execute();
+			} catch (JobsRpcException e) {
+				log.error("Jobs rpc, server stoppedCallback error.", e);
 			}
 		}
 	}

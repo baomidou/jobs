@@ -1,4 +1,4 @@
-package com.baomidou.jobs.rpc.remoting.net.impl.netty_http.server;
+package com.baomidou.jobs.rpc.remoting.net.impl.netty.http.server;
 
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
@@ -51,14 +51,14 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
         });
     }
 
-    private void process(ChannelHandlerContext ctx, String uri, byte[] requestBytes, boolean keepAlive){
+    private void process(ChannelHandlerContext ctx, String uri, byte[] requestBytes, boolean keepAlive) {
         String requestId = null;
         try {
-            if ("/services".equals(uri)) {	// services mapping
+            if ("/services".equals(uri)) {    // services mapping
 
                 // request
                 StringBuffer stringBuffer = new StringBuffer("<ui>");
-                for (String serviceKey: xxlRpcProviderFactory.getServiceData().keySet()) {
+                for (String serviceKey : xxlRpcProviderFactory.getServiceData().keySet()) {
                     stringBuffer.append("<li>").append(serviceKey).append(": ").append(xxlRpcProviderFactory.getServiceData().get(serviceKey)).append("</li>");
                 }
                 stringBuffer.append("</ui>");
@@ -109,7 +109,7 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
     /**
      * write response
      */
-    private void writeResponse(ChannelHandlerContext ctx, boolean keepAlive, byte[] responseBytes){
+    private void writeResponse(ChannelHandlerContext ctx, boolean keepAlive, byte[] responseBytes) {
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(responseBytes));
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html;charset=UTF-8");       // HttpHeaderValues.TEXT_PLAIN.toString()
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
@@ -132,7 +132,7 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent){
+        if (evt instanceof IdleStateEvent) {
             ctx.channel().close();      // close idle channel
             logger.debug("Jobs rpc provider netty_http server close an idle channel.");
         } else {

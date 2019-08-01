@@ -7,31 +7,32 @@ import org.slf4j.LoggerFactory;
 
 /**
  * i client
+ *
  * @author xuxueli 2015-11-24 22:18:10
  */
 public abstract class Client {
-	protected static final Logger logger = LoggerFactory.getLogger(Client.class);
+    protected static final Logger logger = LoggerFactory.getLogger(Client.class);
 
 
-	// ---------------------- init ----------------------
+    // ---------------------- init ----------------------
 
-	protected volatile JobsRpcReferenceBean xxlRpcReferenceBean;
+    protected volatile JobsRpcReferenceBean xxlRpcReferenceBean;
 
-	public void init(JobsRpcReferenceBean xxlRpcReferenceBean) {
-		this.xxlRpcReferenceBean = xxlRpcReferenceBean;
-	}
+    public void init(JobsRpcReferenceBean xxlRpcReferenceBean) {
+        this.xxlRpcReferenceBean = xxlRpcReferenceBean;
+    }
 
 
     // ---------------------- send ----------------------
 
-	/**
-	 * async send, bind requestId and future-response
-	 *
-	 * @param address
-	 * @param xxlRpcRequest
-	 * @return
-	 * @throws Exception
-	 */
-	public abstract void asyncSend(String address, JobsRpcRequest xxlRpcRequest) throws Exception;
+    /**
+     * async send, bind requestId and future-response
+     *
+     * @param address
+     * @param xxlRpcRequest
+     * @return
+     * @throws Exception
+     */
+    public abstract void asyncSend(String address, JobsRpcRequest xxlRpcRequest) throws Exception;
 
 }

@@ -13,111 +13,117 @@ import java.util.concurrent.*;
  */
 public class JobsRpcFutureResponse implements Future<JobsRpcResponse> {
 
-	private JobsRpcInvokerFactory invokerFactory;
+    private JobsRpcInvokerFactory invokerFactory;
 
-	// net data
-	private JobsRpcRequest request;
-	private JobsRpcResponse response;
+    /**
+     * net data
+     */
+    private JobsRpcRequest request;
+    private JobsRpcResponse response;
 
-	// future lock
-	private boolean done = false;
-	private Object lock = new Object();
+    /**
+     * future lock
+     */
+    private boolean done = false;
+    private Object lock = new Object();
 
-	// callback, can be null
-	private JobsRpcInvokeCallback invokeCallback;
-
-
-	public JobsRpcFutureResponse(final JobsRpcInvokerFactory invokerFactory, JobsRpcRequest request, JobsRpcInvokeCallback invokeCallback) {
-		this.invokerFactory = invokerFactory;
-		this.request = request;
-		this.invokeCallback = invokeCallback;
-
-		// set-InvokerFuture
-		setInvokerFuture();
-	}
+    /**
+     * callback, can be null
+     */
+    private JobsRpcInvokeCallback invokeCallback;
 
 
-	// ---------------------- response pool ----------------------
+    public JobsRpcFutureResponse(final JobsRpcInvokerFactory invokerFactory, JobsRpcRequest request, JobsRpcInvokeCallback invokeCallback) {
+        this.invokerFactory = invokerFactory;
+        this.request = request;
+        this.invokeCallback = invokeCallback;
 
-	public void setInvokerFuture(){
-		this.invokerFactory.setInvokerFuture(request.getRequestId(), this);
-	}
-	public void removeInvokerFuture(){
-		this.invokerFactory.removeInvokerFuture(request.getRequestId());
-	}
-
-
-	// ---------------------- get ----------------------
-
-	public JobsRpcRequest getRequest() {
-		return request;
-	}
-	public JobsRpcInvokeCallback getInvokeCallback() {
-		return invokeCallback;
-	}
+        // set-InvokerFuture
+        setInvokerFuture();
+    }
 
 
-	// ---------------------- for invoke back ----------------------
+    // ---------------------- response pool ----------------------
 
-	public void setResponse(JobsRpcResponse response) {
-		this.response = response;
-		synchronized (lock) {
-			done = true;
-			lock.notifyAll();
-		}
-	}
+    public void setInvokerFuture() {
+        this.invokerFactory.setInvokerFuture(request.getRequestId(), this);
+    }
 
-
-	// ---------------------- for invoke ----------------------
-
-	@Override
-	public boolean cancel(boolean mayInterruptIfRunning) {
-		// TODO
-		return false;
-	}
-
-	@Override
-	public boolean isCancelled() {
-		// TODO
-		return false;
-	}
-
-	@Override
-	public boolean isDone() {
-		return done;
-	}
-
-	@Override
-	public JobsRpcResponse get() throws InterruptedException, ExecutionException {
-		try {
-			return get(-1, TimeUnit.MILLISECONDS);
-		} catch (TimeoutException e) {
-			throw new JobsRpcException(e);
-		}
-	}
-
-	@Override
-	public JobsRpcResponse get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-		if (!done) {
-			synchronized (lock) {
-				try {
-					if (timeout < 0) {
-						lock.wait();
-					} else {
-						long timeoutMillis = (TimeUnit.MILLISECONDS==unit)?timeout:TimeUnit.MILLISECONDS.convert(timeout , unit);
-						lock.wait(timeoutMillis);
-					}
-				} catch (InterruptedException e) {
-					throw e;
-				}
-			}
-		}
-
-		if (!done) {
-			throw new JobsRpcException("Jobs rpc, request timeout at:"+ System.currentTimeMillis() +", request:" + request.toString());
-		}
-		return response;
-	}
+    public void removeInvokerFuture() {
+        this.invokerFactory.removeInvokerFuture(request.getRequestId());
+    }
 
 
+    // ---------------------- get ----------------------
+
+    public JobsRpcRequest getRequest() {
+        return request;
+    }
+
+    public JobsRpcInvokeCallback getInvokeCallback() {
+        return invokeCallback;
+    }
+
+
+    // ---------------------- for invoke back ----------------------
+
+    public void setResponse(JobsRpcResponse response) {
+        this.response = response;
+        synchronized (lock) {
+            done = true;
+            lock.notifyAll();
+        }
+    }
+
+
+    // ---------------------- for invoke ----------------------
+
+    @Override
+    public boolean cancel(boolean mayInterruptIfRunning) {
+        // TODO
+        return false;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        // TODO
+        return false;
+    }
+
+    @Override
+    public boolean isDone() {
+        return done;
+    }
+
+    @Override
+    public JobsRpcResponse get() throws InterruptedException, ExecutionException {
+        try {
+            return get(-1, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException e) {
+            throw new JobsRpcException(e);
+        }
+    }
+
+    @Override
+    public JobsRpcResponse get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+        if (!done) {
+            synchronized (lock) {
+                try {
+                    if (timeout < 0) {
+                        lock.wait();
+                    } else {
+                        long timeoutMillis = (TimeUnit.MILLISECONDS == unit) ? timeout : TimeUnit.MILLISECONDS.convert(timeout, unit);
+                        lock.wait(timeoutMillis);
+                    }
+                } catch (InterruptedException e) {
+                    throw e;
+                }
+            }
+        }
+
+        if (!done) {
+            throw new JobsRpcException("Jobs rpc, request timeout at:" + System.currentTimeMillis() + ", request:" + request.toString());
+        }
+        return response;
+    }
 }

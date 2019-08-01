@@ -1,9 +1,9 @@
 package com.baomidou.jobs.rpc.remoting.net;
 
-import com.baomidou.jobs.rpc.remoting.net.impl.netty.client.NettyClient;
-import com.baomidou.jobs.rpc.remoting.net.impl.netty.server.NettyServer;
-import com.baomidou.jobs.rpc.remoting.net.impl.netty_http.client.NettyHttpClient;
-import com.baomidou.jobs.rpc.remoting.net.impl.netty_http.server.NettyHttpServer;
+import com.baomidou.jobs.rpc.remoting.net.impl.netty.http.client.NettyHttpClient;
+import com.baomidou.jobs.rpc.remoting.net.impl.netty.http.server.NettyHttpServer;
+import com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.client.NettyClient;
+import com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.server.NettyServer;
 
 /**
  * remoting net

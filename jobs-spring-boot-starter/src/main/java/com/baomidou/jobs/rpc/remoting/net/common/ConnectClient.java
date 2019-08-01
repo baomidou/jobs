@@ -1,23 +1,18 @@
 package com.baomidou.jobs.rpc.remoting.net.common;
 
+import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.serialize.Serializer;
-import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
-import com.baomidou.jobs.rpc.remoting.net.params.BaseCallback;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author xuxueli 2018-10-19
  */
+@Slf4j
 public abstract class ConnectClient {
-    protected static transient Logger logger = LoggerFactory.getLogger(ConnectClient.class);
-
-
-    // ---------------------- iface ----------------------
 
     public abstract void init(String address, final Serializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception;
 
@@ -25,10 +20,7 @@ public abstract class ConnectClient {
 
     public abstract boolean isValidate();
 
-    public abstract void send(JobsRpcRequest xxlRpcRequest) throws Exception ;
-
-
-    // ---------------------- client pool map ----------------------
+    public abstract void send(JobsRpcRequest jobsRpcRequest) throws Exception;
 
     /**
      * async send
@@ -46,31 +38,28 @@ public abstract class ConnectClient {
         } catch (Exception e) {
             throw e;
         }
-
     }
 
-    private static volatile ConcurrentHashMap<String, ConnectClient> connectClientMap;        // (static) alread addStopCallBack
+    private static volatile ConcurrentHashMap<String, ConnectClient> connectClientMap;
     private static volatile ConcurrentHashMap<String, Object> connectClientLockMap = new ConcurrentHashMap<>();
+
     private static ConnectClient getPool(String address, Class<? extends ConnectClient> connectClientImpl,
-                                         final JobsRpcReferenceBean xxlRpcReferenceBean) throws Exception {
+                                         final JobsRpcReferenceBean jobsRpcReferenceBean) throws Exception {
 
         // init base compont, avoid repeat init
         if (connectClientMap == null) {
             synchronized (ConnectClient.class) {
                 if (connectClientMap == null) {
                     // init
-                    connectClientMap = new ConcurrentHashMap<String, ConnectClient>();
+                    connectClientMap = new ConcurrentHashMap<>(16);
                     // stop callback
-                    xxlRpcReferenceBean.getInvokerFactory().addStopCallBack(new BaseCallback() {
-                        @Override
-                        public void run() throws Exception {
-                            if (connectClientMap.size() > 0) {
-                                for (String key: connectClientMap.keySet()) {
-                                    ConnectClient clientPool = connectClientMap.get(key);
-                                    clientPool.close();
-                                }
-                                connectClientMap.clear();
+                    jobsRpcReferenceBean.getInvokerFactory().addStopCallBack(() -> {
+                        if (connectClientMap.size() > 0) {
+                            for (String key : connectClientMap.keySet()) {
+                                ConnectClient clientPool = connectClientMap.get(key);
+                                clientPool.close();
                             }
+                            connectClientMap.clear();
                         }
                     });
                 }
@@ -79,7 +68,7 @@ public abstract class ConnectClient {
 
         // get-valid client
         ConnectClient connectClient = connectClientMap.get(address);
-        if (connectClient!=null && connectClient.isValidate()) {
+        if (connectClient != null && connectClient.isValidate()) {
             return connectClient;
         }
 
@@ -95,7 +84,7 @@ public abstract class ConnectClient {
 
             // get-valid client, avlid repeat
             connectClient = connectClientMap.get(address);
-            if (connectClient!=null && connectClient.isValidate()) {
+            if (connectClient != null && connectClient.isValidate()) {
                 return connectClient;
             }
 
@@ -108,7 +97,7 @@ public abstract class ConnectClient {
             // set pool
             ConnectClient connectClient_new = connectClientImpl.newInstance();
             try {
-                connectClient_new.init(address, xxlRpcReferenceBean.getSerializer(), xxlRpcReferenceBean.getInvokerFactory());
+                connectClient_new.init(address, jobsRpcReferenceBean.getSerializer(), jobsRpcReferenceBean.getInvokerFactory());
                 connectClientMap.put(address, connectClient_new);
             } catch (Exception e) {
                 connectClient_new.close();
@@ -117,7 +106,5 @@ public abstract class ConnectClient {
 
             return connectClient_new;
         }
-
     }
-
 }
