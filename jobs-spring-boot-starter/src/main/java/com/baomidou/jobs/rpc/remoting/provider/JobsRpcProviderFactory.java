@@ -1,7 +1,7 @@
 package com.baomidou.jobs.rpc.remoting.provider;
 
 import com.baomidou.jobs.exception.JobsRpcException;
-import com.baomidou.jobs.rpc.registry.ServiceRegistry;
+import com.baomidou.jobs.rpc.registry.IJobsServiceRegistry;
 import com.baomidou.jobs.rpc.remoting.net.NetEnum;
 import com.baomidou.jobs.rpc.remoting.net.Server;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
@@ -29,7 +29,7 @@ public class JobsRpcProviderFactory {
     private int port;
     private String accessToken;
 
-    private Class<? extends ServiceRegistry> serviceRegistryClass;
+    private Class<? extends IJobsServiceRegistry> serviceRegistryClass;
     private Map<String, String> serviceRegistryParam;
 
 
@@ -42,7 +42,7 @@ public class JobsRpcProviderFactory {
                            String ip,
                            int port,
                            String accessToken,
-                           Class<? extends ServiceRegistry> serviceRegistryClass,
+                           Class<? extends IJobsServiceRegistry> serviceRegistryClass,
                            Map<String, String> serviceRegistryParam) {
 
         // init
@@ -91,7 +91,7 @@ public class JobsRpcProviderFactory {
     // ---------------------- start / stop ----------------------
 
     private Server server;
-    private ServiceRegistry serviceRegistry;
+    private IJobsServiceRegistry serviceRegistry;
     private String serviceAddress;
 
     public void start() throws Exception {

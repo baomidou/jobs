@@ -2,7 +2,7 @@ package com.baomidou.jobs.executor;
 
 import com.baomidou.jobs.JobsConstant;
 import com.baomidou.jobs.handler.IJobsHandler;
-import com.baomidou.jobs.rpc.registry.ServiceRegistry;
+import com.baomidou.jobs.rpc.registry.IJobsServiceRegistry;
 import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.invoker.call.CallType;
 import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
@@ -158,7 +158,7 @@ public abstract class JobsAbstractExecutor {
     /**
      * RPC Client 节点注册
      */
-    public static class ExecutorServiceRegistry extends ServiceRegistry {
+    public static class ExecutorServiceRegistry implements IJobsServiceRegistry {
 
         @Override
         public void start(Map<String, String> param) {

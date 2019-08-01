@@ -1,6 +1,6 @@
 package com.baomidou.jobs.rpc.registry.impl;
 
-import com.baomidou.jobs.rpc.registry.ServiceRegistry;
+import com.baomidou.jobs.rpc.registry.IJobsServiceRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.TreeSet;
  *
  * @author xuxueli 2018-10-17
  */
-public class LocalServiceRegistry extends ServiceRegistry {
+public class LocalServiceRegistry implements IJobsServiceRegistry {
 
     /**
      * registry data

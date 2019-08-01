@@ -1,7 +1,6 @@
 package com.baomidou.jobs.rpc.registry.client.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -12,8 +11,8 @@ import java.net.URL;
 /**
  * @author xuxueli 2018-11-25 00:55:31
  */
+@Slf4j
 public class BasicHttpUtil {
-    private static Logger logger = LoggerFactory.getLogger(BasicHttpUtil.class);
 
     /**
      * post
@@ -73,7 +72,7 @@ public class BasicHttpUtil {
             }
             return result.toString();
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         } finally {
             try {
                 if (bufferedReader != null) {
@@ -83,7 +82,7 @@ public class BasicHttpUtil {
                     connection.disconnect();
                 }
             } catch (Exception e2) {
-                logger.error(e2.getMessage(), e2);
+                log.error(e2.getMessage(), e2);
             }
         }
         return null;
@@ -135,7 +134,7 @@ public class BasicHttpUtil {
             }
             return result.toString();
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         } finally {
             try {
                 if (bufferedReader != null) {
@@ -145,7 +144,7 @@ public class BasicHttpUtil {
                     connection.disconnect();
                 }
             } catch (Exception e2) {
-                logger.error(e2.getMessage(), e2);
+                log.error(e2.getMessage(), e2);
             }
         }
         return null;

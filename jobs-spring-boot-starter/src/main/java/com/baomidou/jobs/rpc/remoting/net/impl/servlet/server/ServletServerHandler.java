@@ -23,8 +23,8 @@ import java.io.OutputStream;
 public class ServletServerHandler {
     private JobsRpcProviderFactory jobsRpcProviderFactory;
 
-    public ServletServerHandler(JobsRpcProviderFactory xxlRpcProviderFactory) {
-        this.jobsRpcProviderFactory = xxlRpcProviderFactory;
+    public ServletServerHandler(JobsRpcProviderFactory jobsRpcProviderFactory) {
+        this.jobsRpcProviderFactory = jobsRpcProviderFactory;
     }
 
     /**
@@ -46,17 +46,17 @@ public class ServletServerHandler {
         } else {    // default remoting mapping
 
             // request parse
-            JobsRpcRequest xxlRpcRequest = null;
+            JobsRpcRequest jobsRpcRequest;
             try {
 
-                xxlRpcRequest = parseRequest(request);
+                jobsRpcRequest = parseRequest(request);
             } catch (Exception e) {
                 writeResponse(response, JobsHelper.getErrorInfo(e).getBytes());
                 return;
             }
 
             // invoke
-            JobsRpcResponse xxlRpcResponse = jobsRpcProviderFactory.invokeService(xxlRpcRequest);
+            JobsRpcResponse xxlRpcResponse = jobsRpcProviderFactory.invokeService(jobsRpcRequest);
 
             // response-serialize + response-write
             byte[] responseBytes = jobsRpcProviderFactory.getSerializer().serialize(xxlRpcResponse);
@@ -69,10 +69,8 @@ public class ServletServerHandler {
      * write response
      */
     private void writeResponse(HttpServletResponse response, byte[] responseBytes) throws IOException {
-
         response.setContentType("text/html;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
-
         OutputStream out = response.getOutputStream();
         out.write(responseBytes);
         out.flush();
@@ -87,8 +85,8 @@ public class ServletServerHandler {
         if (requestBytes == null || requestBytes.length == 0) {
             throw new JobsRpcException("Jobs rpc request data is empty.");
         }
-        JobsRpcRequest rpcXxlRpcRequest = (JobsRpcRequest) jobsRpcProviderFactory.getSerializer().deserialize(requestBytes, JobsRpcRequest.class);
-        return rpcXxlRpcRequest;
+        return (JobsRpcRequest) jobsRpcProviderFactory.getSerializer()
+                .deserialize(requestBytes, JobsRpcRequest.class);
     }
 
     /**
@@ -104,7 +102,7 @@ public class ServletServerHandler {
         InputStream is = request.getInputStream();
         if (contentLen > 0) {
             int readLen = 0;
-            int readLengthThisTime = 0;
+            int readLengthThisTime;
             byte[] message = new byte[contentLen];
             try {
                 while (readLen != contentLen) {

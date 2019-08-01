@@ -32,14 +32,14 @@ public class JobsRegistryBaseClient {
         this.env = env;
 
         // valid
-        if (adminAddress==null || adminAddress.trim().length()==0) {
-            throw new RuntimeException("xxl-registry adminAddress empty");
+        if (adminAddress == null || adminAddress.trim().length() == 0) {
+            throw new RuntimeException("jobs-registry adminAddress empty");
         }
-        if (biz==null || biz.trim().length()<4 || biz.trim().length()>255) {
-            throw new RuntimeException("xxl-registry biz empty Invalid[4~255]");
+        if (biz == null || biz.trim().length() < 4 || biz.trim().length() > 255) {
+            throw new RuntimeException("jobs-registry biz empty Invalid[4~255]");
         }
-        if (env==null || env.trim().length()<2 || env.trim().length()>255) {
-            throw new RuntimeException("xxl-registry biz env Invalid[2~255]");
+        if (env == null || env.trim().length() < 2 || env.trim().length() > 255) {
+            throw new RuntimeException("jobs-registry biz env Invalid[2~255]");
         }
 
         // parse
@@ -58,18 +58,18 @@ public class JobsRegistryBaseClient {
      * @param registryDataList
      * @return
      */
-    public boolean registry(List<JobsRegistryDataParamVO> registryDataList){
+    public boolean registry(List<JobsRegistryDataParamVO> registryDataList) {
 
         // valid
-        if (registryDataList==null || registryDataList.size()==0) {
-            throw new RuntimeException("xxl-registry registryDataList empty");
+        if (registryDataList == null || registryDataList.size() == 0) {
+            throw new RuntimeException("jobs-registry registryDataList empty");
         }
-        for (JobsRegistryDataParamVO registryParam: registryDataList) {
-            if (registryParam.getKey()==null || registryParam.getKey().trim().length()<4 || registryParam.getKey().trim().length()>255) {
-                throw new RuntimeException("xxl-registry registryDataList#key Invalid[4~255]");
+        for (JobsRegistryDataParamVO registryParam : registryDataList) {
+            if (registryParam.getKey() == null || registryParam.getKey().trim().length() < 4 || registryParam.getKey().trim().length() > 255) {
+                throw new RuntimeException("jobs-registry registryDataList#key Invalid[4~255]");
             }
-            if (registryParam.getValue()==null || registryParam.getValue().trim().length()<4 || registryParam.getValue().trim().length()>255) {
-                throw new RuntimeException("xxl-registry registryDataList#value Invalid[4~255]");
+            if (registryParam.getValue() == null || registryParam.getValue().trim().length() < 4 || registryParam.getValue().trim().length() > 255) {
+                throw new RuntimeException("jobs-registry registryDataList#value Invalid[4~255]");
             }
         }
 
@@ -87,12 +87,12 @@ public class JobsRegistryBaseClient {
 
         // result
         Map<String, Object> respObj = requestAndValid(pathUrl, paramsJson, 5);
-        return respObj!=null?true:false;
+        return respObj != null ? true : false;
     }
 
-    private Map<String, Object> requestAndValid(String pathUrl, String requestBody, int timeout){
+    private Map<String, Object> requestAndValid(String pathUrl, String requestBody, int timeout) {
 
-        for (String adminAddressUrl: adminAddressArr) {
+        for (String adminAddressUrl : adminAddressArr) {
             String finalUrl = adminAddressUrl + pathUrl;
 
             // request
@@ -105,14 +105,15 @@ public class JobsRegistryBaseClient {
             Map<String, Object> resopnseMap = null;
             try {
                 resopnseMap = BasicJson.parseMap(responseData);
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
 
 
             // valid resopnse
-            if (resopnseMap==null
+            if (resopnseMap == null
                     || !resopnseMap.containsKey("code")
                     || !"200".equals(String.valueOf(resopnseMap.get("code")))
-                    ) {
+            ) {
                 log.warn("JobsRegistryBaseClient response fail, responseData={}", responseData);
                 return null;
             }
@@ -132,15 +133,15 @@ public class JobsRegistryBaseClient {
      */
     public boolean remove(List<JobsRegistryDataParamVO> registryDataList) {
         // valid
-        if (registryDataList==null || registryDataList.size()==0) {
-            throw new RuntimeException("xxl-registry registryDataList empty");
+        if (registryDataList == null || registryDataList.size() == 0) {
+            throw new RuntimeException("jobs-registry registryDataList empty");
         }
-        for (JobsRegistryDataParamVO registryParam: registryDataList) {
-            if (registryParam.getKey()==null || registryParam.getKey().trim().length()<4 || registryParam.getKey().trim().length()>255) {
-                throw new RuntimeException("xxl-registry registryDataList#key Invalid[4~255]");
+        for (JobsRegistryDataParamVO registryParam : registryDataList) {
+            if (registryParam.getKey() == null || registryParam.getKey().trim().length() < 4 || registryParam.getKey().trim().length() > 255) {
+                throw new RuntimeException("jobs-registry registryDataList#key Invalid[4~255]");
             }
-            if (registryParam.getValue()==null || registryParam.getValue().trim().length()<4 || registryParam.getValue().trim().length()>255) {
-                throw new RuntimeException("xxl-registry registryDataList#value Invalid[4~255]");
+            if (registryParam.getValue() == null || registryParam.getValue().trim().length() < 4 || registryParam.getValue().trim().length() > 255) {
+                throw new RuntimeException("jobs-registry registryDataList#value Invalid[4~255]");
             }
         }
 
@@ -158,7 +159,7 @@ public class JobsRegistryBaseClient {
 
         // result
         Map<String, Object> respObj = requestAndValid(pathUrl, paramsJson, 5);
-        return respObj!=null?true:false;
+        return respObj != null ? true : false;
     }
 
     /**
@@ -169,8 +170,8 @@ public class JobsRegistryBaseClient {
      */
     public Map<String, TreeSet<String>> discovery(Set<String> keys) {
         // valid
-        if (keys==null || keys.size()==0) {
-            throw new RuntimeException("xxl-registry keys empty");
+        if (keys == null || keys.size() == 0) {
+            throw new RuntimeException("jobs-registry keys empty");
         }
 
         // pathUrl
@@ -189,7 +190,7 @@ public class JobsRegistryBaseClient {
         Map<String, Object> respObj = requestAndValid(pathUrl, paramsJson, 5);
 
         // parse
-        if (respObj!=null && respObj.containsKey("data")) {
+        if (respObj != null && respObj.containsKey("data")) {
             Map<String, TreeSet<String>> data = (Map<String, TreeSet<String>>) respObj.get("data");
             return data;
         }
@@ -205,8 +206,8 @@ public class JobsRegistryBaseClient {
      */
     public boolean monitor(Set<String> keys) {
         // valid
-        if (keys==null || keys.size()==0) {
-            throw new RuntimeException("xxl-registry keys empty");
+        if (keys == null || keys.size() == 0) {
+            throw new RuntimeException("jobs-registry keys empty");
         }
 
         // pathUrl
@@ -217,13 +218,12 @@ public class JobsRegistryBaseClient {
         registryParamVO.setAccessToken(this.accessToken);
         registryParamVO.setBiz(this.biz);
         registryParamVO.setEnv(this.env);
-        registryParamVO.setKeys(new ArrayList<String>(keys));
+        registryParamVO.setKeys(new ArrayList<>(keys));
 
         String paramsJson = BasicJson.toJson(registryParamVO);
 
         // result
         Map<String, Object> respObj = requestAndValid(pathUrl, paramsJson, 60);
-        return respObj!=null?true:false;
+        return respObj != null ? true : false;
     }
-
 }

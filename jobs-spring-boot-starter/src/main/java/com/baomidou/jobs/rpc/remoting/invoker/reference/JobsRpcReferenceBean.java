@@ -16,8 +16,6 @@ import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
 import com.baomidou.jobs.rpc.serialize.Serializer;
 import com.baomidou.jobs.rpc.util.ClassUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Proxy;
 import java.util.TreeSet;

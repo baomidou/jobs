@@ -1,7 +1,7 @@
 package com.baomidou.jobs.rpc.remoting.invoker;
 
 import com.baomidou.jobs.exception.JobsRpcException;
-import com.baomidou.jobs.rpc.registry.ServiceRegistry;
+import com.baomidou.jobs.rpc.registry.IJobsServiceRegistry;
 import com.baomidou.jobs.rpc.registry.impl.LocalServiceRegistry;
 import com.baomidou.jobs.rpc.remoting.net.params.IJobsRpcCallback;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcFutureResponse;
@@ -33,14 +33,14 @@ public class JobsRpcInvokerFactory {
 
     // ---------------------- config ----------------------
 
-    private Class<? extends ServiceRegistry> serviceRegistryClass;
+    private Class<? extends IJobsServiceRegistry> serviceRegistryClass;
     private Map<String, String> serviceRegistryParam;
 
 
     public JobsRpcInvokerFactory() {
     }
 
-    public JobsRpcInvokerFactory(Class<? extends ServiceRegistry> serviceRegistryClass, Map<String, String> serviceRegistryParam) {
+    public JobsRpcInvokerFactory(Class<? extends IJobsServiceRegistry> serviceRegistryClass, Map<String, String> serviceRegistryParam) {
         this.serviceRegistryClass = serviceRegistryClass;
         this.serviceRegistryParam = serviceRegistryParam;
     }
@@ -80,9 +80,9 @@ public class JobsRpcInvokerFactory {
 
     // ---------------------- service registry ----------------------
 
-    private ServiceRegistry serviceRegistry;
+    private IJobsServiceRegistry serviceRegistry;
 
-    public ServiceRegistry getServiceRegistry() {
+    public IJobsServiceRegistry getServiceRegistry() {
         return serviceRegistry;
     }
 

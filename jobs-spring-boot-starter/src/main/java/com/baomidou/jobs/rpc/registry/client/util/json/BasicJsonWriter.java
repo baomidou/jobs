@@ -1,7 +1,6 @@
 package com.baomidou.jobs.rpc.registry.client.util.json;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -10,10 +9,8 @@ import java.util.*;
 /**
  * @author xuxueli 2018-11-30
  */
-public class BasicJsonwriter {
-    private static Logger logger = LoggerFactory.getLogger(BasicJsonwriter.class);
-
-
+@Slf4j
+public class BasicJsonWriter {
     private static final String STR_SLASH = "\"";
     private static final String STR_SLASH_STR = "\":";
     private static final String STR_COMMA = ",";
@@ -35,7 +32,7 @@ public class BasicJsonwriter {
         try {
             writeObjItem(null, object, json);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         // replace
@@ -93,8 +90,6 @@ public class BasicJsonwriter {
 
             json.append(value);
         } else if (value instanceof Object[] || value instanceof Collection) {
-            // collection | array     //  Array.getLength(array);   // Array.get(array, i);
-
             Collection valueColl = null;
             if (value instanceof Object[]) {
                 Object[] valueArr = (Object[]) value;
@@ -153,7 +148,7 @@ public class BasicJsonwriter {
         if (cacheFields.containsKey(cacheKey)) {
             return cacheFields.get(cacheKey);
         }
-        Field[] fields = getAllDeclaredFields(clazz);    //clazz.getDeclaredFields();
+        Field[] fields = getAllDeclaredFields(clazz);
         cacheFields.put(cacheKey, fields);
         return fields;
     }
@@ -183,13 +178,10 @@ public class BasicJsonwriter {
             field.setAccessible(true);
             return field.get(obj);
         } catch (IllegalArgumentException | IllegalAccessException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             return null;
         } finally {
             field.setAccessible(false);
         }
     }
-
-
-
 }

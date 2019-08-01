@@ -36,7 +36,7 @@ public class JobsRegistryClient {
                     if (registryData.size() > 0) {
 
                         boolean ret = registryBaseClient.registry(new ArrayList<JobsRegistryDataParamVO>(registryData));
-                        log.debug("Jobs registry, refresh registry data {}, registryData = {}", ret?"success":"fail",registryData);
+                        log.debug("Jobs registry, refresh registry data {}, registryData = {}", ret ? "success" : "fail", registryData);
                     }
                 } catch (Exception e) {
                     if (!registryThreadStop) {
@@ -53,48 +53,45 @@ public class JobsRegistryClient {
             }
             log.info("Jobs registry, registryThread stoped.");
         });
-        registryThread.setName("xxl-registry, JobsRegistryClient registryThread.");
+        registryThread.setName("jobs-registry, JobsRegistryClient registryThread.");
         registryThread.setDaemon(true);
         registryThread.start();
 
         // discovery thread
-        discoveryThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!registryThreadStop) {
+        discoveryThread = new Thread(() -> {
+            while (!registryThreadStop) {
 
-                    if (discoveryData.size() == 0) {
-                        try {
-                            TimeUnit.SECONDS.sleep(3);
-                        } catch (Exception e) {
-                            if (!registryThreadStop) {
-                                log.error("Jobs registry, discoveryThread error.", e);
-                            }
-                        }
-                    } else {
-                        try {
-                            // monitor
-                            boolean monitorRet = registryBaseClient.monitor(discoveryData.keySet());
-
-                            // avoid fail-retry request too quick
-                            if (!monitorRet){
-                                TimeUnit.SECONDS.sleep(10);
-                            }
-
-                            // refreshDiscoveryData, all
-                            refreshDiscoveryData(discoveryData.keySet());
-                        } catch (Exception e) {
-                            if (!registryThreadStop) {
-                                log.error("Jobs registry, discoveryThread error.", e);
-                            }
+                if (discoveryData.size() == 0) {
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (Exception e) {
+                        if (!registryThreadStop) {
+                            log.error("Jobs registry, discoveryThread error.", e);
                         }
                     }
+                } else {
+                    try {
+                        // monitor
+                        boolean monitorRet = registryBaseClient.monitor(discoveryData.keySet());
 
+                        // avoid fail-retry request too quick
+                        if (!monitorRet) {
+                            TimeUnit.SECONDS.sleep(10);
+                        }
+
+                        // refreshDiscoveryData, all
+                        refreshDiscoveryData(discoveryData.keySet());
+                    } catch (Exception e) {
+                        if (!registryThreadStop) {
+                            log.error("Jobs registry, discoveryThread error.", e);
+                        }
+                    }
                 }
-                log.info("Jobs registry, discoveryThread stoped.");
+
             }
+            log.info("Jobs registry, discoveryThread stoped.");
         });
-        discoveryThread.setName("xxl-registry, JobsRegistryClient discoveryThread.");
+        discoveryThread.setName("jobs-registry, JobsRegistryClient discoveryThread.");
         discoveryThread.setDaemon(true);
         discoveryThread.start();
 
@@ -119,18 +116,18 @@ public class JobsRegistryClient {
      * @param registryDataList
      * @return
      */
-    public boolean registry(List<JobsRegistryDataParamVO> registryDataList){
+    public boolean registry(List<JobsRegistryDataParamVO> registryDataList) {
 
         // valid
-        if (registryDataList==null || registryDataList.size()==0) {
-            throw new RuntimeException("xxl-registry registryDataList empty");
+        if (registryDataList == null || registryDataList.size() == 0) {
+            throw new RuntimeException("jobs-registry registryDataList empty");
         }
-        for (JobsRegistryDataParamVO registryParam: registryDataList) {
-            if (registryParam.getKey()==null || registryParam.getKey().trim().length()<4 || registryParam.getKey().trim().length()>255) {
-                throw new RuntimeException("xxl-registry registryDataList#key Invalid[4~255]");
+        for (JobsRegistryDataParamVO registryParam : registryDataList) {
+            if (registryParam.getKey() == null || registryParam.getKey().trim().length() < 4 || registryParam.getKey().trim().length() > 255) {
+                throw new RuntimeException("jobs-registry registryDataList#key Invalid[4~255]");
             }
-            if (registryParam.getValue()==null || registryParam.getValue().trim().length()<4 || registryParam.getValue().trim().length()>255) {
-                throw new RuntimeException("xxl-registry registryDataList#value Invalid[4~255]");
+            if (registryParam.getValue() == null || registryParam.getValue().trim().length() < 4 || registryParam.getValue().trim().length() > 255) {
+                throw new RuntimeException("jobs-registry registryDataList#value Invalid[4~255]");
             }
         }
 
@@ -144,7 +141,6 @@ public class JobsRegistryClient {
     }
 
 
-
     /**
      * remove
      *
@@ -153,15 +149,15 @@ public class JobsRegistryClient {
      */
     public boolean remove(List<JobsRegistryDataParamVO> registryDataList) {
         // valid
-        if (registryDataList==null || registryDataList.size()==0) {
-            throw new RuntimeException("xxl-registry registryDataList empty");
+        if (registryDataList == null || registryDataList.size() == 0) {
+            throw new RuntimeException("jobs-registry registryDataList empty");
         }
-        for (JobsRegistryDataParamVO registryParam: registryDataList) {
-            if (registryParam.getKey()==null || registryParam.getKey().trim().length()<4 || registryParam.getKey().trim().length()>255) {
-                throw new RuntimeException("xxl-registry registryDataList#key Invalid[4~255]");
+        for (JobsRegistryDataParamVO registryParam : registryDataList) {
+            if (registryParam.getKey() == null || registryParam.getKey().trim().length() < 4 || registryParam.getKey().trim().length() > 255) {
+                throw new RuntimeException("jobs-registry registryDataList#key Invalid[4~255]");
             }
-            if (registryParam.getValue()==null || registryParam.getValue().trim().length()<4 || registryParam.getValue().trim().length()>255) {
-                throw new RuntimeException("xxl-registry registryDataList#value Invalid[4~255]");
+            if (registryParam.getValue() == null || registryParam.getValue().trim().length() < 4 || registryParam.getValue().trim().length() > 255) {
+                throw new RuntimeException("jobs-registry registryDataList#value Invalid[4~255]");
             }
         }
 
@@ -182,7 +178,7 @@ public class JobsRegistryClient {
      * @return
      */
     public Map<String, TreeSet<String>> discovery(Set<String> keys) {
-        if (keys==null || keys.size() == 0) {
+        if (keys == null || keys.size() == 0) {
             return null;
         }
 
@@ -217,8 +213,8 @@ public class JobsRegistryClient {
     /**
      * refreshDiscoveryData, some or all
      */
-    private void refreshDiscoveryData(Set<String> keys){
-        if (keys==null || keys.size() == 0) {
+    private void refreshDiscoveryData(Set<String> keys) {
+        if (keys == null || keys.size() == 0) {
             return;
         }
 
@@ -226,8 +222,8 @@ public class JobsRegistryClient {
         Map<String, TreeSet<String>> updatedData = new HashMap<>();
 
         Map<String, TreeSet<String>> keyValueListData = registryBaseClient.discovery(keys);
-        if (keyValueListData!=null) {
-            for (String keyItem: keyValueListData.keySet()) {
+        if (keyValueListData != null) {
+            for (String keyItem : keyValueListData.keySet()) {
 
                 // list > set
                 TreeSet<String> valueSet = new TreeSet<>();
@@ -236,7 +232,7 @@ public class JobsRegistryClient {
                 // valid if updated
                 boolean updated = true;
                 TreeSet<String> oldValSet = discoveryData.get(keyItem);
-                if (oldValSet!=null && BasicJson.toJson(oldValSet).equals(BasicJson.toJson(valueSet))) {
+                if (oldValSet != null && BasicJson.toJson(oldValSet).equals(BasicJson.toJson(valueSet))) {
                     updated = false;
                 }
 
@@ -257,7 +253,7 @@ public class JobsRegistryClient {
 
 
     public TreeSet<String> discovery(String key) {
-        if (key==null) {
+        if (key == null) {
             return null;
         }
 
