@@ -17,10 +17,10 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class ExecutorRegistryThread {
-    private static ExecutorRegistryThread instance = new ExecutorRegistryThread();
+    private static ExecutorRegistryThread INSTANCE = new ExecutorRegistryThread();
 
     public static ExecutorRegistryThread getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     private Thread registryThread;
