@@ -4,6 +4,7 @@ import com.baomidou.jobs.admin.service.IJobsLogService;
 import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.model.JobsLog;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class JobsLogController extends BaseController {
      * 分页
      */
     @GetMapping("/page")
-    public JobsResponse<IPage<JobsLog>> page(JobsLog jobsInfo) {
+    public R<IPage<JobsLog>> page(JobsLog jobsInfo) {
         return jobsInfoService.page(request, jobsInfo);
     }
 
@@ -33,7 +34,7 @@ public class JobsLogController extends BaseController {
      * 总执行次数
      */
     @GetMapping("/count")
-    public JobsResponse<Integer> count() {
+    public R<Integer> count() {
         return success(jobsInfoService.countAll());
     }
 
@@ -41,7 +42,7 @@ public class JobsLogController extends BaseController {
      * 总执行成功次数
      */
     @GetMapping("/count-success")
-    public JobsResponse<Integer> countSuccess() {
+    public R<Integer> countSuccess() {
         return success(jobsInfoService.countSuccess());
     }
 }

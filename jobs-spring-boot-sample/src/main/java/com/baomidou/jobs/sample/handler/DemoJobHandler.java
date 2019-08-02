@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class DemoJobHandler implements IJobsHandler {
 
     @Override
-    public JobsResponse<String> execute(String tenantId, String param) throws JobsException {
+    public JobsResponse execute(String tenantId, String param) throws JobsException {
         System.out.println("执行 DemoJobHandler tenantId=" + tenantId
             + ",param=" + param);
         return JobsResponse.ok();

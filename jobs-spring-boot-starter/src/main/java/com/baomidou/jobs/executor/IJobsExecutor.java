@@ -19,5 +19,5 @@ public interface IJobsExecutor {
      * @return JobsResponse<String>
      * @throws JobsException
      */
-    JobsResponse<String> run(TriggerParam triggerParam) throws JobsException;
+    JobsResponse run(TriggerParam triggerParam) throws JobsException;
 }

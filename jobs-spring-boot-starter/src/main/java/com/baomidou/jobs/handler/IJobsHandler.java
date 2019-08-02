@@ -20,5 +20,5 @@ public interface IJobsHandler {
      * @return
      * @throws JobsException
      */
-    JobsResponse<String> execute(String tenantId, String param) throws JobsException;
+    JobsResponse execute(String tenantId, String param) throws JobsException;
 }

@@ -1,12 +1,12 @@
 package com.baomidou.jobs.admin.controller;
 
 import com.baomidou.jobs.admin.service.IJobsRegistryService;
+import com.baomidou.jobs.model.JobsRegistry;
+import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.jobs.api.JobsResponse;
-import com.baomidou.jobs.model.JobsRegistry;
 
 /**
  * 用户信息
@@ -24,7 +24,7 @@ public class JobsRegistryController extends BaseController {
      * 分页
      */
     @GetMapping("/page")
-    public JobsResponse<Object> page(JobsRegistry jobRegistry) {
+    public R<Object> page(JobsRegistry jobRegistry) {
         return success(null);//jobRegistryService.page(request, jobRegistry));
     }
 }

@@ -110,7 +110,7 @@ public class JobsRpcInvokerFactory {
         futureResponsePool.remove(requestId);
     }
 
-    public void notifyInvokerFuture(String requestId, final JobsRpcResponse xxlRpcResponse) {
+    public void notifyInvokerFuture(String requestId, final JobsRpcResponse jobsRpcResponse) {
 
         // get
         final JobsRpcFutureResponse futureResponse = futureResponsePool.get(requestId);
@@ -123,14 +123,11 @@ public class JobsRpcInvokerFactory {
 
             // callback type
             try {
-                executeResponseCallback(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (xxlRpcResponse.getErrorMsg() != null) {
-                            futureResponse.getInvokeCallback().onFailure(new JobsRpcException(xxlRpcResponse.getErrorMsg()));
-                        } else {
-                            futureResponse.getInvokeCallback().onSuccess(xxlRpcResponse.getResult());
-                        }
+                executeResponseCallback(() -> {
+                    if (jobsRpcResponse.getErrorMsg() != null) {
+                        futureResponse.getInvokeCallback().onFailure(new JobsRpcException(jobsRpcResponse.getErrorMsg()));
+                    } else {
+                        futureResponse.getInvokeCallback().onSuccess(jobsRpcResponse.getResult());
                     }
                 });
             } catch (Exception e) {
@@ -139,7 +136,7 @@ public class JobsRpcInvokerFactory {
         } else {
 
             // other nomal type
-            futureResponse.setResponse(xxlRpcResponse);
+            futureResponse.setResponse(jobsRpcResponse);
         }
 
         // do remove

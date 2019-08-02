@@ -1,7 +1,6 @@
 package com.baomidou.jobs.admin.controller;
 
-import com.baomidou.jobs.api.IJobsErrorCode;
-import com.baomidou.jobs.api.JobsResponse;
+import com.baomidou.mybatisplus.extension.api.R;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +26,8 @@ public class BaseController {
      * @param <T>  对象泛型
      * @return ignore
      */
-    protected <T> JobsResponse<T> success(T data) {
-        return JobsResponse.ok(data);
+    protected <T> R<T> success(T data) {
+        return R.ok(data);
     }
 
     /**
@@ -37,18 +36,8 @@ public class BaseController {
      * @param msg 提示内容
      * @return ignore
      */
-    protected <T> JobsResponse<T> failed(String msg) {
-        return JobsResponse.failed(msg);
-    }
-
-    /**
-     * 请求失败
-     *
-     * @param errorCode 请求错误码
-     * @return ignore
-     */
-    protected <T> JobsResponse<T> failed(IJobsErrorCode errorCode) {
-        return JobsResponse.failed(errorCode);
+    protected <T> R<T> failed(String msg) {
+        return R.failed(msg);
     }
 
 }

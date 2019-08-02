@@ -1,9 +1,9 @@
 package com.baomidou.jobs.admin.service;
 
 import com.baomidou.jobs.admin.service.vo.JobsDateDistributionVO;
-import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.model.JobsLog;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -41,7 +41,7 @@ public interface IJobsLogService {
      */
     boolean removeById(Long id);
 
-    JobsResponse<IPage<JobsLog>> page(HttpServletRequest request, JobsLog jobsInfo);
+    R<IPage<JobsLog>> page(HttpServletRequest request, JobsLog jobsInfo);
 
     List<JobsDateDistributionVO> getJobsDateDistributionVO();
 }

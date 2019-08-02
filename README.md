@@ -1,4 +1,4 @@
-# jobs 分布式任务调度平台
+# jobs 分布式任务调度组件
 项目名：Jobs 【致敬: 史蒂夫·乔布斯（Steve Jobs)】
 
 目标是构建一个 Spring Boot 分布式任务 starter 插拔组件

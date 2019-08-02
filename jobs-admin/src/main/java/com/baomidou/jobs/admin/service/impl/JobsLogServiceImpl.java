@@ -9,8 +9,7 @@ import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.model.JobsLog;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
+import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -18,7 +17,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class JobsLogServiceImpl implements IJobsLogService {
@@ -57,8 +55,8 @@ public class JobsLogServiceImpl implements IJobsLogService {
     }
 
     @Override
-    public JobsResponse<IPage<JobsLog>> page(HttpServletRequest request, JobsLog jobsLog) {
-        return JobsResponse.ok(jobsLogMapper.selectPage(
+    public R<IPage<JobsLog>> page(HttpServletRequest request, JobsLog jobsLog) {
+        return R.ok(jobsLogMapper.selectPage(
                 JobsPageHelper.getPage(request), Wrappers.query(jobsLog)
         ));
     }

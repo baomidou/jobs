@@ -74,7 +74,7 @@ public class JobsTrigger {
 
         // trigger remote executor
         int actualRetryCount = 0;
-        JobsResponse<String> triggerResult;
+        JobsResponse triggerResult;
         List<String> registryList = jobsService.getAppAddressList(jobsInfo.getApp());
         if (null != registryList && 0 != registryList.size()) {
             // 路由选举执行地址
@@ -100,7 +100,7 @@ public class JobsTrigger {
         return true;
     }
 
-    public static void jobsResultHandler(JobsInfo jobsInfo, String address, JobsResponse<String> jobsResponse) {
+    public static void jobsResultHandler(JobsInfo jobsInfo, String address, JobsResponse jobsResponse) {
         IJobsResultHandler jobsResultHandler = JobsHelper.getJobsResultHandler();
         if (null != jobsResultHandler) {
             jobsResultHandler.handle(jobsInfo, address, jobsResponse);
@@ -118,9 +118,9 @@ public class JobsTrigger {
      * @param address
      * @return
      */
-    public static JobsResponse<String> runExecutor(TriggerParam triggerParam, String address, List<String> registryList,
+    public static JobsResponse runExecutor(TriggerParam triggerParam, String address, List<String> registryList,
                                                    int failRetryCount, int actualRetryCount) {
-        JobsResponse<String> jobsResponse;
+        JobsResponse jobsResponse;
         try {
             jobsResponse = JobsScheduler.getJobsExecutor(address).run(triggerParam);
         } catch (JobsException e) {

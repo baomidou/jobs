@@ -16,15 +16,11 @@ import java.util.Optional;
 @Data
 @ToString
 @Accessors(chain = true)
-public class JobsResponse<T> implements Serializable {
+public class JobsResponse implements Serializable {
     /**
      * 业务错误码
      */
     private int code;
-    /**
-     * 结果集
-     */
-    private T data;
     /**
      * 描述
      */
@@ -41,33 +37,20 @@ public class JobsResponse<T> implements Serializable {
     }
 
     public static JobsResponse ok() {
-        return ok("ok");
+        return restResult(JobsErrorCode.SUCCESS);
     }
 
-    public static <T> JobsResponse<T> ok(T data) {
-        JobsErrorCode aec = JobsErrorCode.SUCCESS;
-        if (data instanceof Boolean && Boolean.FALSE.equals(data)) {
-            aec = JobsErrorCode.FAILED;
-        }
-        return restResult(data, aec);
+    public static JobsResponse failed(String msg) {
+        return restResult(JobsErrorCode.FAILED.getCode(), msg);
     }
 
-    public static <T> JobsResponse<T> failed(String msg) {
-        return restResult(null, JobsErrorCode.FAILED.getCode(), msg);
+    public static JobsResponse restResult(IJobsErrorCode errorCode) {
+        return restResult(errorCode.getCode(), errorCode.getMsg());
     }
 
-    public static <T> JobsResponse<T> failed(IJobsErrorCode errorCode) {
-        return restResult(null, errorCode);
-    }
-
-    public static <T> JobsResponse<T> restResult(T data, IJobsErrorCode errorCode) {
-        return restResult(data, errorCode.getCode(), errorCode.getMsg());
-    }
-
-    private static <T> JobsResponse<T> restResult(T data, int code, String msg) {
-        JobsResponse<T> apiResult = new JobsResponse<>();
+    private static JobsResponse restResult(int code, String msg) {
+        JobsResponse apiResult = new JobsResponse();
         apiResult.setCode(code);
-        apiResult.setData(data);
         apiResult.setMsg(msg);
         return apiResult;
     }

@@ -4,13 +4,13 @@ import com.baomidou.jobs.admin.mapper.JobsInfoMapper;
 import com.baomidou.jobs.admin.service.IJobsInfoService;
 import com.baomidou.jobs.admin.service.IJobsLogService;
 import com.baomidou.jobs.admin.service.JobsPageHelper;
-import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.cron.CronExpression;
 import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.jobs.trigger.JobsTrigger;
 import com.baomidou.jobs.trigger.TriggerTypeEnum;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.api.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +30,8 @@ public class JobsInfoServiceImpl implements IJobsInfoService {
     private IJobsLogService jobsInfoService;
 
     @Override
-    public JobsResponse<IPage<JobsInfo>> page(HttpServletRequest request, JobsInfo jobsInfo) {
-        return JobsResponse.ok(jobInfoMapper.selectPage(
+    public R<IPage<JobsInfo>> page(HttpServletRequest request, JobsInfo jobsInfo) {
+        return R.ok(jobInfoMapper.selectPage(
                 JobsPageHelper.getPage(request), Wrappers.query(jobsInfo)
         ));
     }

@@ -1,9 +1,9 @@
 package com.baomidou.jobs.admin.controller;
 
 import com.baomidou.jobs.admin.service.IJobsInfoService;
-import com.baomidou.jobs.api.JobsResponse;
 import com.baomidou.jobs.model.JobsInfo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,7 +24,7 @@ public class JobsInfoController extends BaseController {
      * 分页
      */
     @GetMapping("/page")
-    public JobsResponse<IPage<JobsInfo>> page(JobsInfo jobInfo) {
+    public R<IPage<JobsInfo>> page(JobsInfo jobInfo) {
         return jobInfoService.page(request, jobInfo);
     }
 
@@ -32,7 +32,7 @@ public class JobsInfoController extends BaseController {
      * 总任务数
      */
     @GetMapping("/count")
-    public JobsResponse<Integer> count() {
+    public R<Integer> count() {
         return success(jobInfoService.count());
     }
 
@@ -40,7 +40,7 @@ public class JobsInfoController extends BaseController {
      * 执行
      */
     @PostMapping("/execute-{id}")
-    public JobsResponse<Boolean> execute(@PathVariable("id") Long id, String param) {
+    public R<Boolean> execute(@PathVariable("id") Long id, String param) {
         return success(jobInfoService.execute(id, param));
     }
 
@@ -48,7 +48,7 @@ public class JobsInfoController extends BaseController {
      * 启动
      */
     @PostMapping("/start-{id}")
-    public JobsResponse<Boolean> start(@PathVariable("id") Long id) {
+    public R<Boolean> start(@PathVariable("id") Long id) {
         return success(jobInfoService.start(id));
     }
 
@@ -56,7 +56,7 @@ public class JobsInfoController extends BaseController {
      * 停止
      */
     @PostMapping("/stop-{id}")
-    public JobsResponse<Boolean> stop(@PathVariable("id") Long id) {
+    public R<Boolean> stop(@PathVariable("id") Long id) {
         return success(jobInfoService.stop(id));
     }
 
@@ -64,7 +64,7 @@ public class JobsInfoController extends BaseController {
      * 删除
      */
     @PostMapping("/remove-{id}")
-    public JobsResponse<Boolean> remove(@PathVariable("id") Long id) {
+    public R<Boolean> remove(@PathVariable("id") Long id) {
         return success(jobInfoService.remove(id));
     }
 }

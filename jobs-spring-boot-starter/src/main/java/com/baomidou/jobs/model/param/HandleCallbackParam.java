@@ -18,13 +18,13 @@ public class HandleCallbackParam implements Serializable {
     private Long logId;
     private Long logDateTime;
 
-    private JobsResponse<String> executeResult;
+    private JobsResponse executeResult;
 
     public HandleCallbackParam() {
         // to do nothing
     }
 
-    public HandleCallbackParam(Long logId, Long logDateTime, JobsResponse<String> executeResult) {
+    public HandleCallbackParam(Long logId, Long logDateTime, JobsResponse executeResult) {
         this.logId = logId;
         this.logDateTime = logDateTime;
         this.executeResult = executeResult;

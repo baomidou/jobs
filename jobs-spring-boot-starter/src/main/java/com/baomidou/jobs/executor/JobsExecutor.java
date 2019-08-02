@@ -22,8 +22,14 @@ public class JobsExecutor implements IJobsExecutor {
      * @return
      */
     @Override
-    public JobsResponse<String> run(TriggerParam triggerParam) throws JobsException {
+    public JobsResponse run(TriggerParam triggerParam) throws JobsException {
+        if (null == triggerParam) {
+            throw new JobsException("JobsExecutor execute triggerParam is null");
+        }
         IJobsHandler jobsHandler = JobsAbstractExecutor.getJobsHandler(triggerParam.getHandler());
+        if (null == jobsHandler) {
+            throw new JobsException("JobsExecutor not found execute handler:" + triggerParam.getHandler());
+        }
         return jobsHandler.execute(triggerParam.getTenantId(), triggerParam.getParam());
     }
 }

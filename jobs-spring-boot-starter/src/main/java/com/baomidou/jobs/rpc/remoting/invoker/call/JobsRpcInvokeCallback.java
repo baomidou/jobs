@@ -18,7 +18,7 @@ public abstract class JobsRpcInvokeCallback<T> {
     /**
      * get callback
      *
-     * @return
+     * @return JobsRpcInvokeCallback
      */
     public static JobsRpcInvokeCallback getCallback() {
         JobsRpcInvokeCallback invokeCallback = threadInvokerFuture.get();
