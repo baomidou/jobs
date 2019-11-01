@@ -14,6 +14,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class JobsProperties {
     public static final String PREFIX = "jobs";
     /**
+     * cron 类型，默认 QUARTZ 【 支持 CRON4J, QUARTZ, UNIX, SPRING 】
+     * com.cronutils.model.CronType
+     */
+    private String cronType = "QUARTZ";
+    /**
      * admin 访问票据
      */
     private String adminAccessToken;

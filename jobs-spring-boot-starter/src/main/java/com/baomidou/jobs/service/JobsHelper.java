@@ -4,6 +4,7 @@ import com.baomidou.jobs.disruptor.JobsDisruptorTemplate;
 import com.baomidou.jobs.handler.IJobsResultHandler;
 import com.baomidou.jobs.router.IJobsExecutorRouter;
 import com.baomidou.jobs.starter.JobsProperties;
+import com.cronutils.parser.CronParser;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,6 +29,9 @@ public class JobsHelper implements InitializingBean {
     }
 
     @Resource
+    private CronParser _cronParser;
+
+    @Resource
     private IJobsService _jobsService;
     @Resource
     private IJobsExecutorRouter _jobsExecutorRouter;
@@ -37,6 +41,10 @@ public class JobsHelper implements InitializingBean {
     private JobsProperties _jobsProperties;
     @Resource
     private JobsDisruptorTemplate _jobsDisruptorTemplate;
+
+    public static CronParser getCronParser() {
+        return JOB_HELPER._cronParser;
+    }
 
     public static IJobsService getJobsService() {
         return JOB_HELPER._jobsService;

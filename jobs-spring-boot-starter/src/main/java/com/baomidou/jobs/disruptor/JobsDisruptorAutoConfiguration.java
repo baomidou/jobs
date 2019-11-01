@@ -3,12 +3,17 @@ package com.baomidou.jobs.disruptor;
 import com.baomidou.jobs.router.ExecutorConsistentHashRouter;
 import com.baomidou.jobs.router.IJobsExecutorRouter;
 import com.baomidou.jobs.starter.JobsProperties;
+import com.cronutils.model.CronType;
+import com.cronutils.model.definition.CronDefinition;
+import com.cronutils.model.definition.CronDefinitionBuilder;
+import com.cronutils.parser.CronParser;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -26,6 +31,16 @@ import java.util.concurrent.ThreadFactory;
 @Configuration
 @EnableConfigurationProperties(JobsProperties.class)
 public class JobsDisruptorAutoConfiguration {
+    @Autowired
+    private JobsProperties jobsProperties;
+
+    @Bean
+    @ConditionalOnMissingBean
+    public CronParser cronParser() {
+        CronDefinition cronDefinition = CronDefinitionBuilder.instanceDefinitionFor(
+                CronType.valueOf(jobsProperties.getCronType()));
+        return new CronParser(cronDefinition);
+    }
 
     @Bean
     @ConditionalOnMissingBean

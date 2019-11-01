@@ -1,12 +1,13 @@
 package com.baomidou.jobs.service;
 
 import com.baomidou.jobs.JobsConstant;
-import com.baomidou.jobs.cron.CronExpression;
 import com.baomidou.jobs.model.JobsInfo;
+import com.cronutils.model.time.ExecutionTime;
+import com.cronutils.parser.CronParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -54,8 +55,10 @@ public class JobsHeartbeat implements Runnable {
                         JobsInfo tempJobsInfo = new JobsInfo();
                         tempJobsInfo.setId(jobsInfo.getId());
                         tempJobsInfo.setLastTime(jobsInfo.getNextTime());
-                        tempJobsInfo.setNextTime(new CronExpression(jobsInfo.getCron())
-                                .getNextValidTimeAfter(new Date()).getTime());
+                        CronParser cronParser = JobsHelper.getCronParser();
+                        ExecutionTime executionTime = ExecutionTime.forCron(cronParser.parse(jobsInfo.getCron()));
+                        tempJobsInfo.setNextTime(executionTime.nextExecution(ZonedDateTime.now())
+                            .get().toInstant().getEpochSecond());
                         if (waitSecond >= 0) {
                             // 推送任务消息
                             JobsHelper.getJobsDisruptorTemplate().publish(jobsInfo, waitSecond);
