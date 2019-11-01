@@ -4,6 +4,7 @@ import com.baomidou.jobs.disruptor.JobsDisruptorTemplate;
 import com.baomidou.jobs.handler.IJobsResultHandler;
 import com.baomidou.jobs.router.IJobsExecutorRouter;
 import com.baomidou.jobs.starter.JobsProperties;
+import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.Resource;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.ZonedDateTime;
 
 /**
  * Spring Boot 相关辅助类
@@ -44,6 +46,34 @@ public class JobsHelper implements InitializingBean {
 
     public static CronParser getCronParser() {
         return JOB_HELPER._cronParser;
+    }
+
+    /**
+     * CRON 表达式校验
+     *
+     * @param expression CRON 表达式
+     * @return
+     */
+    public static boolean cronValidate(final String expression) {
+        try {
+            getCronParser().parse(expression).validate();
+        } catch (Throwable t) {
+            // 非法
+            return false;
+        }
+        // 合法
+        return true;
+    }
+
+    /**
+     * CRON 表达式下次执行时间
+     *
+     * @param expression CRON 表达式
+     * @return
+     */
+    public static long cronNextTime(final String expression) {
+        ExecutionTime executionTime = ExecutionTime.forCron(getCronParser().parse(expression));
+        return executionTime.nextExecution(ZonedDateTime.now()).get().toInstant().getEpochSecond();
     }
 
     public static IJobsService getJobsService() {
