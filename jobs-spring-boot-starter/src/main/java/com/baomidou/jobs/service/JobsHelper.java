@@ -73,7 +73,7 @@ public class JobsHelper implements InitializingBean {
      */
     public static long cronNextTime(final String expression) {
         ExecutionTime executionTime = ExecutionTime.forCron(getCronParser().parse(expression));
-        return executionTime.nextExecution(ZonedDateTime.now()).get().toInstant().getEpochSecond();
+        return executionTime.nextExecution(ZonedDateTime.now()).get().toInstant().toEpochMilli();
     }
 
     public static IJobsService getJobsService() {

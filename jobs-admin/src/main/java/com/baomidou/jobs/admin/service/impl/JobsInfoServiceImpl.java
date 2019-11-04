@@ -4,12 +4,13 @@ import com.baomidou.jobs.admin.mapper.JobsInfoMapper;
 import com.baomidou.jobs.admin.service.IJobsInfoService;
 import com.baomidou.jobs.admin.service.IJobsLogService;
 import com.baomidou.jobs.admin.service.JobsPageHelper;
-import com.baomidou.jobs.cron.CronExpression;
 import com.baomidou.jobs.model.JobsInfo;
+import com.baomidou.jobs.service.JobsHelper;
 import com.baomidou.jobs.trigger.JobsTrigger;
 import com.baomidou.jobs.trigger.TriggerTypeEnum;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.api.Assert;
 import com.baomidou.mybatisplus.extension.api.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -44,6 +43,7 @@ public class JobsInfoServiceImpl implements IJobsInfoService {
     @Override
     public List<JobsInfo> listNextTime(long nextTime) {
         return jobInfoMapper.selectList(Wrappers.<JobsInfo>lambdaQuery()
+                .eq(JobsInfo::getStatus, 0)
                 .le(JobsInfo::getNextTime, nextTime));
     }
 
@@ -65,20 +65,12 @@ public class JobsInfoServiceImpl implements IJobsInfoService {
         }
         JobsInfo jobsInfo = new JobsInfo();
         jobsInfo.setId(dbJobInfo.getId());
-
-        // next trigger time (10s后生效，避开预读周期)
-        long nextTriggerTime;
-        try {
-            nextTriggerTime = new CronExpression(dbJobInfo.getCron())
-                    .getNextValidTimeAfter(new Date(System.currentTimeMillis() + 10000)).getTime();
-        } catch (ParseException e) {
-            log.error(e.getMessage(), e);
-            return false;
-        }
-
         jobsInfo.setStatus(1);
         jobsInfo.setLastTime(0L);
-        jobsInfo.setNextTime(nextTriggerTime);
+        Assert.fail(!JobsHelper.cronValidate(dbJobInfo.getCron()), "CRON 表达式不可用");
+
+        // next trigger time (10s后生效，避开预读周期)
+        jobsInfo.setNextTime(JobsHelper.cronNextTime(dbJobInfo.getCron()) + 10000);
         return jobInfoMapper.updateById(jobsInfo) > 0;
     }
 

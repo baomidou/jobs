@@ -45,10 +45,10 @@ public class CronUtilsTest {
 
     ExecutionTime executionTime = ExecutionTime.forCron(cron);
     Optional<ZonedDateTime> lastExecution = executionTime.lastExecution(now);
-    System.out.println(lastExecution.get().toInstant().getEpochSecond());
+    System.out.println(lastExecution.get().toInstant().toEpochMilli());
 
     // Get date for next execution
     Optional<ZonedDateTime> nextExecution = executionTime.nextExecution(now);
-    System.out.println(nextExecution.get().toInstant().getEpochSecond());
+    System.out.println(nextExecution.get().toInstant().toEpochMilli());
   }
 }
