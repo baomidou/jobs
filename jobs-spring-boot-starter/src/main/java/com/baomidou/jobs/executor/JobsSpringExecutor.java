@@ -1,17 +1,21 @@
 package com.baomidou.jobs.executor;
 
 import com.baomidou.jobs.handler.IJobsHandler;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * jobs executor (for spring)
+ * jobs spring executor
  *
- * @author xxl jobob
- * @since 2019-06-22
+ * @author jobob
+ * @since 2019-11-01
  */
 public class JobsSpringExecutor extends JobsAbstractExecutor implements ApplicationContextAware {
+    @Autowired
+    private IJobsRpcSerializer jobsRpcSerializer;
 
     @Override
     public void start() throws Exception {
@@ -43,7 +47,8 @@ public class JobsSpringExecutor extends JobsAbstractExecutor implements Applicat
         JobsSpringExecutor.applicationContext = applicationContext;
     }
 
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
+    @Override
+    public IJobsRpcSerializer getJobsRpcSerializer() {
+        return jobsRpcSerializer;
     }
 }

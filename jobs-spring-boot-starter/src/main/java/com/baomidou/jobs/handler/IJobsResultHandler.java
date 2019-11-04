@@ -18,7 +18,6 @@ public interface IJobsResultHandler {
      * @param jobsInfo     任务信息
      * @param address      调度地址
      * @param jobsResponse 异常响应，根据 code 对应类 JobsErrorCode 值确定调度正确失败
-     * @return
      */
     void handle(JobsInfo jobsInfo, String address, JobsResponse jobsResponse);
 }

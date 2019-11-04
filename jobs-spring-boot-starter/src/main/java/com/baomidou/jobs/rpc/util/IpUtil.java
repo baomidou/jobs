@@ -196,6 +196,4 @@ public class IpUtil {
 
         return new Object[]{host, port};
     }
-
-
 }

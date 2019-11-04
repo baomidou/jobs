@@ -91,10 +91,6 @@ public class ServletServerHandler {
 
     /**
      * read bytes from http request
-     *
-     * @param request
-     * @return
-     * @throws IOException
      */
     public static final byte[] readBytes(HttpServletRequest request) throws IOException {
         request.setCharacterEncoding("UTF-8");

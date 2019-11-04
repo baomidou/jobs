@@ -3,7 +3,7 @@ package com.baomidou.jobs.rpc.remoting.net.common;
 import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
-import com.baomidou.jobs.rpc.serialize.Serializer;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public abstract class ConnectClient {
 
-    public abstract void init(String address, final Serializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception;
+    public abstract void init(String address, final IJobsRpcSerializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception;
 
     public abstract void close();
 

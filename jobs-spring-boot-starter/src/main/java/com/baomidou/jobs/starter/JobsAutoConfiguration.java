@@ -1,6 +1,8 @@
 package com.baomidou.jobs.starter;
 
 import com.baomidou.jobs.executor.JobsSpringExecutor;
+import com.baomidou.jobs.rpc.serialize.impl.KryoRpcSerializer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(JobsProperties.class)
 public class JobsAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean
+    public KryoRpcSerializer jobsRpcSerializer() {
+        return new KryoRpcSerializer();
+    }
 
     @Bean(initMethod = "start", destroyMethod = "destroy")
     public JobsSpringExecutor jobsSpringExecutor(JobsProperties jobsProperties) {

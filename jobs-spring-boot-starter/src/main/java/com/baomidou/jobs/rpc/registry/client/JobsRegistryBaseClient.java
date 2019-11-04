@@ -54,9 +54,6 @@ public class JobsRegistryBaseClient {
 
     /**
      * registry
-     *
-     * @param registryDataList
-     * @return
      */
     public boolean registry(List<JobsRegistryDataParamVO> registryDataList) {
 

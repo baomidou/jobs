@@ -72,10 +72,6 @@ public class JobsRpcInvokeFuture implements Future {
 
     /**
      * get future
-     *
-     * @param type
-     * @param <T>
-     * @return
      */
     public static <T> Future<T> getFuture(Class<T> type) {
         Future<T> future = (Future<T>) threadInvokerFuture.get();
@@ -85,8 +81,6 @@ public class JobsRpcInvokeFuture implements Future {
 
     /**
      * set future
-     *
-     * @param future
      */
     public static void setFuture(JobsRpcInvokeFuture future) {
         threadInvokerFuture.set(future);

@@ -9,7 +9,7 @@ import com.baomidou.jobs.rpc.remoting.invoker.reference.JobsRpcReferenceBean;
 import com.baomidou.jobs.rpc.remoting.invoker.route.LoadBalance;
 import com.baomidou.jobs.rpc.remoting.net.NetEnum;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
-import com.baomidou.jobs.rpc.serialize.Serializer;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
 import com.baomidou.jobs.rpc.util.IpUtil;
 import com.baomidou.jobs.rpc.util.NetUtil;
 import com.baomidou.jobs.service.IJobsService;
@@ -78,15 +78,17 @@ public abstract class JobsAbstractExecutor {
         stopInvokerFactory();
     }
 
+    /**
+     * 序列化接口
+     */
+    public abstract IJobsRpcSerializer getJobsRpcSerializer();
 
     /**
      * Jobs Admin
      */
     private static List<IJobsService> JOBS_SERVICE;
-    private static Serializer serializer;
 
     private void initJobsAdminList(String adminAddress, String accessToken) throws Exception {
-        serializer = Serializer.SerializeEnum.HESSIAN.getSerializer();
         if (!StringUtils.isEmpty(adminAddress)) {
             if (JOBS_SERVICE == null) {
                 JOBS_SERVICE = new ArrayList<>();
@@ -97,7 +99,7 @@ public abstract class JobsAbstractExecutor {
                     String addressUrl = address.concat(JobsConstant.JOBS_API);
                     IJobsService jobsAdmin = (IJobsService) new JobsRpcReferenceBean(
                             NetEnum.NETTY_HTTP,
-                            serializer,
+                            getJobsRpcSerializer(),
                             CallType.SYNC,
                             LoadBalance.ROUND,
                             IJobsService.class,
@@ -127,11 +129,6 @@ public abstract class JobsAbstractExecutor {
         return JOBS_SERVICE;
     }
 
-    public static Serializer getSerializer() {
-        return serializer;
-    }
-
-
     /**
      * rpc provider factory
      */
@@ -144,7 +141,7 @@ public abstract class JobsAbstractExecutor {
         serviceRegistryParam.put("address", IpUtil.getIpPort(ip, port));
 
         JOBS_RPC_PROVIDER_FACTORY = new JobsRpcProviderFactory();
-        JOBS_RPC_PROVIDER_FACTORY.initConfig(NetEnum.NETTY_HTTP, Serializer.SerializeEnum.HESSIAN.getSerializer(),
+        JOBS_RPC_PROVIDER_FACTORY.initConfig(NetEnum.NETTY_HTTP, getJobsRpcSerializer(),
                 ip, port, accessToken, ExecutorServiceRegistry.class, serviceRegistryParam);
 
         // add services

@@ -12,8 +12,6 @@ public interface IJobsRpcCallback {
 
     /**
      * 执行回调逻辑
-     *
-     * @throws JobsRpcException
      */
     void execute() throws JobsRpcException;
 }

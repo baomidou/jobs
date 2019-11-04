@@ -14,7 +14,7 @@ public class NettyClient extends Client {
     private Class<? extends ConnectClient> connectClientImpl = NettyConnectClient.class;
 
     @Override
-    public void asyncSend(String address, JobsRpcRequest xxlRpcRequest) throws Exception {
-        ConnectClient.asyncSend(xxlRpcRequest, address, connectClientImpl, xxlRpcReferenceBean);
+    public void asyncSend(String address, JobsRpcRequest rpcRequest) throws Exception {
+        ConnectClient.asyncSend(rpcRequest, address, connectClientImpl, rpcReferenceBean);
     }
 }

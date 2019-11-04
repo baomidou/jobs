@@ -10,7 +10,7 @@ import java.util.TreeSet;
  *
  * @author xuxueli 2018-12-04
  */
-public class XxlRpcLoadBalanceRandomStrategy extends JobsRpcLoadBalance {
+public class RpcLoadBalanceRandomStrategy extends JobsRpcLoadBalance {
 
     private Random random = new Random();
 
@@ -23,5 +23,4 @@ public class XxlRpcLoadBalanceRandomStrategy extends JobsRpcLoadBalance {
         String finalAddress = addressArr[random.nextInt(addressSet.size())];
         return finalAddress;
     }
-
 }

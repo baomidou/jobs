@@ -27,7 +27,7 @@
 
 
 # 鸣谢
-Jobs 参考 <a target="_blank" href="https://github.com/xuxueli/xxl-job">xxl-job</a> 可以理解为它的分支，目的是构建类似 Swagger 模式的插拔组件。
+Jobs 参考 <a target="_blank" href="https://github.com/xuxueli/xxl-job">xxl-job</a> 但是更为轻量，目的是构建类似 Swagger 模式的插拔组件。
 
 VUE 前端：<a target="_blank" href="https://gitee.com/baomidou/jobs-admin-web">jobs-admin-web</a>
 

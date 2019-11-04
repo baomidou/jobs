@@ -21,6 +21,9 @@ ext {
             jobsVersion = '1.0.3.2-SNAPSHOT',
             springBootVersion = '2.2.0.RELEASE',
             springVersion = '5.2.0.RELEASE',
+            nettyAllVersion = '4.1.43.Final',
+            disruptorVersion = '3.4.2',
+            kryoVersion = '5.0.0-RC4',
             junitVersion = '5.4.0',
     ]
 
@@ -34,7 +37,9 @@ ext {
             "cron-utils"               : "com.cronutils:cron-utils:9.0.2",
             "mysql-connector-java"     : "mysql:mysql-connector-java:8.0.16",
             "p6spy"                    : "p6spy:p6spy:3.8.2",
-            "disruptor"                : "com.lmax:disruptor:3.4.2",
+            "netty-all"                : "io.netty:netty-all:${nettyAllVersion}",
+            "disruptor"                : "com.lmax:disruptor:${disruptorVersion}",
+            "kryo"                     : "com.esotericsoftware:kryo:${kryoVersion}",
 
             "javax.servlet-api"        : "javax.servlet:javax.servlet-api:4.0.1",
             "aspectjweaver"            : "org.aspectj:aspectjweaver:1.9.2",

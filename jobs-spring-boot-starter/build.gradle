@@ -1,8 +1,8 @@
 dependencies {
+    api "${lib.'netty-all'}"
     api "${lib.'disruptor'}"
-    api 'io.netty:netty-all:4.1.37.Final'
-    api 'com.caucho:hessian:4.0.62'
     api "${lib.'cron-utils'}"
+    api "${lib.'kryo'}"
     implementation "${lib.'slf4j-api'}"
     implementation "org.springframework:spring-context:${springVersion}"
     implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}" as String))

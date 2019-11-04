@@ -13,7 +13,7 @@ import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcFutureResponse;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
-import com.baomidou.jobs.rpc.serialize.Serializer;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
 import com.baomidou.jobs.rpc.util.ClassUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class JobsRpcReferenceBean {
     private NetEnum netType;
-    private Serializer serializer;
+    private IJobsRpcSerializer serializer;
     private CallType callType;
     private LoadBalance loadBalance;
 
@@ -47,7 +47,7 @@ public class JobsRpcReferenceBean {
     private JobsRpcInvokerFactory invokerFactory;
 
     public JobsRpcReferenceBean(NetEnum netType,
-                                Serializer serializer,
+                                IJobsRpcSerializer serializer,
                                 CallType callType,
                                 LoadBalance loadBalance,
                                 Class<?> iface,
@@ -99,7 +99,7 @@ public class JobsRpcReferenceBean {
     }
 
     // get
-    public Serializer getSerializer() {
+    public IJobsRpcSerializer getSerializer() {
         return serializer;
     }
 
@@ -179,7 +179,7 @@ public class JobsRpcReferenceBean {
                             } else if (addressSet.size() == 1) {
                                 finalAddress = addressSet.first();
                             } else {
-                                finalAddress = loadBalance.xxlRpcInvokerRouter.route(serviceKey, addressSet);
+                                finalAddress = loadBalance.rpcLoadBalance.route(serviceKey, addressSet);
                             }
 
                         }

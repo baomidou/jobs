@@ -3,7 +3,7 @@ package com.baomidou.jobs.rpc.remoting.net.impl.netty.http.client;
 import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
 import com.baomidou.jobs.rpc.remoting.net.common.ConnectClient;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
-import com.baomidou.jobs.rpc.serialize.Serializer;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -32,12 +32,12 @@ public class NettyHttpConnectClient extends ConnectClient {
     private EventLoopGroup group;
     private Channel channel;
 
-    private Serializer serializer;
+    private IJobsRpcSerializer serializer;
     private String address;
     private String host;
 
     @Override
-    public void init(String address, final Serializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception {
+    public void init(String address, final IJobsRpcSerializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception {
 
         if (!address.toLowerCase().startsWith("http")) {
             address = "http://" + address;    // IP:PORT, need parse to url

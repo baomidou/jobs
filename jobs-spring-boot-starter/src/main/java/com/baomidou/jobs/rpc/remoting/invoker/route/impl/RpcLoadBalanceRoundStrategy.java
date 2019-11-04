@@ -11,8 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author xuxueli 2018-12-04
  */
-public class XxlRpcLoadBalanceRoundStrategy extends JobsRpcLoadBalance {
-
+public class RpcLoadBalanceRoundStrategy extends JobsRpcLoadBalance {
     private ConcurrentHashMap<String, Integer> routeCountEachJob = new ConcurrentHashMap<String, Integer>();
     private long CACHE_VALID_TIME = 0;
     private int count(String serviceKey) {
@@ -24,7 +23,8 @@ public class XxlRpcLoadBalanceRoundStrategy extends JobsRpcLoadBalance {
 
         // count++
         Integer count = routeCountEachJob.get(serviceKey);
-        count = (count==null || count>1000000)?(new Random().nextInt(100)):++count;  // 初始化时主动Random一次，缓解首次压力
+        // 初始化时主动Random一次，缓解首次压力
+        count = (count==null || count>1000000)?(new Random().nextInt(100)):++count;
         routeCountEachJob.put(serviceKey, count);
         return count;
     }

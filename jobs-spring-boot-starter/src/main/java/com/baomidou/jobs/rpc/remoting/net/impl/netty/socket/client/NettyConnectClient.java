@@ -6,7 +6,7 @@ import com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.codec.NettyDecoder;
 import com.baomidou.jobs.rpc.remoting.net.impl.netty.socket.codec.NettyEncoder;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
-import com.baomidou.jobs.rpc.serialize.Serializer;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
 import com.baomidou.jobs.rpc.util.IpUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -32,7 +32,7 @@ public class NettyConnectClient extends ConnectClient {
     private Channel channel;
 
     @Override
-    public void init(String address, final Serializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception {
+    public void init(String address, final IJobsRpcSerializer serializer, final JobsRpcInvokerFactory xxlRpcInvokerFactory) throws Exception {
 
         Object[] array = IpUtil.parseIpPort(address);
         String host = (String) array[0];

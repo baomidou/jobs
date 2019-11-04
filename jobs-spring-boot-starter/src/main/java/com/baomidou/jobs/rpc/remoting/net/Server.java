@@ -19,9 +19,6 @@ public abstract class Server {
 
 	/**
 	 * start server
-	 *
-	 * @param jobsRpcProviderFactory
-	 * @throws Exception
 	 */
 	public abstract void start(final JobsRpcProviderFactory jobsRpcProviderFactory) throws Exception;
 

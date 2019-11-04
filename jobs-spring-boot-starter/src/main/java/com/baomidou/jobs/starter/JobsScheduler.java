@@ -8,7 +8,6 @@ import com.baomidou.jobs.rpc.remoting.invoker.route.LoadBalance;
 import com.baomidou.jobs.rpc.remoting.net.NetEnum;
 import com.baomidou.jobs.rpc.remoting.net.impl.servlet.server.ServletServerHandler;
 import com.baomidou.jobs.rpc.remoting.provider.JobsRpcProviderFactory;
-import com.baomidou.jobs.rpc.serialize.Serializer;
 import com.baomidou.jobs.service.IJobsService;
 import com.baomidou.jobs.service.JobsHeartbeat;
 import com.baomidou.jobs.service.JobsHelper;
@@ -77,7 +76,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
         JobsRpcProviderFactory jobsRpcProviderFactory = new JobsRpcProviderFactory();
         jobsRpcProviderFactory.initConfig(
                 NetEnum.NETTY_HTTP,
-                Serializer.SerializeEnum.HESSIAN.getSerializer(),
+                JobsHelper.getJobsRpcSerializer(),
                 null,
                 0,
                 JobsHelper.getJobsProperties().getAdminAccessToken(),
@@ -121,7 +120,7 @@ public class JobsScheduler implements InitializingBean, DisposableBean {
         // set-cache
         jobsExecutor = (IJobsExecutor) new JobsRpcReferenceBean(
                 NetEnum.NETTY_HTTP,
-                Serializer.SerializeEnum.HESSIAN.getSerializer(),
+                JobsHelper.getJobsRpcSerializer(),
                 CallType.SYNC,
                 LoadBalance.ROUND,
                 IJobsExecutor.class,

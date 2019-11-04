@@ -28,8 +28,6 @@ public abstract class JobsRpcInvokeCallback<T> {
 
     /**
      * set future
-     *
-     * @param invokeCallback
      */
     public static void setCallback(JobsRpcInvokeCallback invokeCallback) {
         threadInvokerFuture.set(invokeCallback);

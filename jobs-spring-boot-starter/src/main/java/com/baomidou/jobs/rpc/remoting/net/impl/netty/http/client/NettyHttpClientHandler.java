@@ -1,7 +1,7 @@
 package com.baomidou.jobs.rpc.remoting.net.impl.netty.http.client;
 
 import com.baomidou.jobs.rpc.remoting.invoker.JobsRpcInvokerFactory;
-import com.baomidou.jobs.rpc.serialize.Serializer;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
 import com.baomidou.jobs.exception.JobsRpcException;
 import io.netty.buffer.ByteBufUtil;
@@ -22,9 +22,9 @@ public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttp
 
 
     private JobsRpcInvokerFactory xxlRpcInvokerFactory;
-    private Serializer serializer;
+    private IJobsRpcSerializer serializer;
 
-    public NettyHttpClientHandler(final JobsRpcInvokerFactory xxlRpcInvokerFactory, Serializer serializer) {
+    public NettyHttpClientHandler(final JobsRpcInvokerFactory xxlRpcInvokerFactory, IJobsRpcSerializer serializer) {
         this.xxlRpcInvokerFactory = xxlRpcInvokerFactory;
         this.serializer = serializer;
     }

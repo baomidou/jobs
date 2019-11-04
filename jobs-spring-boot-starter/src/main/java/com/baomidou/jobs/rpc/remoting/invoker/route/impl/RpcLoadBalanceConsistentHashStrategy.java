@@ -16,7 +16,7 @@ import java.util.*;
  *
  * @author xuxueli 2018-12-04
  */
-public class XxlRpcLoadBalanceConsistentHashStrategy extends JobsRpcLoadBalance {
+public class RpcLoadBalanceConsistentHashStrategy extends JobsRpcLoadBalance {
 
     private int VIRTUAL_NODE_NUM = 5;
 
@@ -80,5 +80,4 @@ public class XxlRpcLoadBalanceConsistentHashStrategy extends JobsRpcLoadBalance 
         String finalAddress = doRoute(serviceKey, addressSet);
         return finalAddress;
     }
-
 }

@@ -3,6 +3,7 @@ package com.baomidou.jobs.service;
 import com.baomidou.jobs.disruptor.JobsDisruptorTemplate;
 import com.baomidou.jobs.handler.IJobsResultHandler;
 import com.baomidou.jobs.router.IJobsExecutorRouter;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
 import com.baomidou.jobs.starter.JobsProperties;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
@@ -32,13 +33,14 @@ public class JobsHelper implements InitializingBean {
 
     @Resource
     private CronParser _cronParser;
-
     @Resource
     private IJobsService _jobsService;
     @Resource
     private IJobsExecutorRouter _jobsExecutorRouter;
     @Resource
     private IJobsResultHandler _jobsResultHandler;
+    @Resource
+    private IJobsRpcSerializer _jobsRpcSerializer;
     @Resource
     private JobsProperties _jobsProperties;
     @Resource
@@ -86,6 +88,10 @@ public class JobsHelper implements InitializingBean {
 
     public static IJobsResultHandler getJobsResultHandler() {
         return JOB_HELPER._jobsResultHandler;
+    }
+
+    public static IJobsRpcSerializer getJobsRpcSerializer() {
+        return JOB_HELPER._jobsRpcSerializer;
     }
 
     public static JobsProperties getJobsProperties() {

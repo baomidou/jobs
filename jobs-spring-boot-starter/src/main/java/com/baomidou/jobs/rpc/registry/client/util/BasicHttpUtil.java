@@ -16,11 +16,6 @@ public class BasicHttpUtil {
 
     /**
      * post
-     *
-     * @param url
-     * @param requestBody
-     * @param timeout
-     * @return
      */
     public static String postBody(String url, String requestBody, int timeout) {
         HttpURLConnection connection = null;
@@ -90,10 +85,6 @@ public class BasicHttpUtil {
 
     /**
      * get
-     *
-     * @param url
-     * @param timeout second
-     * @return
      */
     public static String get(String url, int timeout) {
         HttpURLConnection connection = null;

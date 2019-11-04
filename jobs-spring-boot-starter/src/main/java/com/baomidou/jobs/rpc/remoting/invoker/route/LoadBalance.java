@@ -3,22 +3,21 @@ package com.baomidou.jobs.rpc.remoting.invoker.route;
 import com.baomidou.jobs.rpc.remoting.invoker.route.impl.*;
 
 /**
- * @author xuxueli 2018-12-04
+ * 负载均衡策略
+ *
+ * @author jobob
+ * @since 2019-11-01
  */
 public enum LoadBalance {
-    RANDOM(new XxlRpcLoadBalanceRandomStrategy()),
-    ROUND(new XxlRpcLoadBalanceRoundStrategy()),
-    LRU(new XxlRpcLoadBalanceLRUStrategy()),
-    LFU(new XxlRpcLoadBalanceLFUStrategy()),
-    CONSISTENT_HASH(new XxlRpcLoadBalanceConsistentHashStrategy());
+    RANDOM(new RpcLoadBalanceRandomStrategy()),
+    ROUND(new RpcLoadBalanceRoundStrategy()),
+    CONSISTENT_HASH(new RpcLoadBalanceConsistentHashStrategy());
 
+    public final JobsRpcLoadBalance rpcLoadBalance;
 
-    public final JobsRpcLoadBalance xxlRpcInvokerRouter;
-
-    LoadBalance(JobsRpcLoadBalance xxlRpcInvokerRouter) {
-        this.xxlRpcInvokerRouter = xxlRpcInvokerRouter;
+    LoadBalance(JobsRpcLoadBalance rpcLoadBalance) {
+        this.rpcLoadBalance = rpcLoadBalance;
     }
-
 
     public static LoadBalance match(String name, LoadBalance defaultRouter) {
         for (LoadBalance item : LoadBalance.values()) {

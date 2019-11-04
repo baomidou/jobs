@@ -1,8 +1,11 @@
-package com.baomidou.jobs.disruptor;
+package com.baomidou.jobs.starter;
 
+import com.baomidou.jobs.disruptor.JobsDisruptorTemplate;
+import com.baomidou.jobs.disruptor.JobsEventHandler;
+import com.baomidou.jobs.disruptor.JobsInfoEvent;
 import com.baomidou.jobs.router.ExecutorConsistentHashRouter;
 import com.baomidou.jobs.router.IJobsExecutorRouter;
-import com.baomidou.jobs.starter.JobsProperties;
+import com.baomidou.jobs.rpc.serialize.impl.KryoRpcSerializer;
 import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
@@ -13,7 +16,6 @@ import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,20 +25,24 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * Jobs Disruptor 启动配置
+ * Jobs Admin 启动配置
  *
  * @author jobob
  * @since 2019-06-27
  */
 @Configuration
 @EnableConfigurationProperties(JobsProperties.class)
-public class JobsDisruptorAutoConfiguration {
-    @Autowired
-    private JobsProperties jobsProperties;
+public class JobsAdminAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public CronParser cronParser() {
+    public KryoRpcSerializer jobsRpcSerializer() {
+        return new KryoRpcSerializer();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public CronParser cronParser(JobsProperties jobsProperties) {
         CronDefinition cronDefinition = CronDefinitionBuilder.instanceDefinitionFor(
                 CronType.valueOf(jobsProperties.getCronType()));
         return new CronParser(cronDefinition);

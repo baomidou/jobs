@@ -6,7 +6,7 @@ import com.baomidou.jobs.rpc.remoting.net.NetEnum;
 import com.baomidou.jobs.rpc.remoting.net.Server;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcRequest;
 import com.baomidou.jobs.rpc.remoting.net.params.JobsRpcResponse;
-import com.baomidou.jobs.rpc.serialize.Serializer;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
 import com.baomidou.jobs.rpc.util.IpUtil;
 import com.baomidou.jobs.rpc.util.NetUtil;
 import com.baomidou.jobs.service.JobsHelper;
@@ -24,7 +24,7 @@ import java.util.Map;
 @Slf4j
 public class JobsRpcProviderFactory {
     private NetEnum netType;
-    private Serializer serializer;
+    private IJobsRpcSerializer serializer;
     private String ip;
     private int port;
     private String accessToken;
@@ -38,7 +38,7 @@ public class JobsRpcProviderFactory {
     }
 
     public void initConfig(NetEnum netType,
-                           Serializer serializer,
+                           IJobsRpcSerializer serializer,
                            String ip,
                            int port,
                            String accessToken,
@@ -79,7 +79,7 @@ public class JobsRpcProviderFactory {
     }
 
 
-    public Serializer getSerializer() {
+    public IJobsRpcSerializer getSerializer() {
         return serializer;
     }
 
