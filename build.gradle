@@ -52,7 +52,7 @@ ext {
 
 allprojects {
     group = 'com.baomidou'
-    version = "1.0.3.2-SNAPSHOT"
+    version = "1.0.3"
 }
 
 description = "jobs 分布式任务调度平台"
