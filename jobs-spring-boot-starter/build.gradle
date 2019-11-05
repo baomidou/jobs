@@ -2,7 +2,7 @@ dependencies {
     api "${lib.'netty-all'}"
     api "${lib.'disruptor'}"
     api "${lib.'cron-utils'}"
-    api "${lib.'kryo'}"
+    api "${lib.'hessian'}"
     implementation "${lib.'slf4j-api'}"
     implementation "org.springframework:spring-context:${springVersion}"
     implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}" as String))

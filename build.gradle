@@ -18,12 +18,12 @@ ext {
 
     libraries = [
             mybatisPlusVersion = '3.2.0',
-            jobsVersion = '1.0.3.2-SNAPSHOT',
+            jobsVersion = '1.0.3.3-SNAPSHOT',
             springBootVersion = '2.2.0.RELEASE',
             springVersion = '5.2.0.RELEASE',
             nettyAllVersion = '4.1.43.Final',
             disruptorVersion = '3.4.2',
-            kryoVersion = '5.0.0-RC4',
+            hessianVersion = '4.0.62',
             junitVersion = '5.4.0',
     ]
 
@@ -39,7 +39,7 @@ ext {
             "p6spy"                    : "p6spy:p6spy:3.8.2",
             "netty-all"                : "io.netty:netty-all:${nettyAllVersion}",
             "disruptor"                : "com.lmax:disruptor:${disruptorVersion}",
-            "kryo"                     : "com.esotericsoftware:kryo:${kryoVersion}",
+            "hessian"                     : "com.caucho:hessian:${hessianVersion}",
 
             "javax.servlet-api"        : "javax.servlet:javax.servlet-api:4.0.1",
             "aspectjweaver"            : "org.aspectj:aspectjweaver:1.9.2",
@@ -52,7 +52,7 @@ ext {
 
 allprojects {
     group = 'com.baomidou'
-    version = "1.0.3"
+    version = "1.0.3.3-SNAPSHOT"
 }
 
 description = "jobs 分布式任务调度平台"

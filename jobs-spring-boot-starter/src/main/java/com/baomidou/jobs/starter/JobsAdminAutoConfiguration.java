@@ -5,7 +5,8 @@ import com.baomidou.jobs.disruptor.JobsEventHandler;
 import com.baomidou.jobs.disruptor.JobsInfoEvent;
 import com.baomidou.jobs.router.ExecutorConsistentHashRouter;
 import com.baomidou.jobs.router.IJobsExecutorRouter;
-import com.baomidou.jobs.rpc.serialize.impl.KryoRpcSerializer;
+import com.baomidou.jobs.rpc.serialize.IJobsRpcSerializer;
+import com.baomidou.jobs.rpc.serialize.impl.HessianSerializer;
 import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
@@ -36,8 +37,8 @@ public class JobsAdminAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public KryoRpcSerializer jobsRpcSerializer() {
-        return new KryoRpcSerializer();
+    public IJobsRpcSerializer jobsRpcSerializer() {
+        return new HessianSerializer();
     }
 
     @Bean
