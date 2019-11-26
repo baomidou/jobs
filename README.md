@@ -25,6 +25,9 @@
 
 2、启动 admin 启动 sample （观察控制台日志及 jobs-log 表数据）
 
+# 注意
+
+Client 端默认为内网 ip 外网调用，启动命令添加 `--jobs-app-ip=外网ip` 指定 IP 端口防火墙需要放行
 
 # 鸣谢
 Jobs 参考 <a target="_blank" href="https://github.com/xuxueli/xxl-job">xxl-job</a> 但是更为轻量，目的是构建类似 Swagger 模式的插拔组件。
