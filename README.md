@@ -32,7 +32,7 @@ Client 端默认为内网 ip 外网调用，启动命令添加 `--jobs-app-ip=�
 # 鸣谢
 Jobs 参考 <a target="_blank" href="https://github.com/xuxueli/xxl-job">xxl-job</a> 但是更为轻量，目的是构建类似 Swagger 模式的插拔组件。
 
-VUE 前端：<a target="_blank" href="https://gitee.com/baomidou/jobs-admin-web">jobs-admin-web</a>
+VUE 前端：<a target="_blank" href="https://github.com/ldw21cn/jobs-admin-web">jobs-admin-web</a>
 
 ### 界面效果
 
